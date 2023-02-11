@@ -154,6 +154,36 @@
     }
     return 0;
     }</p>
+    <p>使用C++語言代碼和其中的系統調用函數來檢測設備的配置資訊,以下为代码</p>
+    <p>#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main() {
+        
+  string osInfo;
+  ifstream osInfoFile("/etc/os-release");
+  if (osInfoFile.is_open()) {
+    getline(osInfoFile, osInfo);
+    cout << "Operating System: " << osInfo << endl;
+  } else {
+    cout << "Could not retrieve operating system information." << endl;
+  }
+
+  string hardwareInfo;
+  ifstream hardwareInfoFile("/proc/cpuinfo");
+  if (hardwareInfoFile.is_open()) {
+    while (getline(hardwareInfoFile, hardwareInfo)) {
+      cout << hardwareInfo << endl;
+    }
+  } else {
+    cout << "Could not retrieve hardware information." << endl;
+  }
+
+  return 0;
+        }</p>
 <h2>程式設計語言代碼Python</h2>
 <p>作用实现加、减、乘、除的四则运算，以下为代码</p>
 <p>def main():
