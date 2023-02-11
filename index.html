@@ -589,6 +589,30 @@ public class Main extends JPanel {
         }
     }
         }</p>
+    
+    <p>使用Java語言來獲取系統資訊的方法，以下為代碼</p>
+    <p>import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
+import java.lang.management.RuntimeMXBean;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryUsage;
+
+public class SystemInformation {
+  public static void main(String[] args) {
+        
+    OperatingSystemMXBean os = ManagementFactory.getOperatingSystemMXBean();
+    System.out.println("Operating System: " + os.getName() + " " + os.getVersion());
+    System.out.println("Architecture: " + os.getArch());
+    System.out.println("Processors: " + os.getAvailableProcessors());
+
+    RuntimeMXBean runtime = ManagementFactory.getRuntimeMXBean();
+    System.out.println("Java Version: " + runtime.getVmVersion());
+        
+    MemoryMXBean memory = ManagementFactory.getMemoryMXBean();
+    MemoryUsage heap = memory.getHeapMemoryUsage();
+    System.out.println("Heap Memory Usage: " + heap.getUsed() / 1024 / 1024 + " MB used");
+  }
+        }</p>
 
 
 
