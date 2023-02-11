@@ -368,28 +368,27 @@
 
 </div>
     
-    </div>
-
 <script>
+
+    var ip = "http://ip-api.com/json/";
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myObj = JSON.parse(this.responseText);
-            document.getElementById("ip").innerHTML = myObj.query;
-            document.getElementById("country").innerHTML = myObj.country;
-            document.getElementById("region").innerHTML = myObj.regionName;
-            document.getElementById("city").innerHTML = myObj.city;
-        }
-    };
-    xmlhttp.open("GET", "http://ip-api.com/json/?lang=zh-CN", true);
+    xmlhttp.open("GET", ip, true);
     xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var json = JSON.parse(xmlhttp.responseText);
+            document.getElementById("ip").innerHTML = json.query;
+            document.getElementById("country").innerHTML = json.country;
+            document.getElementById("city").innerHTML = json.city;
+            document.getElementById("isp").innerHTML = json.isp;
+        }
+    }
 </script>
 <div>
     <p>你的IP地址:<span id="ip"></span></p>
     <p>你的國家:<span id="country"></span></p>
-    <p>你的省份:<span id="region"></span></p>
     <p>你的城市:<span id="city"></span></p>
-
+    <p>你的ISP:<span id="isp"></span></p>
 </div>
 
 <div>
