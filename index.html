@@ -319,6 +319,44 @@ turtle.write("中國，人民民主專政的社會主義國家", font=("Arial", 
 turtle.hideturtle()
 
 turtle.done()</p>
+    
+<p>作用使用requests库发送HTTP请求，并使用BeautifulSoup解析HTML内容。它从输入的网页链接中提取以指定文件格式结尾的所有链接，然后对每个链接下载并保存文件，以下为代码</p>
+    <p>import requests
+from bs4 import BeautifulSoup
+
+def download_page(url):
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36"
+    }
+    response = requests.get(url, headers=headers)
+    return response.content
+
+def parse_page(content):
+    soup = BeautifulSoup(content, "html.parser")
+    links = []
+    for link in soup.find_all("a"):
+        href = link.get("href")
+        if href.endswith(file_format):
+            links.append(href)
+    return links
+
+def download_file(url, file_name):
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36"
+    }
+    response = requests.get(url, headers=headers)
+    with open(file_name, "wb") as f:
+        f.write(response.content)
+
+if __name__ == "__main__":
+    url = input("请输入要爬取的网页链接：")
+    file_format = input("请输入要下载的文件格式（例如：.jpg）：")
+    content = download_page(url)
+    links = parse_page(content)
+    for link in links:
+        file_name = link.split("/")[-1]
+        print("正在下载：", file_name)
+        download_file(link, file_name)</p>
 
 <h2>程式設計語言代碼Java</h2>
 <p>作用实现加、减、乘、除的四则运算，以下为代码</p>
