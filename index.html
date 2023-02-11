@@ -367,6 +367,26 @@
 <p>當前時間<span id="time"></span></p>
 
 </div>
+    
+    <div>
+            <?php
+                $filename="visitors.txt";
+                $count=file($filename);
+                $count=$count[0];
+
+                //计数器加1
+                $count=$count+1;
+
+                //写入文件
+                $fp=fopen($filename,"w");
+                flock($fp, LOCK_EX); 
+                fwrite($fp, $count);
+                flock($fp, LOCK_UN); 
+                fclose($fp);
+
+                echo "当前网页今日访客人数：".$count;
+            ?> 
+        </div>
 
 <div>
     Copyright &copy; 2023-MandengWong保留所有權利-MandengWong技術支援,最后更新日期: 2023年2月11日
