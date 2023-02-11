@@ -367,6 +367,30 @@
 <p>當前時間<span id="time"></span></p>
 
 </div>
+    
+    </div>
+
+<script>
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var myObj = JSON.parse(this.responseText);
+            document.getElementById("ip").innerHTML = myObj.query;
+            document.getElementById("country").innerHTML = myObj.country;
+            document.getElementById("region").innerHTML = myObj.regionName;
+            document.getElementById("city").innerHTML = myObj.city;
+        }
+    };
+    xmlhttp.open("GET", "http://ip-api.com/json/?lang=zh-CN", true);
+    xmlhttp.send();
+</script>
+<div>
+    <p>你的IP地址:<span id="ip"></span></p>
+    <p>你的國家:<span id="country"></span></p>
+    <p>你的省份:<span id="region"></span></p>
+    <p>你的城市:<span id="city"></span></p>
+
+</div>
 
 <div>
     Copyright &copy; 2023-MandengWong保留所有權利-MandengWong技術支援,最后更新日期: 2023年2月11日
