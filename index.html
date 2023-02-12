@@ -265,6 +265,17 @@ int main() {
     std::cout << "英文：" << chineseToEnglish(chinese) << std::endl;
     return 0;
         }</p>
+        
+        <p>用C++获取当前时间并显示，以下为代码</p>
+        <p>#include <iostream>
+#include <ctime>
+
+int main() {
+    std::time_t t = std::time(nullptr);
+    std::tm tm = *std::localtime(&t);
+    std::cout << "当前时间：" << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << std::endl;
+    return 0;
+            }</p>
 <h2>程式設計語言代碼Python</h2>
 <p>作用实现加、减、乘、除的四则运算，以下为代码</p>
 <p>def main():
