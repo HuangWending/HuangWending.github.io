@@ -723,6 +723,68 @@ public class Main {
         frame.setVisible(true);
     }
         }</p>
+    
+    <p>Java使用开源第三方库，开发的一个简体字翻译成繁体字的程序，以下为代码</p>
+    <p>import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import org.opencc.*;
+
+public class Main {
+
+    private JFrame frame;
+    private JTextField textField;
+    private JTextArea textArea;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    Main window = new Main();
+                    window.frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public Main() {
+        initialize();
+    }
+    private void initialize() {
+        frame = new JFrame();
+        frame.setBounds(100, 100, 450, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
+
+        textField = new JTextField();
+        textField.setBounds(6, 6, 438, 26);
+        frame.getContentPane().add(textField);
+        textField.setColumns(10);
+
+        JButton btnNewButton = new JButton("翻译");
+        btnNewButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String input = textField.getText();
+                OpenCC openCC = new OpenCC();
+                String output = openCC.convert(input, "s2tw");
+                textArea.setText(output);
+            }
+        });
+        btnNewButton.setBounds(6, 44, 117, 29);
+        frame.getContentPane().add(btnNewButton);
+
+        textArea = new JTextArea();
+        textArea.setBounds(6, 85, 438, 165);
+        frame.getContentPane().add(textArea);
+    }
+        }</p>
 
 
 
