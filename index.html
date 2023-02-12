@@ -295,7 +295,7 @@ int main() {
 
     return 0;
                 }</p>
-                <p>C++音乐播放器程序，有文件选择，播放列表、播放/暂停控制、音量控制功能,使用第三方音频库实现音乐播放功能以下为代码</p>
+                <p>C++音乐播放器程序，有文件选择，播放列表、播放/暂停控制、音量控制功能,使用第三方音频库实现音乐播放功能,以下为代码</p>
                 <p>#include <iostream>
 #include <string>
 #include <vector>
@@ -619,7 +619,7 @@ label.pack()
 update_time()
 
                 root.mainloop()</p>
-            <p>用Python的模块和函数在桌面上创建一个文件夹</p>
+            <p>用Python的模块和函数在桌面上创建一个文件夹,以下为代码</p>
             <p>import os
 
 desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
@@ -1173,6 +1173,42 @@ public class MusicPlayer {
     player.playMusic(0);
   }
                                                 }</p>
+        
+        <p>Java用API获取IP地址所在国家/地区，先安装Apache HttpClient库，以下为代码</p>
+        <p><dependency>
+  <groupId>org.apache.httpcomponents</groupId>
+  <artifactId>httpclient</artifactId>
+  <version>4.5.10</version>
+            </dependency></p>
+        <p>import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
+
+public class IPLocation {
+    public static void main(String[] args) {
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpGet request = new HttpGet("http://ip.api.com/json/?lang=zh-cn");
+            HttpResponse response = client.execute(request);
+
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode == 200) {
+                String responseBody = EntityUtils.toString(response.getEntity());
+                JSONObject json = new JSONObject(responseBody);
+                String country = json.getString("country");
+                String region = json.getString("region");
+                System.out.println("所在国家/地区：" + country + "/" + region);
+            } else {
+                System.out.println("获取信息失败，状态码：" + statusCode);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+            }</p>
 
 
 
