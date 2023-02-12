@@ -189,6 +189,8 @@
 
     return 0;
     }</p>
+    
+    <p>
 <h2>程式設計語言代碼Python</h2>
 <p>作用实现加、减、乘、除的四则运算，以下为代码</p>
 <p>def main():
@@ -618,6 +620,42 @@
     System.out.println("Heap Memory Usage: " + heap.getUsed() / 1024 / 1024 + " MB used");
     }
     }</p>
+    
+    <p>使用Java的AWT（Abstract Window Toolkit）和Swing类库来写的一个截图程序，以下为代码</p>
+    <p>import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
+import javax.swing.*;
+
+public class Screenshot {
+    static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+    public static void main(String[] args) {
+        final JFrame frame = new JFrame();
+        Container content = frame.getContentPane();
+        content.setLayout(new BorderLayout());
+
+        JButton capture = new JButton("Capture");
+        capture.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Robot robot = new Robot();
+                    BufferedImage bi = robot.createScreenCapture(new Rectangle(0, 0, (int) screenSize.getWidth(), (int) screenSize.getHeight()));
+                    ImageIO.write(bi, "png", new File("screenshot.png"));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        content.add(capture, BorderLayout.NORTH);
+        frame.setSize(300, 150);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+        }</p>
 
 
 
