@@ -234,6 +234,37 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     return (int) msg.wParam;
         }</p>
+    <p>C++中文转换为英文程序，当输入中文，输出英文，以下为代码</p>
+    <p>#include <iostream>
+#include <map>
+#include <string>
+
+std::map<std::string, std::string> chinese2english = {
+    {"你好", "hello"},
+    {"我", "I"},
+    {"是", "am"},
+    {"中国人", "Chinese"},
+};
+
+std::string chineseToEnglish(std::string chinese) {
+    std::string result;
+    for (auto c : chinese) {
+        std::string s(1, c);
+        if (chinese2english.count(s)) {
+            result += chinese2english[s];
+        } else {
+            result += s;
+        }
+    }
+    return result;
+}
+
+int main() {
+    std::string chinese = "你好我是中国人";
+    std::cout << "中文：" << chinese << std::endl;
+    std::cout << "英文：" << chineseToEnglish(chinese) << std::endl;
+    return 0;
+        }</p>
 <h2>程式設計語言代碼Python</h2>
 <p>作用实现加、减、乘、除的四则运算，以下为代码</p>
 <p>def main():
