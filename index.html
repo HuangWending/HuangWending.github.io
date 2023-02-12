@@ -371,6 +371,29 @@ int main()
 
     return 0;
                     }</p>
+                    <p>C++检测用户IP地址并输出显示其所在国家/地区，以下为代码和操作步骤</p>
+                    <p>安装第三方库:wget http://geolite.maxmind.com/download/geoip/api/c/GeoIP.tar.gz
+tar -xvf GeoIP.tar.gz
+cd GeoIP-1.4.8/
+./configure
+make
+sudo make install
+                        
+#include <GeoIP.h>
+#include <iostream>
+
+int main() {
+    GeoIP *gi = GeoIP_open("GeoLiteCity.dat", GEOIP_MEMORY_CACHE);
+    const char *host = "8.8.8.8";
+    std::string country = GeoIP_country_name_by_addr(gi, host);
+    std::cout << "The IP address " << host << " is located in " << country << std::endl;
+    GeoIP_delete(gi);
+    return 0;
+}
+ 
+g++ -lGeoIP -o detect_country detect_country.cpp
+                        ./detect_country </p>
+                        
 <h2>程式設計語言代碼Python</h2>
 <p>作用实现加、减、乘、除的四则运算，以下为代码</p>
 <p>def main():
@@ -702,6 +725,21 @@ if __name__ == '__main__':
     player.play_music(0)
     pygame.init()
                                       pygame.quit()</p>
+                    <p>检测用户IP地址并输出显示其所在国家/地区，以下为代码和操作步骤</p>
+                    <p>安装第三方库:pip install geoip2
+                        import geoip2.database
+
+def detect_country(ip_address):
+    reader = geoip2.database.Reader("GeoLite2-City.mmdb")
+    response = reader.city(ip_address)
+    country = response.country.name
+    reader.close()
+    return country
+
+ip_address = "8.8.8.8"
+country = detect_country(ip_address)
+                        print(f"The IP address {ip_address} is located in {country}")</p>
+                        
             
 <h2>程式設計語言代碼Java</h2>
             
