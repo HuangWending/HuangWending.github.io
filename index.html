@@ -506,7 +506,27 @@ label = tk.Label(root, text="Hello,MandengWong")
 label.pack()
 
         root.mainloop()</p>
+            <p>用Python来显示当前时间，以下为代码</p>
+            <p>import tkinter as tk
+import time
+
+def update_time():
+    current_time = time.strftime("%Y-%m-%d %H:%M:%S")
+    label.configure(text=current_time)
+    root.after(1000, update_time)
+
+root = tk.Tk()
+root.title("当前时间")
+
+label = tk.Label(root, font=("Courier", 24))
+label.pack()
+
+update_time()
+
+                root.mainloop()</p>
+            
 <h2>程式設計語言代碼Java</h2>
+            
 <p>作用实现加、减、乘、除的四则运算，以下为代码</p>
 <p>import java.util.Scanner;
 
@@ -826,6 +846,48 @@ public class Main {
         textArea.setBounds(6, 85, 438, 165);
         frame.getContentPane().add(textArea);
     }
+        }</p>
+    <p>Java显示当前时间窗口程序，以下为代码</p>
+    <p>import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+public class CurrentTimeWindow {
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("当前时间");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(250, 100));
+
+        final JLabel label = new JLabel();
+        label.setFont(new Font(Font.MONOSPACED, Font.BOLD, 24));
+        panel.add(label);
+
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                label.setText(dateFormat.format(new Date()));
+            }
+        });
+        timer.start();
+
+        frame.getContentPane().add(panel);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
         }</p>
 
 
