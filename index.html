@@ -706,6 +706,23 @@ public class Screenshot {
         frame.setVisible(true);
     }
         }</p>
+    <p>Java視窗程式，顯示標題和字串,以下为代码</p>
+    <p>import javax.swing.*;
+import java.awt.*;
+
+public class Main {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Hello,MandengWong");
+        frame.setSize(200, 150);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Container content = frame.getContentPane();
+        content.setBackground(Color.WHITE);
+        content.setLayout(new FlowLayout());
+        JLabel label = new JLabel("Hello,MandengWong");
+        content.add(label);
+        frame.setVisible(true);
+    }
+        }</p>
 
 
 
