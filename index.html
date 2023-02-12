@@ -193,7 +193,47 @@
     return 0;
     }</p>
     
-    <p>
+    <p>用 C++ 建立視窗程式，使用 Windows API 建立視窗，以下為代碼</p>
+    <p>#include <Windows.h>
+
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch (uMsg)
+    {
+        case WM_CLOSE:
+            PostQuitMessage(0);
+            break;
+        default:
+            return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    }
+
+    return 0;
+}
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+    WNDCLASS wc = {};
+    wc.lpfnWndProc = WindowProc;
+    wc.hInstance = hInstance;
+    wc.lpszClassName = "Hello,MandengWong";
+
+    RegisterClass(&wc);
+
+    HWND hwnd = CreateWindow("Hello,MandengWong", "Hello,MandengWong", WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+        NULL, NULL, hInstance, NULL);
+
+    ShowWindow(hwnd, nCmdShow);
+
+    MSG msg;
+    while (GetMessage(&msg, NULL, 0, 0))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    return (int) msg.wParam;
+        }</p>
 <h2>程式設計語言代碼Python</h2>
 <p>作用实现加、减、乘、除的四则运算，以下为代码</p>
 <p>def main():
