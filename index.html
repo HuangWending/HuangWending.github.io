@@ -444,19 +444,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     import psutil
 
-    # 获取设备的内存信息
     memory = psutil.virtual_memory()
     print("Total memory:", memory.total)
     print("Available memory:", memory.available)
 
-    # 获取设备的CPU信息
     cpu_count = psutil.cpu_count()
     print("Number of CPU cores:", cpu_count)
 
-    # 获取设备的硬盘信息
     disk = psutil.disk_usage('/')
     print("Total disk space:", disk.total)
     print("Used disk space:", disk.used)</p>
+    <p>用 Python 的Tkinter創建一個 GUI 視窗,以下为代码</p>
+    <p>import tkinter as tk
+
+root = tk.Tk()
+root.title("Hello,MandengWong")
+
+label = tk.Label(root, text="Hello,MandengWong")
+label.pack()
+
+        root.mainloop()</p>
 <h2>程式設計語言代碼Java</h2>
 <p>作用实现加、减、乘、除的四则运算，以下为代码</p>
 <p>import java.util.Scanner;
