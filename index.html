@@ -295,6 +295,82 @@ int main() {
 
     return 0;
                 }</p>
+                <p>C++音乐播放器程序，有文件选择，播放列表、播放/暂停控制、音量控制功能,使用第三方音频库实现音乐播放功能以下为代码</p>
+                <p>#include <iostream>
+#include <string>
+#include <vector>
+#include <SFML/Audio.hpp>
+
+int main()
+{
+    std::vector<std::string> playlist;
+
+    playlist.push_back("MandengWong1.mp3");
+    playlist.push_back("MandengWong2.mp3");
+    playlist.push_back("MandengWong3.mp3");
+
+    int current_song = 0; 
+    bool is_playing = false; 
+    float volume = 50.f; 
+
+    sf::Music music; 
+
+    while (true)
+    {
+        std::cout << "1. 播放/暂停" << std::endl;
+        std::cout << "2. 下一首" << std::endl;
+        std::cout << "3. 上一首" << std::endl;
+        std::cout << "4. 音量控制" << std::endl;
+        std::cout << "请选择功能：";
+
+        int choice;
+        std::cin >> choice;
+
+        switch (choice)
+        {
+            case 1:
+                if (is_playing)
+                {
+                    music.pause();
+                    is_playing = false;
+                }
+                else
+                {
+                    music.play();
+                    is_playing = true;
+                }
+                break;
+
+            case 2:
+                current_song = (current_song + 1) % playlist.size();
+                music.stop();
+                music.openFromFile(playlist[current_song]);
+                music.play();
+                is_playing = true;
+                break;
+
+            case 3:
+                current_song = (current_song + playlist.size() - 1) % playlist.size();
+                music.stop();
+                music.openFromFile(playlist[current_song]);
+                music.play();
+                is_playing = true;
+                break;
+
+            case 4:
+                std::cout << "当前音量：" << volume << std::endl;
+                std::cout << "请输入新音量：";
+                std::cin >> volume;
+                music.setVolume(volume);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    return 0;
+                    }</p>
 <h2>程式設計語言代碼Python</h2>
 <p>作用实现加、减、乘、除的四则运算，以下为代码</p>
 <p>def main():
@@ -556,6 +632,76 @@ try:
 except OSError as error:
     print("Creation of the directory %s failed" % path)
                 print("Error:", error)</p>
+                <p>Python音乐播放器，有文件选择，播放列表、播放/暂停控制、音量控制功能，以下为代码</p>
+                <p>import pygame
+import tkinter as tk
+from tkinter import filedialog
+
+class MusicPlayer:
+    def __init__(self):
+        self.music_files = []
+        self.current_music = None
+        self.volume = 1.0
+        self.paused = False
+
+    def add_music_file(self, file_path):
+        self.music_files.append(file_path)
+
+    def remove_music_file(self, index):
+        if index >= 0 and index < len(self.music_files):
+            self.music_files.pop(index)
+
+    def play_music(self, index):
+        if index >= 0 and index < len(self.music_files):
+            pygame.mixer.init()
+            pygame.mixer.music.load(self.music_files[index])
+            pygame.mixer.music.set_volume(self.volume)
+            pygame.mixer.music.play()
+            self.current_music = index
+            self.paused = False
+
+    def pause_music(self):
+        if self.current_music is not None:
+            pygame.mixer.music.pause()
+            self.paused = True
+
+    def resume_music(self):
+        if self.current_music is not None and self.paused:
+            pygame.mixer.music.unpause()
+            self.paused = False
+
+    def stop_music(self):
+        if self.current_music is not None:
+            pygame.mixer.music.stop()
+            self.current_music = None
+            self.paused = False
+
+    def set_volume(self, volume):
+        if volume >= 0 and volume <= 1:
+            self.volume = volume
+            if self.current_music is not None:
+                pygame.mixer.music.set_volume(volume)
+
+    def get_volume(self):
+        return self.volume
+
+    def select_files(self):
+        root = tk.Tk()
+        root.withdraw()
+
+        files = filedialog.askopenfilenames(
+            title="Select music files", filetypes=(("Music files", "*.mp3;*.wav"), ("All files", "*.*"))
+        )
+
+        for file in files:
+            self.music_files.append(file)
+
+if __name__ == '__main__':
+    player = MusicPlayer()
+    player.select_files()
+    player.play_music(0)
+    pygame.init()
+                                      pygame.quit()</p>
             
 <h2>程式設計語言代碼Java</h2>
             
