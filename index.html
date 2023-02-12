@@ -276,6 +276,25 @@ int main() {
     std::cout << "当前时间：" << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << std::endl;
     return 0;
             }</p>
+            <p>用C++在桌面上创建一个文件夹，以下为代码</p>
+            <p>#include <iostream>
+#include <filesystem>
+
+int main() {
+   
+    std::filesystem::path desktopPath = std::filesystem::path("C:\\Users\\username\\Desktop");
+
+    std::filesystem::path newFolderPath = desktopPath / "MandengWong";
+
+    try {
+        std::filesystem::create_directory(newFolderPath);
+        std::cout << "文件夹创建成功！" << std::endl;
+    } catch (const std::filesystem::filesystem_error &ex) {
+        std::cout << ex.what() << std::endl;
+    }
+
+    return 0;
+                }</p>
 <h2>程式設計語言代碼Python</h2>
 <p>作用实现加、减、乘、除的四则运算，以下为代码</p>
 <p>def main():
@@ -524,6 +543,19 @@ label.pack()
 update_time()
 
                 root.mainloop()</p>
+            <p>用Python的模块和函数在桌面上创建一个文件夹</p>
+            <p>import os
+
+desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+folder_name = "MandengWong"
+path = os.path.join(desktop, folder_name)
+
+try:
+    os.makedirs(path)
+    print("Successfully created the directory %s" % path)
+except OSError as error:
+    print("Creation of the directory %s failed" % path)
+                print("Error:", error)</p>
             
 <h2>程式設計語言代碼Java</h2>
             
@@ -888,6 +920,27 @@ public class CurrentTimeWindow {
         frame.setVisible(true);
     }
 
+        }</p>
+    <p>用Java在桌面上创建文件夹，以下为代码</p>
+    <p>import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class Main {
+    public static void main(String[] args) {
+   
+        Path desktopPath = Paths.get(System.getProperty("user.home"), "Desktop");
+
+        Path newFolderPath = desktopPath.resolve("MandengWong");
+
+        try {
+            Files.createDirectory(newFolderPath);
+            System.out.println("文件夹创建成功！");
+        } catch (IOException ex) {
+            System.out.println("文件夹创建失败：" + ex.getMessage());
+        }
+    }
         }</p>
 
 
