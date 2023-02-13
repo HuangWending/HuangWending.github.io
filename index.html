@@ -38,6 +38,119 @@
 
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++ DDOS(分布式拒绝服务)和XSS(跨站脚本攻击)技术来攻击网站，以下为代码</p>
+    <p>首先可以开始准备socket类，使用如下代码：
+
+#include <sys/socket.h>
+#include <netinet/in.h>
+
+//Create a socket
+int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+
+// Address family
+struct sockaddr_in address;
+address.sin_family = AF_INET;
+
+// IP address
+address.sin_addr.s_addr = inet_addr(IP);
+
+// Port number
+address.sin_port = htons(PORT);
+
+然后，使用异步机制创建连接和发送请求：
+
+// Connect to server
+int connection = connect(sockfd, (struct sockaddr *)&address, sizeof(address));
+
+// Send the request
+send(sockfd, data, sizeof(data), 0);
+
+接下来，可以使用以下代码来启动DDoS攻击：
+
+//Create multiple threads
+std::thread thr1(attack, serverAddress, port);
+std::thread thr2(attack, serverAddress, port);
+
+// Join the threads
+thr1.join();
+thr2.join();
+
+// Begin the attack
+void attack(const char* serverAddress, int port) {
+    // Create virtual clients
+    while (true){
+        // Simulate a normal user's behavior
+        //Send a large amount of junk data
+    }
+}
+最后，可以实现一个限流的机制，以防止攻击者把你的服务器彻底崩溃：
+// Implement a rate-limiting policy
+std::atomic<unsigned int> requestCounter(0);
+std::mutex counterLock;
+
+// Limit the request rate per second
+void limitRate(unsigned int threshold) {
+& 
+    while (true){
+        counterLock.lock();
+        if (requestCounter.load() > threshold){
+            counterLock.unlock();
+            std::this_thread::sleep_for(std::chrono::second(1));
+        } else {
+            requestCounter.fetch_add(1);
+            counterLock.unlock();
+        }
+    }
+}
+可以使用以下代码创建一个安全输入检查程序以阻止可疑字符并执行XSS攻击：
+
+```
+// Declare a variable for storing the user input
+String userInput;
+
+// Define a list of special characters that must be checked for.
+String[] suspectChars = {
+    "!", "*", "+", "-", "/", "@", "#", "$", "%", "^", "&", "(", ")", "'", "\""
+};
+
+// Loop through the input and check each character in the list of suspect characters 
+for(int i=0; i < userInput.length; i++) {
+  for(int j=0; j < suspectChars.length; j++) {
+    if(userInput[i].equals(suspectChars[j]))
+    // Flag this as an XSS attack
+  }
+}
+```
+
+接下来，你还可以编写服务器端的反检测机制，以帮助拦截XSS攻击：
+
+```
+// Declare a flag to indicate whether an XSS attack has been observed
+boolean xssFlag = false;
+
+// This function will be called whenever an AJAX request is received
+public void XSSChecker(String input) {
+
+  // Use regular expressions to identify any suspect strings within an AJAX request
+  Pattern pattern = Pattern.compile(
+    "\w*(<script>|//javascript:|alert\()\w*",
+    //Pattern.CASE_INSENSITIVE
+  );
+
+  // Loop through the submitted data
+ // for(String piece : input.split(" ")){
+    // Check if any suspicious strings are present
+   // if(pattern.matcher(piece).matches()){
+      // Set the XSS flag to true
+      //xssFlag = true;
+    }
+  }
+
+}
+```
+</p>
+
+
     <p>C++显示Hello,World程序，以下为代码</p>
     <p>#include <iostream>
 int main() {
