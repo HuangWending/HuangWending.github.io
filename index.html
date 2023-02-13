@@ -400,6 +400,33 @@ int main() {
  
 g++ -lGeoIP -o detect_country detect_country.cpp
                         ./detect_country </p>
+                        <p>C++随机数程序，让用户决定其数量和范围，以下为代码</p>
+                        <p>#include <iostream>
+#include <ctime>
+#include <cstdlib>
+ 
+using namespace std;
+ 
+int main()
+{
+
+    int count, min, max;
+    cout << "How many random numbers do you want to generate? " ;
+    cin >> count;
+    cout << "What is the range of the random numbers? (min and max) ";
+    cin >> min >> max;
+ 
+     cout << "What seed do you want to set? ";
+    int seed;
+    cin >> seed;
+ 
+    srand(seed);
+
+    for (int i = 0; i < count; ++i) {
+        cout << min + rand() % (max - min + 1) << ' ';
+    }
+    return 0;
+                                                  }</p>
                         
 <h2>程式設計語言代碼Python</h2>
                         <p>Python显示Hello,World，以下为代码</p>
@@ -748,6 +775,26 @@ def detect_country(ip_address):
 ip_address = "8.8.8.8"
 country = detect_country(ip_address)
                         print(f"The IP address {ip_address} is located in {country}")</p>
+                    <p>Python随机数代码，让用户决定其数量和范围，以下为代码</p>
+                    <p>import random
+
+count = 
+
+int(input("输入随机数数量: "))
+range = int(input("输入随机数范围: "))
+
+for i in range(count):
+    number = random.randint(
+    number = random.randint(
+
+    number = random.rand
+
+    number = random.
+
+    number = random
+0, range)
+                        print(number)</p>
+                    
                         
             
 <h2>程式設計語言代碼Java</h2>
@@ -1262,6 +1309,27 @@ public class IPLocation {
         }
     }
             }</p>
+        <p>Java随机数程序，让用户决定其随机数的个数和范围，以下为代码</p>
+        <p>import java.util.Scanner;
+import java.util.Random;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner input = new Scanner(System.in);
+    Random random = new Random();
+    
+    System.out.print("输入数字的个数: ");
+    int count = input.nextInt();
+    
+    System.out.print("输入数字的范围 (0-100范围内): ");
+    int range = input.nextInt();
+    
+    for (int i = 0; i < count; i++) {
+      int number = random.nextInt(range + 1);
+      System.out.println(number);
+    }
+  }
+                              }</p>
 
 
 
