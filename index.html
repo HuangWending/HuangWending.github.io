@@ -38,8 +38,8 @@
 
 
 <h2>程式設計語言代碼C/C++</h2>
-    <p>C++ DDOS(分布式拒绝服务)和XSS(跨站脚本攻击)技术来攻击网站，以下为代码</p>
-    <p>首先可以开始准备socket类，使用如下代码：
+    <p>C++ DDOS(分布式拒绝服务)技术来攻击网站，以下为代码</p>
+    <p>首先准备socket类，使用如下代码：
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -101,55 +101,7 @@ void limitRate(unsigned int threshold) {
             counterLock.unlock();
         }
     }
-}
-可以使用以下代码创建一个安全输入检查程序以阻止可疑字符并执行XSS攻击：
-
-```
-// Declare a variable for storing the user input
-String userInput;
-
-// Define a list of special characters that must be checked for.
-String[] suspectChars = {
-    "!", "*", "+", "-", "/", "@", "#", "$", "%", "^", "&", "(", ")", "'", "\""
-};
-
-// Loop through the input and check each character in the list of suspect characters 
-for(int i=0; i < userInput.length; i++) {
-  for(int j=0; j < suspectChars.length; j++) {
-    if(userInput[i].equals(suspectChars[j]))
-    // Flag this as an XSS attack
-  }
-}
-```
-
-接下来，你还可以编写服务器端的反检测机制，以帮助拦截XSS攻击：
-
-```
-// Declare a flag to indicate whether an XSS attack has been observed
-boolean xssFlag = false;
-
-// This function will be called whenever an AJAX request is received
-public void XSSChecker(String input) {
-
-  // Use regular expressions to identify any suspect strings within an AJAX request
-  Pattern pattern = Pattern.compile(
-    "\w*(<script>|//javascript:|alert\()\w*",
-    //Pattern.CASE_INSENSITIVE
-  );
-
-  // Loop through the submitted data
- // for(String piece : input.split(" ")){
-    // Check if any suspicious strings are present
-   // if(pattern.matcher(piece).matches()){
-      // Set the XSS flag to true
-      //xssFlag = true;
-    }
-  }
-
-}
-```
-</p>
-
+        }</p>
 
     <p>C++显示Hello,World程序，以下为代码</p>
     <p>#include <iostream>
