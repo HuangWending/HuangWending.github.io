@@ -68,65 +68,65 @@ public void XSSChecker(String input) {
 
   // Use regular expressions to identify any suspect strings within an AJAX request
   Pattern pattern = Pattern.compile(
-    "\w*(<script>|javascript:|alert\()\w*",
-    Pattern.CASE_INSENSITIVE
+    "\w*(<script>|//javascript:|alert\()\w*",
+    //Pattern.CASE_INSENSITIVE
   );
 
   // Loop through the submitted data
-  for(String piece : input.split(" ")){
+  //for(String piece : input.split(" ")){
     // Check if any suspicious strings are present
-    if(pattern.matcher(piece).matches()){
+   // if(pattern.matcher(piece).matches()){
       // Set the XSS flag to true
-      xssFlag = true;
+     // xssFlag = true;
     }
   }
 
 }</p>
-    <p>C++使用DDOS(分布式拒绝服务)来攻击网站，以下为代码和操作步骤</p>
-    <p>首先准备socket类，使用如下代码：
+   // <p>C++使用DDOS(分布式拒绝服务)来攻击网站，以下为代码和操作步骤</p>
+  //  <p>首先准备socket类，使用如下代码：
 
-#include <sys/socket.h>
-#include <netinet/in.h>
+//#include <sys/socket.h>
+//#include <netinet/in.h>
 
 //Create a socket
-int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+//int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
 // Address family
-struct sockaddr_in address;
-address.sin_family = AF_INET;
+//struct sockaddr_in address;
+//address.sin_family = AF_INET;
 
 // IP address
-address.sin_addr.s_addr = inet_addr(IP);
+//address.sin_addr.s_addr = inet_addr(IP);
 
 // Port number
-address.sin_port = htons(PORT);
+//address.sin_port = htons(PORT);
 ```
 
 然后，使用异步机制创建连接和发送请求：
 
 ```
 // Connect to server
-int connection = connect(sockfd, (struct sockaddr *)&address, sizeof(address));
+//int connection = connect(sockfd, (struct sockaddr *)&address, sizeof(address));
 
 // Send the request
-send(sockfd, data, sizeof(data), 0);
+//send(sockfd, data, sizeof(data), 0);
 ```
 
 接下来，使用以下代码启动DDoS攻击：
 
 ```
 //Create multiple threads
-std::thread thr1(attack, serverAddress, port);
-std::thread thr2(attack, serverAddress, port);
+//std::thread thr1(attack, serverAddress, port);
+//std::thread thr2(attack, serverAddress, port);
 
 // Join the threads
-thr1.join();
-thr2.join();
+//thr1.join();
+//thr2.join();
 
 // Begin the attack
-void attack(const char* serverAddress, int port) {
+//void attack(const char* serverAddress, int port) {
     // Create virtual clients
-    while (true){
+    //while (true){
         // Simulate a normal user's behavior
         //Send a large amount of junk data
     }
