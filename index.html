@@ -41,6 +41,84 @@
 
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++视频播放器程序，以下为代码和操作步骤</p>
+    <p>C++安装第三方库OpenCV的办法:下载OpenCV源代码：可以从OpenCV官方网站下载最新版本的OpenCV源代码。
+
+安装编译器：OpenCV需要一个编译器，如GCC或Visual Studio，并且需要一个C++编译环境。
+
+安装必要的库：在编译OpenCV之前，您需要安装必要的库，如NumPy，CMake等。
+
+编译OpenCV：使用CMake编译OpenCV源代码。CMake会生成一个用于编译OpenCV的Makefile。
+
+安装OpenCV：使用命令行工具，执行“make install”命令，将OpenCV安装到您的计算机上。
+
+        配置C++环境：在开始使用OpenCV之前，您需要配置您的C++环境，以包括OpenCV库的路径。</p>
+    <p>#include <opencv2/opencv.hpp>
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    // 加载视频的文件
+    String videoFile = "选择视频文件.mp4";
+    VideoCapture cap(videoFile);
+    if (!cap.isOpened()) {
+        cout << "Error opening video file" << endl;
+        return -1;
+    }
+
+    // 获取视频的宽度和高度
+    int frame_width = cap.get(CAP_PROP_FRAME_WIDTH);
+    int frame_height = cap.get(CAP_PROP_FRAME_HEIGHT);
+
+    // 创建窗口来显示视频
+    namedWindow("Video", WINDOW_NORMAL);
+    resizeWindow("Video", frame_width, frame_height);
+
+    // 设置播放的速度
+    int playSpeed = 1;
+    cap.set(CAP_PROP_FPS, 30 * playSpeed);
+
+    // 循环读取视频帧并在窗口中显示
+    while (1) {
+        Mat frame;
+        cap >> frame;
+        if (frame.empty())
+            break;
+
+        // 在窗口中显示当前的帧
+        imshow("Video", frame);
+
+        // 检查是否需要暂停
+        int c = waitKey(10);
+        if (c == 'p') {
+            cout << "Paused" << endl;
+            while (1) {
+                c = waitKey(10);
+                if (c == 'c')
+                    break;
+                else if (c == 'q')
+                    return 0;
+            }
+            cout << "Continuing" << endl;
+        } else if (c == 'q') {
+            return 0;
+        }
+
+        // 检查是否需要更改播放的速度
+        if (c == '2') {
+            playSpeed = 2;
+            cap.set(CAP_PROP_FPS, 30 * playSpeed);
+        } else if (c == '0.5') {
+            playSpeed = 0.5;
+            cap.set(CAP_PROP_FPS, 30 * playSpeed);
+        }
+    }
+
+    return 0;
+        }</p>
     <p>C++使电脑关机，重启，睡眠的程序，让用户决定执行其中一种操作,以下为代码</p>
     <p>#include <iostream>
 #include <cstdlib>
