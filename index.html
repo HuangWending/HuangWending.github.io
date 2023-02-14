@@ -1025,6 +1025,62 @@ qr.make(fit=True)
 
 img = qr.make_image(fill_color="black", back_color="white")
                         img.save("qr_code.png")</p>
+                    <p>Python视频播放器程序，以下为代码和操作步骤</p>
+                    <p>安装第三方库:pip install opencv-python
+                        检测安装是否成功:import cv2
+print(cv2.__version__)
+播放器代码:
+import cv2
+class VideoPlayer:
+    def __init__(self, video_file):
+        self.video_file = video_file
+        self.video = cv2.VideoCapture(self.video_file)
+        self.speed = 1
+        
+    def play(self):
+        while True:
+            success, frame = self.video.read()
+            if not success:
+                break
+                
+            cv2.imshow("Video", frame)
+            if cv2.waitKey(int(1000/30/self.speed)) == 27:
+                break
+                
+        self.video.release()
+        cv2.destroyAllWindows()
+        
+    def pause(self):
+        cv2.waitKey(0)
+        
+    def resume(self):
+        self.play()
+        
+    def set_speed(self, speed):
+        self.speed = speed
+        
+    def close(self):
+        self.video.release()
+        cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    video_file = input("Enter the video file path: ")
+    player = VideoPlayer(video_file)
+    print("Enter 'p' to play, 'pa' to pause, 'r' to resume, 's' to change speed, 'q' to quit")
+    while True:
+        action = input("Action: ")
+        if action == 'p':
+            player.play()
+        elif action == 'pa':
+            player.pause()
+        elif action == 'r':
+            player.resume()
+        elif action == 's':
+            speed = float(input("Enter the new speed: "))
+            player.set_speed(speed)
+        elif action == 'q':
+            player.close()
+            break</p>
 <h2>程式設計語言代碼Java</h2>
                     <p>Java使电脑关机，重启，睡眠的程序，让用户决定执行其中一种操作,以下为代码</p>
                     <p>import java.io.IOException;
