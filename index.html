@@ -1008,6 +1008,23 @@ elif choice == 3:
     sleep()
 else:
                         print("无效选择！")</p>
+                    <p>Python生成二维码，以下为代码和操作步骤</p>
+                    <p>安装第三方库:pip install qrcode
+                        import qrcode
+
+data = "Your data to encode in QR code"
+
+qr = qrcode.QRCode(
+    version=1,
+    box_size=10,
+    border=5
+)
+
+qr.add_data(data)
+qr.make(fit=True)
+
+img = qr.make_image(fill_color="black", back_color="white")
+                        img.save("qr_code.png")</p>
 <h2>程式設計語言代碼Java</h2>
                     <p>Java使电脑关机，重启，睡眠的程序，让用户决定执行其中一种操作,以下为代码</p>
                     <p>import java.io.IOException;
