@@ -19,6 +19,9 @@
 
 <p>2023年2月11日</p>
 <p>今天我的官方網站正式上線了，恭喜，網址有一年期限，如果更換網址會提前通知所有人，我將會給這個網站添加更多的內容和功能，有建議發郵件給我或者抖音私信</p>
+    
+<p>2023年2月14日</p>
+<p>由于最近上学的原因，暂时将会以慢动作更新视频，文章和编程内容，毕竟学习很重要，谢谢理解</p>
 
 <h1>聯繫我</h1>
 <p>电子邮件：2110951913@qq.com或hwdstudioshuangwending@gmail.com</p>
@@ -29,7 +32,7 @@
 </a>
 
 <h1>支付宝公益捐款</h1>
-<p>由於以後提供給中華人民共和國（包括澳門特別行政區，香港特別行政區和臺灣省）的任何服務，任何智慧財產權和版權的東西全部免費，我也沒有經濟來源，希望有條件可以支援我，感激不盡！</p>
+<p>由於以後提供給中華人民共和國（包括澳門特別行政區，香港特別行政區和臺灣省）的任何服務，任何智慧財產權和版權的東西全部免費，我也沒有經濟來源，希望有條件可以支援我，感激不盡！不强求各位</p>
 <img src="MandengWongsAlipaycollectioncode.png" alt="donation">
 <br>
 <a href="https://www.alipay.com/">
@@ -38,6 +41,32 @@
 
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++随机密码生成器，使用字母，数字和符号混合的密码，由用户决定长度，以下为代码</p>
+    <p>将int randomStringLength = 10;的数值改为你想要的长度</p>
+    <p>#include <iostream>
+#include <random>
+#include <string>
+
+std::string generatePassword(int length) {
+    std::string password;
+    std::string charList = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*_";
+    std::random_device rd;
+    std::mt19937 generator(rd());
+    std::uniform_int_distribution<> distribution(0, charList.length() - 1);
+
+    for (int i = 0; i < length; i++) {
+        int randomIndex = distribution(generator);
+        password += charList[randomIndex];
+    }
+
+    return password;
+}
+
+int main() {
+    int randomStringLength = 10;
+    std::cout << "随机生成的密码：" << generatePassword(randomStringLength) << std::endl;
+    return 0;
+                                                                                }</p>
     <p>C++ DDOS(分布式拒绝服务)技术来攻击网站，以下为代码</p>
     <p>首先准备socket类，使用如下代码：
 
@@ -493,6 +522,17 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+                            <p>Python随机密码生成器，使用字母，数字和符号混合的密码，长度由用户设定，以下为代码</p>
+                            <p>def generate_password(length=10):改length为你想要的长度</p>
+                            <p>import random
+import string
+
+def generate_password(length=10):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(characters) for i in range(length))
+    return password
+
+                                print("随机生成的密码：", generate_password())</p>
 <p>Python使用第三方库画中国地图，以下为代码</p>
 <p>使用Python的Basemap库来绘制中国的地图,创建一个可容纳要绘制的地图的矩形区域，然后标记经纬度和其他地图元素，最后绘制所需要的地图。以下为代码:
 
@@ -1444,7 +1484,28 @@ public class Main {
     }
   }
                               }</p>
+        <p>Java随机密码生成器，使用字母，数字和符号混合的密码，长度由用户设定</p>
+        <p>private static final int RANDOM_STRING_LENGTH = 10;将数值改为你想要的长度
+import java.util.Random;
 
+public class RandomPasswordGenerator {
+    private static final String CHAR_LIST = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*_";
+    private static final int RANDOM_STRING_LENGTH = 10;
+
+    public static void main(String[] args) {
+        System.out.println("随机生成的密码：" + generatePassword(RANDOM_STRING_LENGTH));
+    }
+
+    private static String generatePassword(int length) {
+        StringBuilder password = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(CHAR_LIST.length());
+            password.append(CHAR_LIST.charAt(randomIndex));
+        }
+        return password.toString();
+    }
+                                   }</p>
 
 
 </div>
@@ -1466,7 +1527,7 @@ public class Main {
 </div>
 
 <div>
-    Copyright &copy; 2023-MandengWong保留所有權利-MandengWong技術支援,最后更新日期: 2023年2月14日
+    Copyright &copy; 2023-MandengWong保留所有權利-MandengWong技術支援,网站最后更新日期: 2023年2月16日 星期四
 </div>
 
 
