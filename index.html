@@ -41,6 +41,34 @@
 
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++图片查看器，以下为代码</p>
+    <p>#include <iostream>
+#include <string>
+#include <opencv2/opencv.hpp>
+
+using namespace std;
+using namespace cv;
+
+int main(int argc, char** argv) {
+    if (argc < 2) {
+        cout << "Usage: " << argv[0] << " image_file" << endl;
+        return 1;
+    }
+
+    string image_file = argv[1];
+
+    Mat image = imread(image_file, IMREAD_COLOR);
+    if (image.empty()) {
+        cout << "Error: could not open or find the image" << endl;
+        return 1;
+    }
+
+    namedWindow("Image Viewer", WINDOW_NORMAL);
+    imshow("Image Viewer", image);
+    waitKey(0);
+
+    return 0;
+                                                                 }</p>
     <p>C++视频播放器程序，以下为代码和操作步骤</p>
     <p>C++安装第三方库OpenCV的办法:下载OpenCV源代码：可以从OpenCV官方网站下载最新版本的OpenCV源代码。
 
