@@ -41,6 +41,29 @@
 
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++图像处理程序，以下为代码</p>
+    <p>#include <iostream>
+#include <opencv2/opencv.hpp>
+
+using namespace std;
+using namespace cv;
+
+int main()
+{
+    Mat image = imread("input_image.jpg", IMREAD_COLOR);  // 读取彩色图像
+    if (image.empty())  // 检查是否成功读取图片
+    {
+        cout << "Could not open or find the image!" << endl;
+        return -1;
+    }
+
+    Mat gray_image;
+    cvtColor(image, gray_image, COLOR_BGR2GRAY);  // 将彩色图像转换为灰度图像
+
+    imwrite("output_image.jpg", gray_image);  // 保存灰度图像
+
+    return 0;
+        }</p>
     <p>C++微积分(高等数学)计算程序，以下为代码</p>
     <p>#include <iostream>
 #include <cmath>
