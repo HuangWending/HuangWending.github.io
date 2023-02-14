@@ -1207,6 +1207,24 @@ if __name__ == "__main__":
         elif action == 'q':
             player.close()
             break</p>
+                    <p>使用Python的第三方库Matplotlib库绘制用户指定数量和单位的统计图，以下为代码</p>
+                    <p>import matplotlib.pyplot as plt
+
+# 获取用户输入的数据
+num = int(input("请输入要绘制的数据个数："))
+unit = input("请输入数据单位：")
+
+# 生成数据
+data = []
+for i in range(num):
+    data.append(float(input(f"请输入第{i+1}个数据：")))
+
+# 绘制图表
+plt.bar(range(num), data)
+plt.xlabel("数据编号")
+plt.ylabel(f"数据 ({unit})")
+plt.title(f"{num}个{unit}的统计图")
+                        plt.show()</p>
 <h2>程式設計語言代碼Java</h2>
                     <p>Java使电脑关机，重启，睡眠的程序，让用户决定执行其中一种操作,以下为代码</p>
                     <p>import java.io.IOException;
