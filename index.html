@@ -41,6 +41,38 @@
 
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++使电脑关机，重启，睡眠的程序，让用户决定执行其中一种操作,以下为代码</p>
+    <p>#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+
+int main() {
+    int choice;
+
+    cout << "请选择操作：" << endl;
+    cout << "1. 关闭电脑" << endl;
+    cout << "2. 重启电脑" << endl;
+    cout << "3. 睡眠电脑" << endl;
+
+    cin >> choice;
+
+    switch (choice) {
+        case 1:
+            system("shutdown /s");
+            break;
+        case 2:
+            system("shutdown /r");
+            break;
+        case 3:
+            system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0");
+            break;
+        default:
+            cout << "无效选择！" << endl;
+    }
+
+    return 0;
+        }</p>
     <p>C++随机密码生成器，使用字母，数字和符号混合的密码，由用户决定长度，以下为代码</p>
     <p>将int randomStringLength = 10;的数值改为你想要的长度</p>
     <p>#include <iostream>
@@ -949,9 +981,77 @@ for i in range(count):
 0, range)
                         print(number)</p>
                     
-                        
-            
+                    <p>Python使电脑关机，重启，睡眠的程序，让用户决定执行其中一种操作,以下为代码</p>
+                    <p>import os
+
+def shutdown():
+    os.system("shutdown /s /t 1")
+
+def restart():
+    os.system("shutdown /r /t 1")
+
+def sleep():
+    os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
+
+print("请选择操作：")
+print("1. 关闭电脑")
+print("2. 重启电脑")
+print("3. 睡眠电脑")
+
+choice = int(input("请输入选择（1、2、3）："))
+
+if choice == 1:
+    shutdown()
+elif choice == 2:
+    restart()
+elif choice == 3:
+    sleep()
+else:
+                        print("无效选择！")</p>
 <h2>程式設計語言代碼Java</h2>
+                    <p>Java使电脑关机，重启，睡眠的程序，让用户决定执行其中一种操作,以下为代码</p>
+                    <p>import java.io.IOException;
+
+public class Main {
+
+    public static void shutdown() throws IOException {
+        Runtime runtime = Runtime.getRuntime();
+        runtime.exec("shutdown /s");
+    }
+
+    public static void restart() throws IOException {
+        Runtime runtime = Runtime.getRuntime();
+        runtime.exec("shutdown /r");
+    }
+
+    public static void sleep() throws IOException {
+        Runtime runtime = Runtime.getRuntime();
+        runtime.exec("rundll32.exe powrprof.dll,SetSuspendState 0,1,0");
+    }
+
+    public static void main(String[] args) throws IOException {
+        System.out.println("请选择操作：");
+        System.out.println("1. 关闭电脑");
+        System.out.println("2. 重启电脑");
+        System.out.println("3. 睡眠电脑");
+
+        int choice = Integer.parseInt(System.console().readLine());
+
+        switch (choice) {
+            case 1:
+                shutdown();
+                break;
+            case 2:
+                restart();
+                break;
+            case 3:
+                sleep();
+                break;
+            default:
+                System.out.println("无效选择！");
+        }
+    }
+                        }</p>
                     <p>Java显示Hello,World,以下为代码</p>
                     <p>public class Main {
   public static void main(String[] args) {
