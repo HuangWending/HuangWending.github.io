@@ -1757,6 +1757,50 @@ public class RandomPasswordGenerator {
         return password.toString();
     }
                                    }</p>
+        <p>Java视频播放器程序，以下为代码和操作步骤</p>
+        <p>下载JavaFX SDK：从https://gluonhq.com/products/javafx/ 下载JavaFX SDK，并将其解压到您的计算机上。
+
+配置环境变量：在您的计算机上打开环境变量设置，并将JavaFX SDK的bin目录添加到PATH变量中。
+
+            验证安装：打开控制台，然后键入以下命令：javafx，如果安装成功，则会出现JavaFX命令的帮助信息。</p>
+        <p>import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
+
+public class Main extends Application {
+    @Override
+    public void start(Stage stage) throws Exception {
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(stage);
+
+        if (file != null) {
+            Media media = new Media(file.toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            MediaView mediaView = new MediaView(mediaPlayer);
+
+            StackPane root = new StackPane();
+            root.getChildren().add(mediaView);
+
+            Scene scene = new Scene(root, 640, 480);
+
+            stage.setScene(scene);
+            stage.show();
+
+            mediaPlayer.play();
+        }
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+            }</p>
 
 
 </div>
