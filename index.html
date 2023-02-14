@@ -1801,6 +1801,60 @@ public class Main extends Application {
         launch(args);
     }
             }</p>
+        
+        <p>Java图片查看器，由用户选择图片文件，以下为代码</p>
+        <p>import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class Main extends JFrame {
+    
+    private JLabel imageLabel;
+    
+    public ImageViewer() {
+        setTitle("图片查看器");
+        setSize(500, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        initUI();
+        setVisible(true);
+    }
+    
+    private void initUI() {
+        Container contentPane = getContentPane();
+        
+        // 显示图片的标签
+        imageLabel = new JLabel();
+        contentPane.add(imageLabel, BorderLayout.CENTER);
+        
+        // 选择图片的按钮
+        JButton chooseImageButton = new JButton("选择图片");
+        chooseImageButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showOpenDialog(ImageViewer.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    Image image = new ImageIcon(selectedFile.getAbsolutePath()).getImage();
+                    imageLabel.setIcon(new ImageIcon(image));
+                }
+            }
+        });
+        contentPane.add(chooseImageButton, BorderLayout.SOUTH);
+    }
+    
+    public static void main(String[] args) {
+        new ImageViewer();
+    }
+            }</p>
 
 
 </div>
