@@ -660,6 +660,26 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+                            <p>Python图片查看器，以下为代码</p>
+                            <p>import argparse
+import cv2
+
+# 创建解析器并定义命令行参数
+parser = argparse.ArgumentParser(description='图片查看器')
+parser.add_argument('image', metavar='image_file', type=str, help='选择需要查看的图片文件')
+
+# 解析命令行参数
+args = parser.parse_args()
+
+# 加载图像文件
+image = cv2.imread(args.image)
+
+# 显示图像并等待用户按下任意键
+cv2.imshow('Image Viewer', image)
+cv2.waitKey(0)
+
+# 释放窗口和资源
+                                cv2.destroyAllWindows()</p>
                             <p>Python随机密码生成器，使用字母，数字和符号混合的密码，长度由用户设定，以下为代码</p>
                             <p>def generate_password(length=10):改length为你想要的长度</p>
                             <p>import random
