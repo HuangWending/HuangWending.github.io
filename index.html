@@ -41,6 +41,55 @@
 
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++画图程序，以下为代码和操作步骤</p>
+    <p>下载QT库:访问Qt官网（https://www.qt.io/）并创建账户
+登录后，访问https://www.qt.io/download-qt-installer下载Qt安装程序。
+打开Qt安装程序，并按照提示安装。
+在安装程序中选择需要安装的Qt组件，
+安装完成后，就可以在C++中使用Qt库了。需要在项目中包含Qt的头文件和链接Qt的库。在Visual Studio开发软件中，在项目设置中指定Qt的路径，自动包含和链接Qt。在其他环境中，需要手动添加头文件和库文件路径。</p>
+    <p>#include <QtWidgets/QApplication>
+#include <QtWidgets/QWidget>
+#include <QtGui/QPainter>
+#include <QtGui/QMouseEvent>
+
+class PaintWidget : public QWidget {
+public:
+    PaintWidget(QWidget* parent = nullptr) : QWidget(parent) {
+        setFixedSize(400, 400);
+        setWindowTitle("画图程序");
+        color = Qt::black;
+        line_width = 1;
+    }
+
+protected:
+    void mousePressEvent(QMouseEvent* event) {
+        last_x = event->x();
+        last_y = event->y();
+    }
+
+    void mouseMoveEvent(QMouseEvent* event) {
+        QPainter painter(this);
+        painter.setPen(QPen(color, line_width));
+        painter.drawLine(last_x, last_y, event->x(), event->y());
+        last_x = event->x();
+        last_y = event->y();
+    }
+
+private:
+    int last_x;
+    int last_y;
+    QColor color;
+    int line_width;
+};
+
+int main(int argc, char* argv[]) {
+    QApplication app(argc, argv);
+
+    PaintWidget widget;
+    widget.show();
+
+    return app.exec();
+        }</p>
     <p>C++图片查看器，以下为代码</p>
     <p>#include <iostream>
 #include <string>
@@ -660,6 +709,62 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+                            <p>Python画图程序，以下为代码</p>
+                            <p>import tkinter as tk
+
+class HuangWendingApp:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("画图程序")
+        self.master.geometry("500x500")
+        self.color = "black"
+        self.line_width = 1
+
+        # 创建画布
+        self.canvas = tk.Canvas(self.master, bg="white", width=400, height=400)
+        self.canvas.pack()
+
+        # 创建颜色选择器
+        self.color_frame = tk.Frame(self.master, bd=1, relief=tk.RAISED)
+        self.color_frame.pack(side=tk.LEFT, padx=5)
+        self.black_button = tk.Button(self.color_frame, bg="black", width=2, command=lambda: self.set_color("black"))
+        self.black_button.pack(pady=5)
+        self.red_button = tk.Button(self.color_frame, bg="red", width=2, command=lambda: self.set_color("red"))
+        self.red_button.pack(pady=5)
+        self.blue_button = tk.Button(self.color_frame, bg="blue", width=2, command=lambda: self.set_color("blue"))
+        self.blue_button.pack(pady=5)
+
+        # 创建线宽选择器
+        self.width_frame = tk.Frame(self.master, bd=1, relief=tk.RAISED)
+        self.width_frame.pack(side=tk.LEFT, padx=5)
+        self.one_button = tk.Button(self.width_frame, text="1", command=lambda: self.set_line_width(1))
+        self.one_button.pack(pady=5)
+        self.two_button = tk.Button(self.width_frame, text="2", command=lambda: self.set_line_width(2))
+        self.two_button.pack(pady=5)
+        self.three_button = tk.Button(self.width_frame, text="3", command=lambda: self.set_line_width(3))
+        self.three_button.pack(pady=5)
+
+        # 绑定鼠标事件
+        self.canvas.bind("<Button-1>", self.start_line)
+        self.canvas.bind("<B1-Motion>", self.draw_line)
+
+    def set_color(self, color):
+        self.color = color
+
+    def set_line_width(self, width):
+        self.line_width = width
+
+    def start_line(self, event):
+        self.last_x, self.last_y = event.x, event.y
+
+    def draw_line(self, event):
+        self.canvas.create_line(self.last_x, self.last_y, event.x, event.y, width=self.line_width, fill=self.color)
+        self.last_x, self.last_y = event.x, event.y
+
+if __name__ == '__main__':
+    root = tk.Tk()
+    app = PaintApp(root)
+                                root.mainloop()</p>
                             <p>Python图片查看器，以下为代码</p>
                             <p>import argparse
 import cv2
@@ -1919,6 +2024,105 @@ public class Main extends JFrame {
     
     public static void main(String[] args) {
         new ImageViewer();
+    }
+            }</p>
+        <p>Java画图程序，以下为代码</p>
+        <p>import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class PaintProgram extends JFrame {
+    private int lastX, lastY;
+    private Color currentColor = Color.BLACK;
+    private int lineWidth = 1;
+
+    private PaintPanel paintPanel;
+
+    public PaintProgram() {
+        setSize(400, 400);
+        setTitle("画图程序");
+
+        paintPanel = new PaintPanel();
+        add(paintPanel, BorderLayout.CENTER);
+
+        JPanel controlPanel = new JPanel();
+        controlPanel.setLayout(new FlowLayout());
+
+        JButton clearButton = new JButton("清空");
+        clearButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                paintPanel.clear();
+            }
+        });
+        controlPanel.add(clearButton);
+
+        JButton redButton = new JButton("红色");
+        redButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                currentColor = Color.RED;
+            }
+        });
+        controlPanel.add(redButton);
+
+        JButton greenButton = new JButton("绿色");
+        greenButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                currentColor = Color.GREEN;
+            }
+        });
+        controlPanel.add(greenButton);
+
+        JButton blueButton = new JButton("蓝色");
+        blueButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                currentColor = Color.BLUE;
+            }
+        });
+        controlPanel.add(blueButton);
+
+        JSlider lineWidthSlider = new JSlider(JSlider.HORIZONTAL, 1, 10, 1);
+        lineWidthSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent event) {
+                lineWidth = lineWidthSlider.getValue();
+            }
+        });
+        controlPanel.add(lineWidthSlider);
+
+        add(controlPanel, BorderLayout.SOUTH);
+    }
+
+    private class PaintPanel extends JPanel {
+        public PaintPanel() {
+            addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent event) {
+                    lastX = event.getX();
+                    lastY = event.getY();
+                }
+            });
+
+            addMouseMotionListener(new MouseMotionAdapter() {
+                public void mouseDragged(MouseEvent event) {
+                    Graphics g = getGraphics();
+                    g.setColor(currentColor);
+                    g.setStroke(new BasicStroke(lineWidth));
+                    g.drawLine(lastX, lastY, event.getX(), event.getY());
+                    lastX = event.getX();
+                    lastY = event.getY();
+                }
+            });
+        }
+
+        public void clear() {
+            Graphics g = getGraphics();
+            g.setColor(getBackground());
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
+    }
+
+    public static void main(String[] args) {
+        PaintProgram paintProgram = new PaintProgram();
+        paintProgram.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        paintProgram.setVisible(true);
     }
             }</p>
 
