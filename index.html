@@ -41,6 +41,38 @@
 
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++微积分(高等数学)计算程序，以下为代码</p>
+    <p>#include <iostream>
+#include <cmath>
+using namespace std;
+
+double f(double x) {
+    return exp(x) - 2 * x;
+}
+
+double df(double x, double eps=1e-6) {
+    double a = f(x), b = f(x + eps);
+    return (b - a) / eps;
+}
+
+double integral(double a, double b, int n=1000) {
+    double h = (b - a) / n;
+    double sum = 0;
+    for (int i = 0; i < n; i++) {
+        double x = a + i * h;
+        sum += f(x) * h;
+    }
+    return sum;
+}
+
+int main() {
+    double x, a, b;
+    cin >> x >> a >> b;
+    cout << "f(" << x << ") = " << f(x) << endl;
+    cout << "f'(" << x << ") = " << df(x) << endl;
+    cout << "Integral[" << a << ", " << b << "] f(x) dx = " << integral(a, b) << endl;
+    return 0;
+        }</p>
     <p>C++画图程序，以下为代码和操作步骤</p>
     <p>下载QT库:访问Qt官网（https://www.qt.io/）并创建账户
 登录后，访问https://www.qt.io/download-qt-installer下载Qt安装程序。
@@ -709,6 +741,27 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+                            <p>Python微积分(高等数学)计算程序，以下为代码</p>
+                            <p>import math
+
+def f(x):
+    return math.exp(x) - 2 * x
+
+def df(x, eps=1e-6):
+    a, b = f(x), f(x + eps)
+    return (b - a) / eps
+
+def integral(a, b, n=1000):
+    h = (b - a) / n
+    x_values = [a + i * h for i in range(n)]
+    f_values = [f(x) for x in x_values]
+    return sum(f_values) * h
+
+x = float(input("x = "))
+a, b = map(float, input("a, b = ").split(","))
+print("f({}) = {}".format(x, f(x)))
+print("f'({}) = {}".format(x, df(x)))
+                                print("Integral[{}, {}] f(x) dx = {}".format(a, b, integral(a, b)))</p>
                             <p>Python画图程序，以下为代码</p>
                             <p>import tkinter as tk
 
@@ -2125,6 +2178,39 @@ public class PaintProgram extends JFrame {
         paintProgram.setVisible(true);
     }
             }</p>
+        <p>Java微积分(高等数学)计算程序，以下为代码</p>
+        <p>import java.util.Scanner;
+
+public class CalculusCalculator {
+    public static double f(double x) {
+        return Math.exp(x) - 2 * x;
+    }
+
+    public static double df(double x, double eps) {
+        double a = f(x), b = f(x + eps);
+        return (b - a) / eps;
+    }
+
+    public static double integral(double a, double b, int n) {
+        double h = (b - a) / n;
+        double sum = 0;
+        for (int i = 0; i < n; i++) {
+            double x = a + i * h;
+            sum += f(x) * h;
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        double x = scanner.nextDouble();
+        double a = scanner.nextDouble(), b = scanner.nextDouble();
+        System.out.printf("f(%f) = %f%n", x, f(x));
+        System.out.printf("f'(%f) = %f%n", x, df(x, 1e-6));
+        System.out.printf("Integral[%f, %f] f(x) dx = %f%n", a, b, integral(a, b, 1000));
+    }
+                              }</p>
+        
 
 
 </div>
