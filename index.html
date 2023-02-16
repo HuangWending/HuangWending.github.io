@@ -2417,6 +2417,82 @@ public class CalculusCalculator {
         System.out.printf("Integral[%f, %f] f(x) dx = %f%n", a, b, integral(a, b, 1000));
     }
                               }</p>
+        <p>Java录音器程序，以下为代码</p>
+        <p>import javax.sound.sampled.*;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+public class Main {
+
+    private static final int RECORD_TIME = 5; // 录音时长（秒）
+    private static final int SAMPLE_RATE = 44100; // 采样率
+    private static final int BITS_PER_SAMPLE = 16; // 每个采样点的位数
+    private static final int CHANNELS = 2; // 录音声道数
+    private static final int BYTES_PER_SAMPLE = BITS_PER_SAMPLE / 8 * CHANNELS; // 每个采样点的字节数
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("请输入录音文件存储路径（留空则使用当前目录）：");
+        String outputDir = scanner.nextLine();
+
+        if (outputDir.isEmpty()) {
+            outputDir = "./";
+        }
+
+        // 根据当前时间生成文件名
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String filename = outputDir + "/recording_" + dateFormat.format(new Date()) + ".wav";
+
+        // 获取录音设备并设置录音参数
+        Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
+        Mixer mixer = null;
+        for (Mixer.Info info : mixerInfo) {
+            if (info.getName().toLowerCase().contains("microphone")) {
+                mixer = AudioSystem.getMixer(info);
+                break;
+            }
+        }
+        if (mixer == null) {
+            System.out.println("没有找到录音设备");
+            return;
+        }
+
+        AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, SAMPLE_RATE, BITS_PER_SAMPLE, CHANNELS, BYTES_PER_SAMPLE, SAMPLE_RATE, false);
+
+        try {
+            DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
+            TargetDataLine line = (TargetDataLine) mixer.getLine(info);
+            line.open(format);
+
+            // 创建录音缓冲区
+            byte[] buffer = new byte[SAMPLE_RATE * BYTES_PER_SAMPLE * RECORD_TIME];
+
+            // 开始录音
+            line.start();
+            System.out.println("开始录音...");
+
+            int bytesRead = 0;
+            while (bytesRead < buffer.length) {
+                bytesRead += line.read(buffer, bytesRead, buffer.length - bytesRead);
+            }
+
+            // 停止录音
+            line.stop();
+            line.close();
+
+            // 保存录音文件
+            System.out.println("录音完成，保存文件：" + filename);
+            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+            AudioInputStream audioInputStream = new AudioInputStream(new ByteArrayInputStream(buffer), format, buffer.length / BYTES_PER_SAMPLE);
+            AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, new File(filename));
+        } catch (LineUnavailableException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+                                             }</p>
         
 
 
