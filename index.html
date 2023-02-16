@@ -41,6 +41,137 @@
 
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++录音器程序，以下为代码</p>
+    <p>#include <iostream>
+#include <fstream>
+#include <string>
+#include <chrono>
+#include <thread>
+#include <cstdlib>
+#include <cstdio>
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+
+using namespace std;
+
+const int RECORD_TIME = 5; // 录音时长（秒）
+const int SAMPLE_RATE = 44100; // 采样率
+const int BITS_PER_SAMPLE = 16; // 每个采样点的位数
+const int CHANNELS = 2; // 录音声道数
+const int BYTES_PER_SAMPLE = BITS_PER_SAMPLE / 8 * CHANNELS; // 每个采样点的字节数
+
+// 获取当前时间（用于文件名）
+string get_current_time() {
+    auto now = chrono::system_clock::now();
+    time_t now_c = chrono::system_clock::to_time_t(now);
+    char buf[20];
+    strftime(buf, sizeof(buf), "%Y%m%d_%H%M%S", localtime(&now_c));
+    return string(buf);
+}
+
+int main() {
+    string output_dir;
+    cout << "请输入录音文件存储路径（留空则使用当前目录）：" << endl;
+    getline(cin, output_dir);
+
+    if (output_dir.empty()) {
+        output_dir = "./";
+    }
+
+    // 根据当前时间生成文件名
+    string filename = output_dir + "/recording_" + get_current_time() + ".wav";
+
+#ifdef _WIN32
+    // 获取录音设备并设置录音参数
+    UINT num_devs = waveInGetNumDevs();
+    if (num_devs == 0) {
+        cout << "没有找到录音设备" << endl;
+        return 1;
+    }
+
+    WAVEFORMATEX format;
+    format.wFormatTag = WAVE_FORMAT_PCM;
+    format.nChannels = CHANNELS;
+    format.nSamplesPerSec = SAMPLE_RATE;
+    format.wBitsPerSample = BITS_PER_SAMPLE;
+    format.nBlockAlign = BYTES_PER_SAMPLE;
+    format.nAvgBytesPerSec = format.nSamplesPerSec * format.nBlockAlign;
+
+    // 打开录音设备并开始录音
+    HWAVEIN hWaveIn;
+    MMRESULT result = waveInOpen(&hWaveIn, WAVE_MAPPER, &format, 0, 0, CALLBACK_NULL);
+    if (result != MMSYSERR_NOERROR) {
+        cout << "无法打开录音设备" << endl;
+        return 1;
+    }
+
+    char* buffer = new char[SAMPLE_RATE * BYTES_PER_SAMPLE * RECORD_TIME];
+    WAVEHDR header = { buffer, SAMPLE_RATE * BYTES_PER_SAMPLE * RECORD_TIME, 0, 0, 0, 0, 0, 0 };
+    result = waveInPrepareHeader(hWaveIn, &header, sizeof(header));
+    if (result != MMSYSERR_NOERROR) {
+        cout << "无法准备录音缓冲区" << endl;
+        waveInClose(hWaveIn);
+        return 1;
+    }
+
+    result = waveInAddBuffer(hWaveIn, &header, sizeof(header));
+    if (result != MMSYSERR_NOERROR) {
+        cout << "无法添加录音缓冲区" << endl;
+        waveInClose(hWaveIn);
+        return 1;
+    }
+    
+    result = waveInStart(hWaveIn);
+    if (result != MMSYSERR_NOERROR) {
+        cout << "无法开始录音" << endl;
+        waveInClose(hWaveIn);
+        return 1;
+    }
+    
+    cout << "开始录音，按回车键结束" << endl;
+    getchar();
+    
+    result = waveInStop(hWaveIn);
+    
+    // 保存录音文件
+    ofstream file(filename, ios::binary);
+    if (!file.is_open()) {
+        cout << "无法打开文件" << endl;
+        waveInClose(hWaveIn);
+        return 1;
+    }
+    
+    // 写入文件头
+    file.write("RIFF", 4);
+    int file_size = 36 + header.dwBytesRecorded;
+    file.write((char*)&file_size, 4);
+    file.write("WAVE", 4);
+    file.write("fmt ", 4);
+    int fmt_size = 16;
+    file.write((char*)&fmt_size, 4);
+    file.write((char*)&format, fmt_size);
+    file.write("data", 4);
+    file.write((char*)&header.dwBytesRecorded, 4);
+    file.write(buffer, header.dwBytesRecorded);
+    file.close();
+    
+// 释放资源
+    waveInUnprepareHeader(hWaveIn, &header, sizeof(header));
+    waveInClose(hWaveIn);
+    delete[] buffer;
+#else
+    // 打开录音设备并开始录音
+    string cmd = "arecord -f S16_LE -r " + to_string(SAMPLE_RATE) + " -c " + to_string(CHANNELS) + " -d " + to_string(RECORD_TIME) + " " + filename;
+    system(cmd.c_str());
+#endif
+    
+        cout << "录音已保存到 " << filename << endl;
+        return 0;
+        }</p>
     <p>C++图像处理程序，以下为代码</p>
     <p>#include <iostream>
 #include <opencv2/opencv.hpp>
