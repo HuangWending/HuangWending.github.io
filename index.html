@@ -764,6 +764,59 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+                            <p>Python录音机程序，以下为代码</p>
+                            <p>#导入pyaudio模块
+import pyaudio
+#导入 wave 模块
+import wave
+
+# 设置录音参数
+CHUNK = 1024 # 每次读取音频数据的大小
+FORMAT = pyaudio.paInt16 # 采样位数
+CHANNELS = 2 # 声道数
+RATE = 44100 # 采样频率
+RECORD_SECONDS = 5 # 录音时长
+
+# 录音函数
+def record_audio(save_path):
+    # 创建一个pyaudio对象
+    audio = pyaudio.PyAudio()
+
+    # 打开音频流
+    stream = audio.open(format=FORMAT, channels=CHANNELS,
+                    rate=RATE, input=True,
+                    frames_per_buffer=CHUNK)
+
+    print("开始录音...")
+
+    frames = []
+
+    # 读取音频数据
+    for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+        data = stream.read(CHUNK)
+        frames.append(data)
+
+    print("录音结束！")
+
+    # 停止音频流
+    stream.stop_stream()
+    stream.close()
+    audio.terminate()
+
+    # 保存音频数据
+    waveFile = wave.open(save_path, 'wb')
+    waveFile.setnchannels(CHANNELS)
+    waveFile.setsampwidth(audio.get_sample_size(FORMAT))
+    waveFile.setframerate(RATE)
+    waveFile.writeframes(b''.join(frames))
+    waveFile.close()
+
+    print("音频数据已保存到:", save_path)
+
+# 测试录音函数
+if __name__ == '__main__':
+    save_path = input("请输入保存路径及文件名：")
+                                record_audio(save_path)</p>
                             <p>Python微积分(高等数学)计算程序，以下为代码</p>
                             <p>import math
 
