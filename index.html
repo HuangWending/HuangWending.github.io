@@ -41,6 +41,150 @@
 
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++删除Android程序的程序，以下为代码</p>
+    <p>#include <iostream>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <cstdio>
+
+using namespace std;
+
+int main() {
+    vector<string> packageNames;
+    vector<string> appNames;
+
+    // 使用ADB命令获取设备上安装的程序列表
+    FILE* cmdPipe = popen("adb shell pm list packages -3", "r");
+    char buffer[1024];
+    while (fgets(buffer, sizeof(buffer), cmdPipe) != nullptr) {
+        string line(buffer);
+        size_t packageStart = line.find(":") + 1;
+        if (packageStart != string::npos) {
+            string packageName = line.substr(packageStart, line.length() - packageStart - 1);
+            packageNames.push_back(packageName);
+        }
+    }
+    pclose(cmdPipe);
+
+    // 获取每个程序的应用名称
+    for (const auto& packageName : packageNames) {
+        string cmd = "adb shell pm dump " + packageName + " | grep \"ApplicationInfo.*labelRes=.*\" | sed \"s/^.*labelRes=//\" | sed \"s/\\\"//g\"";
+        cmdPipe = popen(cmd.c_str(), "r");
+        if (fgets(buffer, sizeof(buffer), cmdPipe) != nullptr) {
+            string appName(buffer);
+            appNames.push_back(appName);
+        }
+        else {
+            appNames.push_back(packageName);
+        }
+        pclose(cmdPipe);
+    }
+
+    // 显示程序列表并获取用户选择
+    cout << "Select an app to uninstall:" << endl;
+    for (size_t i = 0; i < appNames.size(); i++) {
+        cout << i + 1 << ". " << appNames[i] << endl;
+    }
+    int selection;
+    cin >> selection;
+    if (selection < 1 || selection > appNames.size()) {
+        cout << "Invalid selection" << endl;
+        return 1;
+    }
+
+    // 执行卸载命令
+    string packageName = packageNames[selection - 1];
+    string cmd = "adb shell pm uninstall " + packageName;
+    int result = system(cmd.c_str());
+    if (result != 0) {
+        cout << "Uninstall failed" << endl;
+        return 1;
+    }
+    cout << "Uninstall successful" << endl;
+    return 0;
+        }</p>
+    <p>C++删除Windows程序的程序，以下为代码</p>
+    <p>#include <iostream>
+#include <windows.h>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    vector<string> programNames;
+    vector<string> uninstallCommands;
+    char buffer[1024];
+    HKEY key;
+    LONG result;
+
+    // 获取计算机上安装的程序列表
+    result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", 0, KEY_READ, &key);
+    if (result != ERROR_SUCCESS) {
+        cout << "Unable to open registry key" << endl;
+        return 1;
+    }
+    DWORD i = 0;
+    while (true) {
+        result = RegEnumKey(key, i, buffer, sizeof(buffer));
+        if (result == ERROR_NO_MORE_ITEMS) {
+            break;
+        }
+        if (result != ERROR_SUCCESS) {
+            cout << "Unable to enumerate subkeys" << endl;
+            return 1;
+        }
+        HKEY subkey;
+        result = RegOpenKeyEx(key, buffer, 0, KEY_READ, &subkey);
+        if (result != ERROR_SUCCESS) {
+            continue;
+        }
+        DWORD type;
+        DWORD size = sizeof(buffer);
+        result = RegQueryValueEx(subkey, "DisplayName", NULL, &type, (BYTE*)buffer, &size);
+        if (result == ERROR_SUCCESS && type == REG_SZ) {
+            programNames.push_back(buffer);
+            size = sizeof(buffer);
+            result = RegQueryValueEx(subkey, "UninstallString", NULL, &type, (BYTE*)buffer, &size);
+            if (result == ERROR_SUCCESS && type == REG_SZ) {
+                uninstallCommands.push_back(buffer);
+            }
+            else {
+                uninstallCommands.push_back("");
+            }
+        }
+        RegCloseKey(subkey);
+        i++;
+    }
+    RegCloseKey(key);
+
+    // 显示程序列表并获取用户选择
+    cout << "Select a program to uninstall:" << endl;
+    for (size_t i = 0; i < programNames.size(); i++) {
+        cout << i + 1 << ". " << programNames[i] << endl;
+    }
+    int selection;
+    cin >> selection;
+    if (selection < 1 || selection > programNames.size()) {
+        cout << "Invalid selection" << endl;
+        return 1;
+    }
+
+    // 执行卸载命令
+    string command = uninstallCommands[selection - 1];
+    if (command.empty()) {
+        cout << "Unable to find uninstall command" << endl;
+        return 1;
+    }
+    int result = system(command.c_str());
+    if (result != 0) {
+        cout << "Uninstall failed" << endl;
+        return 1;
+    }
+    cout << "Uninstall successful" << endl;
+    return 0;
+        }</p>
     <p>C++录音器程序，以下为代码</p>
     <p>#include <iostream>
 #include <fstream>
