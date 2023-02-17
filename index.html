@@ -41,6 +41,113 @@
 
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++烟花程序，以下为代码</p>
+    <p>#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <windows.h>
+
+using namespace std;
+
+const int SCREEN_WIDTH = 80;
+const int SCREEN_HEIGHT = 25;
+
+void setCursorPosition(int x, int y)
+{
+    static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    cout.flush();
+    COORD coord = { (SHORT)x, (SHORT)y };
+    SetConsoleCursorPosition(hOut, coord);
+}
+
+class Firework
+{
+public:
+    Firework(int x, int y, char color)
+        : m_x(x), m_y(y), m_color(color)
+    {
+        srand((unsigned)time(NULL));
+        m_burstRadius = rand() % 5 + 2;
+        m_numParticles = rand() % 50 + 50;
+        m_particles = new char[m_numParticles];
+        for (int i = 0; i < m_numParticles; ++i)
+        {
+            m_particles[i] = '*';
+        }
+    }
+
+    ~Firework()
+    {
+        delete[] m_particles;
+    }
+
+    void burst()
+    {
+        for (int r = 0; r < m_burstRadius; ++r)
+        {
+            for (int a = 0; a < 360; a += 10)
+            {
+                float angle = a * 3.14159f / 180.0f;
+                int x = m_x + r * cos(angle);
+                int y = m_y + r * sin(angle);
+                if (x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT)
+                {
+                    setCursorPosition(x, y);
+                    cout << m_color;
+                }
+            }
+        }
+    }
+
+    void show()
+    {
+        setCursorPosition(m_x, m_y);
+        cout << m_color;
+    }
+
+private:
+    int m_x;
+    int m_y;
+    char m_color;
+    int m_burstRadius;
+    int m_numParticles;
+    char* m_particles;
+};
+
+int main()
+{
+    srand((unsigned)time(NULL));
+
+    Firework* fireworks[5];
+
+    for (int i = 0; i < 5; ++i)
+    {
+        int x = rand() % SCREEN_WIDTH;
+        int y = rand() % SCREEN_HEIGHT;
+        char color = rand() % 7 + '1';
+        fireworks[i] = new Firework(x, y, color);
+    }
+
+    while (true)
+    {
+        for (int i = 0; i < 5; ++i)
+        {
+            fireworks[i]->show();
+            if (rand() % 100 < 1)
+            {
+                fireworks[i]->burst();
+                delete fireworks[i];
+                int x = rand() % SCREEN_WIDTH;
+                int y = rand() % SCREEN_HEIGHT;
+                char color = rand() % 7 + '1';
+                fireworks[i] = new Firework(x, y, color);
+            }
+        }
+        Sleep(100);
+    }
+
+    return 0;
+        }</p>
     <p>C++删除Android程序的程序，以下为代码</p>
     <p>下载adb命令行工具。您可以从 https://developer.android.com/studio/releases/platform-tools 下载adb命令行工具。解压adb命令行工具。将下载的zip文件解压缩到一个文件夹中。将adb命令行工具添加到系统路径中。在Windows操作系统中，您可以按Win+R打开运行对话框，然后输入“sysdm.cpl”并按Enter键打开系统属性。在“高级”选项卡中，单击“环境变量”按钮，然后在系统变量列表中找到“Path”变量并单击编辑按钮。在变量值文本框中添加adb命令行工具的路径，然后单击“确定”按钮保存更改。
         请注意，您需要先将Android设备连接到计算机上，并在设备上启用USB调试模式才能使用adb命令行工具。您可以在设备的“开发者选项”设置中启用USB调试模式</p>
@@ -1041,6 +1148,119 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+                            <p>Python烟花程序，以下为代码</p>
+                            <p>import pygame
+import random
+import math
+
+# 初始化Pygame
+pygame.init()
+
+# 定义常量
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+COLORS = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255), (255, 0, 255)]
+FPS = 60
+
+# 创建屏幕
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# 定义Firework类
+class Firework:
+    def __init__(self, x, y, color):
+        self.x = x
+        self.y = y
+        self.color = color
+        self.burst_radius = random.randint(80, 150)
+        self.num_particles = random.randint(50, 100)
+        self.particles = []
+        self.exploded = False
+        self.explode()
+
+    def update(self):
+        if self.exploded:
+            for particle in self.particles:
+                particle.update()
+        else:
+            self.y -= 3
+
+    def draw(self):
+        if not self.exploded:
+            pygame.draw.circle(screen, self.color, (self.x, self.y), 5)
+        else:
+            for particle in self.particles:
+                particle.draw()
+
+    def explode(self):
+        for i in range(self.num_particles):
+            speed = random.randint(1, 10)
+            direction = random.randint(0, 360)
+            vx = speed * math.cos(math.radians(direction))
+            vy = speed * math.sin(math.radians(direction))
+            size = random.randint(2, 5)
+            alpha = 255
+            particle = Particle(self.x, self.y, self.color, vx, vy, size, alpha)
+            self.particles.append(particle)
+        self.exploded = True
+
+# 定义Particle类
+class Particle:
+    def __init__(self, x, y, color, vx, vy, size, alpha):
+        self.x = x
+        self.y = y
+        self.color = color
+        self.vx = vx
+        self.vy = vy
+        self.size = size
+        self.alpha = alpha
+
+    def update(self):
+        self.x += self.vx
+        self.y += self.vy
+        self.alpha -= 2
+        if self.alpha <= 0:
+            self.alpha = 0
+
+    def draw(self):
+        color = list(self.color)
+        color.append(self.alpha)
+        pygame.draw.circle(screen, tuple(color), (int(self.x), int(self.y)), self.size)
+
+# 主函数
+def main():
+    clock = pygame.time.Clock()
+    fireworks = []
+
+    # 主循环
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+
+        screen.fill((0, 0, 0))
+
+        # 随机生成烟花
+        if random.randint(0, 200) < 1:
+            x = random.randint(50, SCREEN_WIDTH - 50)
+            y = SCREEN_HEIGHT
+            color = random.choice(COLORS)
+            firework = Firework(x, y, color)
+            fireworks.append(firework)
+
+        # 更新和绘制烟花
+        for firework in fireworks:
+            firework.update()
+            firework.draw()
+
+        # 删除已经爆炸完成的烟花
+        fireworks = [firework for firework in fireworks if firework.particles or not firework.exploded]
+
+        pygame.display.update()
+        clock.tick(FPS)
+
+if __name__ == '__main__':
+                                main()</p>
                             <p>Python删除Android程序的程序，以下为代码</p>
                             <p>下载adb命令行工具。您可以从 https://developer.android.com/studio/releases/platform-tools 下载adb命令行工具。解压adb命令行工具。将下载的zip文件解压缩到一个文件夹中。
 将adb命令行工具添加到系统路径中。在Windows操作系统中，您可以按Win+R打开运行对话框，然后输入“sysdm.cpl”并按Enter键打开系统属性。在“高级”选项卡中，单击“环境变量”按钮，然后在系统变量列表中找到“Path”变量并单击编辑按钮。在变量值文本框中添加adb命令行工具的路径，然后单击“确定”按钮保存更改。
@@ -2874,6 +3094,217 @@ public class AndroidAppUninstaller {
         }
     }
                                            }</p>
+                <p>Java烟花程序，以下为代码</p>
+                <p>import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+public class Main extends JPanel implements ActionListener {
+    private static final long serialVersionUID = 1L;
+
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
+    private static final int NUM_FIREWORKS = 10;
+    private static final int MAX_PARTICLES = 100;
+    private static final int FIREWORK_RADIUS = 4;
+    private static final int GRAVITY = 1;
+
+    private ArrayList<Particle> particles = new ArrayList<Particle>();
+    private ArrayList<Firework> fireworks = new ArrayList<Firework>();
+    private Random rand = new Random();
+    private Color[] colors = { Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA };
+    private Timer timer;
+
+    public Main() {
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        setBackground(Color.BLACK);
+        timer = new Timer(20, this);
+        timer.start();
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Fireworks");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.add(new Main());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (fireworks.size() < NUM_FIREWORKS && rand.nextInt(10) == 0) {
+            Firework firework = new Firework(rand.nextInt(WIDTH), HEIGHT);
+            fireworks.add(firework);
+        }
+
+        ArrayList<Firework> fireworksToRemove = new ArrayList<Firework>();
+        for (Firework firework : fireworks) {
+            if (firework.isExploded()) {
+                for (Particle particle : firework.getParticles()) {
+                    particle.update();
+                }
+                if (firework.getParticles().size() == 0) {
+                    fireworksToRemove.add(firework);
+                }
+            } else {
+                firework.update();
+            }
+        }
+        fireworks.removeAll(fireworksToRemove);
+
+        ArrayList<Particle> particlesToRemove = new ArrayList<Particle>();
+        for (Particle particle : particles) {
+            particle.update();
+            if (particle.getAlpha() <= 0) {
+                particlesToRemove.add(particle);
+            }
+        }
+        particles.removeAll(particlesToRemove);
+
+        repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        for (Firework firework : fireworks) {
+            if (!firework.isExploded()) {
+                g.setColor(firework.getColor());
+                g.fillOval(firework.getX() - FIREWORK_RADIUS, firework.getY() - FIREWORK_RADIUS, FIREWORK_RADIUS * 2,
+                        FIREWORK_RADIUS * 2);
+            } else {
+                for (Particle particle : firework.getParticles()) {
+                    g.setColor(new Color(particle.getColor().getRed(), particle.getColor().getGreen(),
+                            particle.getColor().getBlue(), (int) particle.getAlpha()));
+                    g.fillOval((int) particle.getX(), (int) particle.getY(), particle.getSize(), particle.getSize());
+                }
+            }
+        }
+
+        for (Particle particle : particles) {
+            g.setColor(new Color(particle.getColor().getRed(), particle.getColor().getGreen(),
+                    particle.getColor().getBlue(), (int) particle.getAlpha()));
+            g.fillOval((int) particle.getX(), (int) particle.getY(), particle.getSize(), particle.getSize());
+        }
+
+    }
+
+    private class Firework {
+        private int x;
+        private int y;
+        private Color color;
+        private ArrayList<Particle> particles = new ArrayList<Particle>();
+        private int age;
+        private int radius;
+        private int speed;
+
+        public Firework(int x, int y) {
+            this.x = x;
+            this.y = y;
+            this.color = colors[rand.nextInt(colors.length)];
+            this.age = 0;
+            this.radius = FIREWORK_RADIUS;
+            this.speed = rand.nextInt(8) + 2;
+        }
+
+        public boolean isExploded() {
+            return particles.size() > 0;
+        }
+
+        public ArrayList<Particle> getParticles() {
+            return particles;
+        }
+
+        public Color getColor() {
+            return color;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public void update() {
+            age++;
+            y -= speed;
+            speed -= GRAVITY;
+            if (speed <= 0 || y < radius) {
+                explode();
+            }
+        }
+
+        private void explode() {
+            for (int i = 0; i < MAX_PARTICLES; i++) {
+                Particle particle = new Particle(x, y, color);
+                particles.add(particle);
+            }
+        }
+    }
+
+    private class Particle {
+        private double x;
+        private double y;
+        private Color color;
+        private int size;
+        private double speed;
+        private double angle;
+        private double vx;
+        private double vy;
+        private double alpha;
+
+        public Particle(int x, int y, Color color) {
+            this.x = x;
+            this.y = y;
+            this.color = color;
+            this.size = rand.nextInt(4) + 1;
+            this.speed = rand.nextDouble() * 5 + 1;
+            this.angle = rand.nextDouble() * Math.PI * 2;
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed;
+            this.alpha = 255;
+        }
+
+        public double getX() {
+            return x;
+        }
+
+        public double getY() {
+            return y;
+        }
+
+        public Color getColor() {
+            return color;
+        }
+
+        public int getSize() {
+            return size;
+        }
+
+        public double getAlpha() {
+            return alpha;
+        }
+
+        public void update() {
+            x += vx;
+            y += vy;
+            alpha -= rand.nextInt(3) + 1;
+        }
+    }
+                                              }</p>
         
 
 
