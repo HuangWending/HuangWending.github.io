@@ -42,6 +42,8 @@
 
 <h2>程式設計語言代碼C/C++</h2>
     <p>C++删除Android程序的程序，以下为代码</p>
+    <p>下载adb命令行工具。您可以从 https://developer.android.com/studio/releases/platform-tools 下载adb命令行工具。解压adb命令行工具。将下载的zip文件解压缩到一个文件夹中。将adb命令行工具添加到系统路径中。在Windows操作系统中，您可以按Win+R打开运行对话框，然后输入“sysdm.cpl”并按Enter键打开系统属性。在“高级”选项卡中，单击“环境变量”按钮，然后在系统变量列表中找到“Path”变量并单击编辑按钮。在变量值文本框中添加adb命令行工具的路径，然后单击“确定”按钮保存更改。
+        请注意，您需要先将Android设备连接到计算机上，并在设备上启用USB调试模式才能使用adb命令行工具。您可以在设备的“开发者选项”设置中启用USB调试模式</p>
     <p>#include <iostream>
 #include <string>
 #include <vector>
@@ -1039,6 +1041,67 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+                            <p>Python删除Android程序的程序，以下为代码</p>
+                            <p>下载adb命令行工具。您可以从 https://developer.android.com/studio/releases/platform-tools 下载adb命令行工具。解压adb命令行工具。将下载的zip文件解压缩到一个文件夹中。
+将adb命令行工具添加到系统路径中。在Windows操作系统中，您可以按Win+R打开运行对话框，然后输入“sysdm.cpl”并按Enter键打开系统属性。在“高级”选项卡中，单击“环境变量”按钮，然后在系统变量列表中找到“Path”变量并单击编辑按钮。在变量值文本框中添加adb命令行工具的路径，然后单击“确定”按钮保存更改。
+请注意，您需要先将Android设备连接到计算机上，并在设备上启用USB调试模式才能使用adb命令行工具。您可以在设备的“开发者选项”设置中启用USB调试模式。如果您不知道如何启用USB调试模式</p>
+<p>import subprocess
+
+def get_installed_programs():
+    programs = []
+    cmd = "adb shell pm list packages -f"
+    output = subprocess.check_output(cmd.split(), shell=True)
+    for line in output.decode().splitlines():
+        if line.startswith("package:"):
+            programs.append(line[8:])
+    return programs
+
+def uninstall_program(program_name):
+    cmd = "adb uninstall %s" % program_name
+    subprocess.call(cmd.split())
+
+programs = get_installed_programs()
+print("Select a program to uninstall:")
+for i, program in enumerate(programs):
+    print("%d. %s" % (i+1, program.split("=")[1]))
+selection = int(input())
+if selection < 1 or selection > len(programs):
+    print("Invalid selection")
+else:
+    program_name = programs[selection-1].split("=")[1]
+    print("Uninstalling %s..." % program_name)
+                                uninstall_program(program_name)</p>
+                            <p>Python删除Windows程序的程序，以下为代码和操作步骤</p>
+                            <p>因为要使用Wmi模块获取你电脑里的程序列表，并用subprocess模块进行删除操作，所以要先安装pip（如果没有安装）。从Python的官方网站 https://pip.pypa.io/en/stable/installation/ 下载pip安装程序，并进行安装。
+使用pip安装WMI模块。在命令提示符或终端中运行以下命令：pip install wmi
+使用pip安装subprocess模块。subprocess是Python标准库的一部分，通常不需要单独安装。如果您遇到了subprocess相关的问题，请确保您正在使用的是Python 3或更高版本。如果您需要更新Python版本，请前往 https://www.python.org/downloads/ 下载并安装最新版本。
+请注意，安装WMI和subprocess模块可能需要管理员权限。如果您使用的是Windows操作系统，可以在命令提示符或终端窗口上单击鼠标右键，然后选择“以管理员身份运行”选项。如果您使用的是Linux或macOS操作系统，请在命令前面添加“sudo”前缀以获得管理员权限</p>
+                            <p>import wmi
+import subprocess
+
+def get_installed_programs():
+    programs = []
+    wmi_obj = wmi.WMI()
+    for app in wmi_obj.Win32_Product():
+        programs.append(app.Caption)
+    return programs
+
+def uninstall_program(program_name):
+    cmd = "wmic product where name=\"%s\" call uninstall" % program_name
+    subprocess.call(cmd)
+
+programs = get_installed_programs()
+print("Select a program to uninstall:")
+for i, program in enumerate(programs):
+    print("%d. %s" % (i+1, program))
+selection = int(input())
+if selection < 1 or selection > len(programs):
+    print("Invalid selection")
+else:
+    program_name = programs[selection-1]
+    print("Uninstalling %s..." % program_name)
+                                uninstall_program(program_name)</p>
+                            
                             <p>Python录音机程序，以下为代码</p>
                             <p>#导入pyaudio模块
 import pyaudio
@@ -2637,6 +2700,180 @@ public class Main {
         }
     }
                                              }</p>
+        <p>Java删除Windows程序本体，残留文件和注册表的程序，以下为代码</p>
+        <p>import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.prefs.Preferences;
+
+public class Main {
+
+    public static void main(String[] args) {
+        // 获取程序列表
+        ArrayList<String> programList = getProgramList();
+
+        // 打印程序列表并让用户选择要删除的程序
+        int choice = printProgramList(programList);
+
+        // 删除选择的程序及其残留文件
+        if (choice != 0) {
+            String programName = programList.get(choice - 1);
+            System.out.println("正在删除程序：" + programName);
+            uninstallProgram(programName);
+        } else {
+            System.out.println("程序未删除。");
+        }
+    }
+
+    // 获取计算机上已安装的程序列表
+    private static ArrayList<String> getProgramList() {
+        ArrayList<String> programList = new ArrayList<>();
+        Preferences uninstallKey = Preferences
+                .userRoot()
+                .node("Software")
+                .node("Microsoft")
+                .node("Windows")
+                .node("CurrentVersion")
+                .node("Uninstall");
+        try {
+            String[] programKeys = uninstallKey.childrenNames();
+            for (String key : programKeys) {
+                Preferences programKey = uninstallKey.node(key);
+                String displayName = programKey.get("DisplayName", "");
+                if (!displayName.isEmpty()) {
+                    programList.add(displayName);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return programList;
+    }
+
+    // 打印程序列表并让用户选择要删除的程序
+    private static int printProgramList(ArrayList<String> programList) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("请选择要删除的程序：");
+        for (int i = 0; i < programList.size(); i++) {
+            System.out.println((i + 1) + ". " + programList.get(i));
+        }
+        System.out.println("0. 取消");
+        return scanner.nextInt();
+    }
+
+    // 删除程序及其残留文件
+    private static void uninstallProgram(String programName) {
+        try {
+            // 删除程序注册表项
+            Preferences uninstallKey = Preferences
+                    .userRoot()
+                    .node("Software")
+                    .node("Microsoft")
+                    .node("Windows")
+                    .node("CurrentVersion")
+                    .node("Uninstall");
+            String[] programKeys = uninstallKey.childrenNames();
+            for (String key : programKeys) {
+                Preferences programKey = uninstallKey.node(key);
+                String displayName = programKey.get("DisplayName", "");
+                if (displayName.equals(programName)) {
+                    programKey.removeNode();
+                    break;
+                }
+            }
+
+            // 删除程序残留文件
+            String programPath = getProgramPath(programName);
+            if (programPath != null) {
+                File programDir = new File(programPath);
+                if (programDir.exists()) {
+                    deleteDirectory(programDir);
+                }
+            }
+
+            System.out.println("程序已成功删除。");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 获取程序的安装路径
+                                               private static String</p>
+            <p>Java删除Android程序的程序，以下为代码</p>
+            <p>import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class AndroidAppUninstaller {
+
+    public static void main(String[] args) {
+        // 获取应用程序列表
+        ArrayList<String> appList = getAppList();
+
+        // 打印应用程序列表并让用户选择要删除的应用程序
+        int choice = printAppList(appList);
+
+        // 删除选择的应用程序及其残留文件
+        if (choice != 0) {
+            String packageName = appList.get(choice - 1);
+            System.out.println("正在删除应用程序：" + packageName);
+            uninstallApp(packageName);
+        } else {
+            System.out.println("应用程序未删除。");
+        }
+    }
+
+    // 获取Android设备上已安装的应用程序列表
+    private static ArrayList<String> getAppList() {
+        ArrayList<String> appList = new ArrayList<>();
+        try {
+            String adbPath = "adb"; // 设置Adb路径
+            Process process = Runtime.getRuntime().exec(adbPath + " shell pm list packages");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("package:")) {
+                    appList.add(line.substring(8));
+                }
+            }
+            process.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return appList;
+    }
+
+    // 打印应用程序列表并让用户选择要删除的应用程序
+    private static int printAppList(ArrayList<String> appList) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("请选择要删除的应用程序：");
+        for (int i = 0; i < appList.size(); i++) {
+            System.out.println((i + 1) + ". " + appList.get(i));
+        }
+        System.out.println("0. 取消");
+        return scanner.nextInt();
+    }
+
+    // 删除应用程序及其残留文件
+    private static void uninstallApp(String packageName) {
+        try {
+            // 卸载应用程序
+            String adbPath = "adb"; // 设置Adb路径
+            Process process = Runtime.getRuntime().exec(adbPath + " uninstall " + packageName);
+            process.waitFor();
+
+            // 删除应用程序残留文件
+            process = Runtime.getRuntime().exec(adbPath + " shell su -c \"rm -rf /data/data/" + packageName + "\"");
+            process.waitFor();
+
+            System.out.println("应用程序已成功删除。");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+                                           }</p>
         
 
 
