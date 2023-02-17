@@ -3305,44 +3305,44 @@ public class Main extends JPanel implements ActionListener {
         }
     }
                                               }</p>
-        
-<div>
-	<script>
-		// 检测用户所在国家、城市和 IP 地址
-		function detectLocation() {
-			// 创建一个 XMLHttpRequest 对象
-			var xhr = new XMLHttpRequest();
 
-			// 指定获取 IP 地址、国家和城市信息的 API
-			var url = "https://ipapi.co/json/";
+<script>
+    // 检测用户所在国家、城市、区域和 IP 地址
+    function detectLocation() {
+        // 创建一个 XMLHttpRequest 对象
+        var xhr = new XMLHttpRequest();
 
-			// 发送 GET 请求
-			xhr.open("GET", url, true);
+        // 指定获取 IP 地址、国家、城市和区域信息的 API
+        var url = "https://ipapi.co/json/";
 
-			// 处理返回结果
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState == 4 && xhr.status == 200) {
-					var data = JSON.parse(xhr.responseText);
+        // 发送 GET 请求
+        xhr.open("GET", url, true);
 
-					// 显示 IP 地址、国家和城市信息
-					document.getElementById("ip-address").innerHTML = "你的 IP 地址是：" + data.ip;
-					document.getElementById("country").innerHTML = "你所在的国家/地区是：" + data.country_name;
-					document.getElementById("city").innerHTML = "你所在的城市是：" + data.city;
-				}
-			};
+        // 处理返回结果
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var data = JSON.parse(xhr.responseText);
 
-			// 发送请求
-			xhr.send();
-		}
-	</script>
+               
+                document.getElementById("ip-address").innerHTML = "你的 IP 地址是：" + data.ip;
+                document.getElementById("country").innerHTML = "你所在的国家/地区是：" + data.country_name;
+                document.getElementById("city").innerHTML = "你所在的城市是：" + data.city;
+                document.getElementById("region").innerHTML = "你所在的省份是：" + data.region;
+            }
+        };
+
+        // 发送请求
+        xhr.send();
+    }
+</script>
 </head>
 <body onload="detectLocation();">
-	<h1>检测用户所在国家</h1>
-	<p id="ip-address">正在检测，请稍候...</p>
-	<p id="country"></p>
-	<p id="city"></p>
-    </div>
-</div>
+<h1>检测你所在的国家/地区</h1>
+<p id="ip-address">正在检测，请稍候...</p>
+<p id="country"></p>
+<p id="city"></p>
+<p id="region"></p>
+ 
 <script>
     var today = new Date();
     var todayGMT = today.toLocaleString('chinese', { hour12: false, timeZone: 'Asia/Shanghai' });
