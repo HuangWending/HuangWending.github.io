@@ -3555,6 +3555,22 @@ public class Main extends JPanel implements ActionListener {
         }
     }
                                               }</p>
+ 
+<footer>
+    <p>本站已有<span id="visitor-count">0</span>位访客。</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    
+<script>
+    $(document).ready(function() {
+       
+        $.get("/api/visitor-count", function(data) {
+           
+            $("#visitor-count").text(data);
+        });
+    });
+</script>
 
 <script>
     // 检测用户所在国家、城市、区域和 IP 地址
