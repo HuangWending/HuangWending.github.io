@@ -6,7 +6,7 @@
     <title>MandengWong(HuangWending)</title>
 </head>
 <body>
-<h1>MandengWong個人官方網站</h1>
+    <h1>MandengWong個人官方網站</h1>
     
     <h2>關於我</h>
     <p>我來自中華人民共和國，男，生日：7月18日，擅長程式設計語言：Scratch，Python，C/C++，Java和Web</p>
@@ -3952,6 +3952,175 @@ public class FileDecompressor {
 在写入完成后，我们使用close函数来关闭所有打开的文件句柄。在这个示例中，我们使用try-with-resources语句来自动管理文件句柄的打开和关闭，这样可以确保在程序运行过程中出现任何异常时，文件句柄都能被正确关闭。
 
                             在编写Java文件解压缩程序时，你需要导入java.util.zip包，并使用其中的类和方法来解压缩文件</p>
+                        
+                        <title>留言板</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <style>
+        #messageList {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        #messageList li {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        #messageList li .message {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        #messageList li .author {
+            font-weight: bold;
+        }
+        #messageList li .date {
+            font-size: 0.8em;
+            color: #999;
+        }
+        #messageList li .country {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .replyForm {
+            display: none;
+        }
+        .replyForm textarea {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        .likeButton {
+            display: inline-block;
+            border: none;
+            background-color: transparent;
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>留言板</h1>
+<form>
+    <label for="name">姓名:</label>
+    <input type="text" id="name" name="name"><br>
+    <label for="contact">联系方式:</label>
+    <input type="text" id="contact" name="contact"><br>
+    <label for="message">留言内容:</label><br>
+    <textarea id="message" name="message"></textarea><br>
+    <button type="button" onclick="addMessage()">提交留言</button>
+</form>
+<hr>
+<h2>留言列表</h2>
+<ul id="messageList"></ul>
+
+<script>
+    var messages = [];
+
+    function addMessage() {
+        var name = document.getElementById("name").value;
+        var contact = document.getElementById("contact").value;
+        var message = document.getElementById("message").value;
+        var messageList = document.getElementById("messageList");
+        var listItem = document.createElement("li");
+        var timestamp = moment().format("YYYY-MM-DD HH:mm:ss");
+        var country = "";
+        axios.get("https://ipapi.co/json/").then(function(response) {
+            country = response.data.country_name;
+        }).catch(function(error) {
+            console.log(error);
+        });
+        var messageObj = {
+            "id": messages.length + 1,
+            "name": name,
+            "contact": contact,
+            "message": message,
+            "date": timestamp,
+            "country": country,
+            "likes": 0,
+            "replies": []
+        };
+        messages.push(messageObj);
+        listItem.innerHTML = "<div class=\"author\">" + name + "</div><div class=\"date\">" + timestamp + "</div><div class=\"country\">" + country + "</div><div class=\"message\">" + message + "</div><button class=\"likeButton\" onclick=\"likeMessage(" + messageObj.id + ")\">赞</button><button onclick=\"showReplyForm(" + messageObj.id + ")\">回复</button><form class=\"replyForm\" id=\"replyForm" + messageObj.id + "\"><textarea id=\"replyMessage" + messageObj.id + "\"></textarea><button type=\"button\" onclick=\"addReply(" + messageObj.id + ")\">提交回复</button></form><ul id=\"replyList" + messageObj.id + "\"></ul>";
+        messageList.appendChild(listItem);
+    }
+
+    function likeMessage(id) {
+        var messageObj = messages.find(function(message) {
+            return message.id === id;
+        });
+        messageObj.likes++;
+        var likeButton = document.getElementsByClassName("likeButton")[id - 1];
+        likeButton.innerHTML = "赞(" + messageObj.likes + ")";
+    }
+
+    function showReplyForm(id) {
+        var replyForm = document.getElementById("replyForm" + id);
+        replyForm.style.display = "block";
+    }
+
+    function addReply(id) {
+        var messageObj = messages.find(function(message) {
+            return message.id === id;
+        });
+        var replyMessage = document.getElementById("replyMessage" + id).value;
+        var replyList = document.getElementById("replyList" + id);
+        var listItem = document.createElement("li");
+        var timestamp = moment().format("YYYY-MM-DD HH:mm:ss");
+        var country = "";
+        axios.get("https://ipapi.co/json/").then(function(response) {
+            country = response.data.country_name;
+        }).catch(function(error) {
+            console.log(error);
+        });
+        var replyObj = {
+            "id": messageObj.replies.length + 1,
+            "message": replyMessage,
+            "date": timestamp,
+            "country": country,
+            "likes": 0
+        };
+        messageObj.replies.push(replyObj);
+        listItem.innerHTML = "<div class=\"date\">" + timestamp + "</div><div class=\"country\">" + country + "</div><div class=\"message\">" + replyMessage + "</div><button class=\"likeButton\" onclick=\"likeReply(" + id + ", " + replyObj.id + ")\">赞</button>";
+        replyList.appendChild(listItem);
+    }
+
+    function likeReply(messageId, replyId) {
+        var messageObj = messages.find(function(message) {
+            return message.id === messageId;
+        });
+        var replyObj = messageObj.replies.find(function(reply) {
+            return reply.id === replyId;
+        });
+        replyObj.likes++;
+        var likeButton = document.getElementsByClassName("likeButton")[messageId + replyId - 2];
+        likeButton.innerHTML = "赞(" + replyObj.likes + ")";
+    }
+
+    function getMessages() {
+        axios.get("https://api.myjson.com/bins/1g8q9t").then(function(response) {
+            messages = response.data.messages;
+            var messageList = document.getElementById("messageList");
+            messages.forEach(function(message) {
+                var listItem = document.createElement("li");
+                listItem.innerHTML = "<div class=\"author\">" + message.name + "</div><div class=\"date\">" + message.date + "</div><div class=\"country\">" + message.country + "</div><div class=\"message\">" + message.message + "</div><button class=\"likeButton\" onclick=\"likeMessage(" + message.id + ")\">赞(" + message.likes + ")</button><button onclick=\"showReplyForm(" + message.id + ")\">回复</button><form class=\"replyForm\" id=\"replyForm" + message.id + "\"><textarea id=\"replyMessage" + message.id + "\"></textarea><button type=\"button\" onclick=\"addReply(" + message.id + ")\">提交回复</button></form><ul id=\"replyList" + message.id + "\"></ul>";
+                messageList.appendChild(listItem);
+                var replyList = document.getElementById("replyList" + message.id);
+                message.replies.forEach(function(reply) {
+                    var listItem = document.createElement("li");
+                    listItem.innerHTML = "<div class=\"date\">" + reply.date + "</div><div class=\"country\">" + reply.country + "</div><div class=\"message\">" + reply.message + "</div><button class=\"likeButton\" onclick=\"likeReply(" + message.id + ", " + reply.id + ")\">赞(" + reply.likes + ")</button>";
+                    replyList.appendChild(listItem);
+                });
+            });
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+
+    getMessages();
+</script>
 
 <script>
     // 检测用户所在国家、城市、区域和 IP 地址
