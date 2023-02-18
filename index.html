@@ -1609,95 +1609,345 @@ if __name__ == "__main__":
     elif option == 4:
     break</p>
 
-<p>作用畫出中華人民共和國的象徵和標誌中華人民共和國國旗，並標註“中國，人民民主專政的社會主義國家”，以下为代码</p>
+<p>作用畫出中華人民共和國的象徵和標誌中華人民共和國國旗，以下为代码</p>
 
 <p>import turtle
 
-    turtle.speed(10)
-    turtle.setup(650, 450)
-
-    turtle.up()
-    turtle.goto(-300, 200)
-    turtle.down()
-    turtle.begin_fill()
-    turtle.fillcolor("red")
-    turtle.pencolor("red")
-
-    for i in range(2):
+# 设置画笔速度和画布大小和位置
+turtle.speed(10)
+turtle.setup(650, 450)
+# 画国旗大背景
+# 移动画笔需要先把笔抬起来
+turtle.up()
+turtle.goto(-300, 200)
+turtle.down()
+turtle.begin_fill()
+turtle.fillcolor("red")
+turtle.pencolor("red")
+# 画出边界
+for i in range(2):
     turtle.forward(600)
     turtle.right(90)
     turtle.forward(400)
     turtle.right(90)
-    turtle.end_fill()
+# 填充中国国旗的颜色
+turtle.end_fill()
 
-    turtle.up()
-    turtle.goto(-200, 160)
-    turtle.seth(-72)
-    turtle.down()
-    turtle.begin_fill()
-    turtle.fillcolor("yellow")
-    turtle.pencolor("yellow")
-    for x in range(5):
+# 画大五角星
+turtle.up()
+turtle.goto(-200, 160)
+turtle.seth(-72)
+turtle.down()
+turtle.begin_fill()
+turtle.fillcolor("yellow")
+turtle.pencolor("yellow")
+for x in range(5):
     turtle.forward(120)
     turtle.right(144)
-    turtle.end_fill()
+turtle.end_fill()
 
-    turtle.up()
-    turtle.goto(-100 - 17.3145, 160 - 6.174)
-    turtle.seth(48.96347)
-    turtle.down()
-    turtle.begin_fill()
-    turtle.fillcolor("yellow")
-    turtle.pencolor("yellow")
-    for x in range(5):
+# 画第一个小五角星
+turtle.up()
+turtle.goto(-100 - 17.3145, 160 - 6.174)
+turtle.seth(48.96347)
+turtle.down()
+turtle.begin_fill()
+turtle.fillcolor("yellow")
+turtle.pencolor("yellow")
+for x in range(5):
     turtle.forward(38.0417418)
     turtle.right(144)
-    turtle.end_fill()
+turtle.end_fill()
 
-    turtle.up()
-    turtle.goto(-60 - 19.7948663580, 120 - 2.857143)
-    turtle.seth(36.213211)
-    turtle.down()
-    turtle.begin_fill()
-    turtle.fillcolor("yellow")
-    turtle.pencolor("yellow")
-    for x in range(5):
+# 画第二个小五角星
+turtle.up()
+turtle.goto(-60 - 19.7948663580, 120 - 2.857143)
+turtle.seth(36.213211)
+turtle.down()
+turtle.begin_fill()
+turtle.fillcolor("yellow")
+turtle.pencolor("yellow")
+for x in range(5):
     turtle.forward(38.0417418)
     turtle.right(144)
-    turtle.end_fill()
+turtle.end_fill()
 
-    turtle.up()
-    turtle.goto(-60 - 19.5, 60 + 5.714285848)
-    turtle.seth(5)
-    turtle.down()
-    turtle.begin_fill()
-    turtle.fillcolor("yellow")
-    turtle.pencolor("yellow")
-    for x in range(5):
+# 画第三个小五角星
+turtle.up()
+turtle.goto(-60 - 19.5, 60 + 5.714285848)
+turtle.seth(5)
+turtle.down()
+turtle.begin_fill()
+turtle.fillcolor("yellow")
+turtle.pencolor("yellow")
+for x in range(5):
     turtle.forward(38.0417418)
     turtle.right(144)
-    turtle.end_fill()
+turtle.end_fill()
 
-    turtle.up()
-    turtle.goto(-100 - 17.2, 20 + 15.99999)
-    turtle.seth(-35.1301)
-    turtle.down()
-    turtle.begin_fill()
-    turtle.fillcolor("yellow")
-    turtle.pencolor("yellow")
-    for x in range(5):
+# 画第四个小五角星
+turtle.up()
+turtle.goto(-100 - 17.2, 20 + 15.99999)
+turtle.seth(-35.1301)
+turtle.down()
+turtle.begin_fill()
+turtle.fillcolor("yellow")
+turtle.pencolor("yellow")
+for x in range(5):
     turtle.forward(38.0417418)
     turtle.right(144)
-    turtle.end_fill()
+turtle.end_fill()
 
-    turtle.up()
-    turtle.goto(-200, -200)
-    turtle.down()
-    turtle.pencolor("black")
-    turtle.write("中國，人民民主專政的社會主義國家", font=("Arial", 30, "normal"))
+# 写文字
+turtle.up()
+turtle.goto(-300, -200)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("北京天津河北山西内蒙古辽宁吉林黑龙江上海江苏浙江安徽福建江西", font=("宋体", 15, "normal"))
 
-    turtle.hideturtle()
+# 写文字
+turtle.up()
+turtle.goto(-300, -180)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("山东河南湖北湖南广东广西海南重庆四川贵州云南西藏陕西甘肃青海", font=("宋体", 15, "normal"))
 
+# 写文字
+turtle.up()
+turtle.goto(-300, -160)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("宁夏新疆香港澳门台湾", font=("宋体", 15, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, -140)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("台北新北桃园台中台南高雄基隆新竹嘉义新竹苗栗彰化南投云林嘉义屏东台东花莲宜兰澎湖金门连江（马祖）", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, -120)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("福州莆田泉州厦门漳州龙岩三明南平宁德", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, -100)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("南昌九江景德镇萍乡新余鹰潭赣州吉安宜春抚州上饶", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, -80)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("济南青岛淄博枣庄东营烟台潍坊济宁泰安威海日照莱芜临沂德州聊城滨州菏泽", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, -60)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("郑州开封洛阳平顶山安阳鹤壁新乡焦作濮阳许昌漯河三门峡南阳商丘信阳周口驻马店", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, -40)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("武汉黄石十堰宜昌襄阳鄂州荆门孝感荆州黄冈咸宁随州恩施", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, -20)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("长沙株洲湘潭衡阳邵阳岳阳常德张家界益阳郴州永州怀化娄底湘西", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 0)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("广州深圳珠海汕头佛山韶关湛江肇庆江门茂名惠州梅州汕尾河源阳江清远东莞中山潮州揭阳云浮", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 20)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("南宁柳州桂林梧州北海崇左来宾贺州玉林百色河池钦州防城港贵港", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 40)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("海口三亚三沙儋州琼海文昌万宁东方五指山定安屯昌澄白沙乐东陵水保亭琼中", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 60)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("成都自贡攀枝花泸州德阳绵阳广元遂宁内江乐山南充宜宾广安达州雅安巴中资阳阿坝甘孜凉山", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 80)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("贵阳六盘水遵义安顺毕节铜仁黔西南黔东南黔南", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 100)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("昆明曲靖玉溪保山昭通丽江普洱临沧楚雄红河文山西双版纳大理德宏怒江迪庆", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 120)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("拉萨日喀则昌都林芝山南那曲阿里", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 140)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("西安铜川宝鸡咸阳渭南延安汉中榆林安康商洛", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 160)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("兰州嘉峪关金昌白银天水武威张掖平凉酒泉庆阳定西陇南临夏甘南", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 180)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("西宁海东海北黄南海南果洛玉树海西", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 200)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("银川石嘴山吴忠固原中卫", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 220)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("乌鲁木齐克拉玛依吐鲁番哈密昌吉博尔塔拉巴音郭楞阿克苏克孜勒苏喀什和田伊犁塔城阿勒泰", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 240)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("香港元朗九龙城湾仔油尖旺沙田深水埗西贡黄大仙离岛中西大埔荃湾葵青屯门观塘北，南，东区澳门花地玛堂圣安多尼堂嘉模堂大堂望德堂圣方济各堂圣老楞佐堂", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 260)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("北京市天津市上海市重庆市", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 280)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("杭州宁波温州嘉兴湖州绍兴金华衢州舟山台州丽水", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 300)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("合肥芜湖蚌埠淮南马鞍山淮北铜陵安庆黄山滁州阜阳宿州六安亳州池州宣城", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 320)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("石家庄唐山秦皇岛邯郸邢台保定张家口承德沧州廊坊衡水", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 340)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("太原大同阳泉长治晋城朔州晋中运城忻州临汾吕梁", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 360)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("呼和浩特包头乌海赤峰通辽鄂尔多斯呼伦贝尔巴彦淖尔乌兰察布兴安锡林郭勒阿拉善", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 380)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("沈阳大连鞍山抚顺本溪丹东锦州营口阜新辽阳盘锦铁岭朝阳葫芦岛", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 400)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("长春吉林四平辽源通化白山松原白城延边", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 420)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("哈尔滨齐齐哈尔牡丹江佳木斯绥化黑河大兴安岭伊春大庆七台河鸡西鹤岗双鸭山", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 440)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("南京无锡徐州常州苏州南通连云港淮安盐城扬州镇江泰州宿迁", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 460)
+turtle.down()
+turtle.pencolor("black")
+turtle.write("杭州宁波温州嘉兴湖州绍兴金华衢州舟山台州丽水", font=("宋体", 10, "normal"))
+
+# 写文字
+turtle.up()
+turtle.goto(-300, 480)
+turtle.down()
+turtle.pencolor("black")
+
+
+
+
+
+# 隐藏画笔
+turtle.hideturtle()
     turtle.done()</p>
 
 <p>作用使用requests库发送HTTP请求，并使用BeautifulSoup解析HTML内容。它从输入的网页链接中提取以指定文件格式结尾的所有链接，然后对每个链接下载并保存文件，以下为代码</p>
