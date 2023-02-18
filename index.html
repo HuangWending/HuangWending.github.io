@@ -35,6 +35,80 @@
 <img src="MandengWongsAlipaycollectioncode.png" alt="donation">
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++商品购买模拟程序，以下为代码</p>
+    <p>#include <iostream>
+using namespace std;
+
+const int MAX_ITEMS = 10;    // 最大商品数量
+
+string items[MAX_ITEMS] = {"商品1", "商品2", "商品3", "商品4", "商品5"};  // 商品列表
+double prices[MAX_ITEMS] = {100, 200, 300, 400, 500};  // 商品价格
+int stocks[MAX_ITEMS] = {5, 10, 15, 20, 25};  // 商品库存
+
+void printItems() {
+    cout << "商品列表：" << endl;
+    for (int i = 0; i < MAX_ITEMS; i++) {
+        cout << i << ". " << items[i] << "（" << prices[i] << "元，库存" << stocks[i] << "）" << endl;
+    }
+}
+
+int main() {
+    double total = 0;
+    while (true) {
+        printItems();
+
+        int id, qty;
+        cout << "请输入要购买的商品编号和数量，用空格隔开（输入-1结束）：";
+        cin >> id;
+        if (id == -1) break;
+        if (id < 0 || id >= MAX_ITEMS) {
+            cout << "无效的商品编号！" << endl;
+            continue;
+        }
+        cout << "请输入购买数量：";
+        cin >> qty;
+        if (qty <= 0) {
+            cout << "无效的购买数量！" << endl;
+            continue;
+        }
+        if (qty > stocks[id]) {
+            cout << "库存不足！" << endl;
+            continue;
+        }
+
+        double price = prices[id];
+        double amount = price * qty;
+
+        cout << "购买信息：" << endl;
+        cout << "商品：" << items[id] << "，单价：" << price << "元，数量：" << qty << "，总价：" << amount << "元" << endl;
+
+        // 库存管理
+        stocks[id] -= qty;
+
+        // 打折和优惠券
+        cout << "是否打折（y/n）？";
+        char ch;
+        cin >> ch;
+        if (ch == 'y' || ch == 'Y') {
+            amount *= 0.1;
+            cout << "打一折后总价：" << amount << "元" << endl;
+        }
+
+        cout << "是否使用优惠券（y/n）？";
+        cin >> ch;
+        if (ch == 'y' || ch == 'Y') {
+            amount -= 50;
+            if (amount < 0) amount = 0;
+            cout << "使用优惠券后总价：" << amount << "元" << endl;
+        }
+
+        total += amount;
+        cout << "当前总价：" << total << "元" << endl;
+    }
+    cout << "感谢你购买我们的商品，欢迎你的下一次购买!" << endl;
+
+    return 0;
+                                  }</p>
     <p>C++烟花程序，以下为代码</p>
     <p>#include <iostream>
 #include <cstdlib>
@@ -2261,6 +2335,58 @@ plt.xlabel("数据编号")
 plt.ylabel(f"数据 ({unit})")
 plt.title(f"{num}个{unit}的统计图")
                         plt.show()</p>
+                    <p>Python商品购买模拟程序，以下为代码</p>
+                    <p>from tkinter import *
+
+# 商品列表和价格数组
+products = ['商品1', '商品2', '商品3', '商品4']
+prices = [5, 3, 4, 8]
+
+# 创建窗口
+root = Tk()
+
+# 创建窗口元素
+label = Label(root, text="请选择要购买的商品和数量：")
+label.pack()
+
+# 显示商品列表
+for i in range(len(products)):
+    label = Label(root, text=str(i+1) + ". " + products[i] + "（" + str(prices[i]) + "元）")
+    label.pack()
+
+# 用户输入商品编号和数量
+entry1 = Entry(root)
+entry1.pack()
+entry2 = Entry(root)
+entry2.pack()
+
+# 计算总价
+def calculate():
+    index = int(entry1.get()) - 1
+    count = int(entry2.get())
+    price = prices[index]
+    total = price * count
+    if discount.get() == 1:
+        total *= 0.1
+    label.config(text="您购买了" + products[index] + str(count) + "个，总价为" + str(total) + "元。")
+    prices[index] -= count
+    if continue_buy.get() == 0:
+        root.destroy()
+
+# 打折优惠和继续购买
+discount = IntVar()
+discount_check = Checkbutton(root, text="使用打折工具（1折）", variable=discount)
+discount_check.pack()
+continue_buy = IntVar()
+continue_check = Checkbutton(root, text="继续购买", variable=continue_buy)
+continue_check.pack()
+
+# 提交按钮
+button = Button(root, text="提交", command=calculate)
+button.pack()
+
+# 运行窗口程序
+                        root.mainloop()</p>
 <h2>程式設計語言代碼Java</h2>
                     <p>Java使电脑关机，重启，睡眠的程序，让用户决定执行其中一种操作,以下为代码</p>
                     <p>import java.io.IOException;
@@ -3549,6 +3675,113 @@ public class Main extends JPanel implements ActionListener {
         }
     }
                                               }</p>
+                    <p>Java商品购买模拟程序，以下为代码</p>
+                    <p>import javax.swing.*;
+
+import java.awt.*;
+
+import java.awt.event.ActionEvent;
+
+import java.awt.event.ActionListener;
+public class Main extends JFrame implements ActionListener {
+
+    private String[] productList = {"商品1", "商品2", "商品3", "商品4", "商品5"};
+
+    private double[] priceList = {10.0, 20.0, 30.0, 40.0, 50.0};
+
+    private int[] stockList = {5, 10, 15, 20, 25};
+    private double total = 0.0;
+    private JLabel productLabel, quantityLabel, discountToolLabel, totalLabel;
+    private JComboBox<String> productComboBox;
+    private JTextField quantityTextField;
+    private JCheckBox discountToolCheckBox;
+    private JButton buyButton, cancelButton;
+
+    public Main() {
+        super("商品购买程序");
+
+        // 设置布局
+        setLayout(new GridLayout(4, 2));
+
+        // 创建组件
+        productLabel = new JLabel("商品：");
+        quantityLabel = new JLabel("数量：");
+        discountToolLabel = new JLabel("打折工具/优惠工具：");
+        totalLabel = new JLabel("总价：");
+
+        productComboBox = new JComboBox<>(productList);
+        quantityTextField = new JTextField();
+        discountToolCheckBox = new JCheckBox();
+
+        buyButton = new JButton("购买");
+        cancelButton = new JButton("取消");
+
+        // 添加组件
+        add(productLabel);
+        add(productComboBox);
+        add(quantityLabel);
+        add(quantityTextField);
+        add(discountToolLabel);
+        add(discountToolCheckBox);
+        add(totalLabel);
+        add(new JLabel(""));
+
+        add(buyButton);
+        add(cancelButton);
+
+        // 添加事件监听器
+        buyButton.addActionListener(this);
+        cancelButton.addActionListener(this);
+
+        // 设置窗口属性
+        setLocationRelativeTo(null);
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == buyButton) {
+            int productId = productComboBox.getSelectedIndex();
+            int quantity = Integer.parseInt(quantityTextField.getText());
+
+            double subTotal = priceList[productId] * quantity;
+
+            if (discountToolCheckBox.isSelected()) {
+                subTotal *= 0.1;
+            }
+
+            total += subTotal;
+
+            JOptionPane.showMessageDialog(this,
+                    "购买商品: " + productList[productId] + "\n" +
+                            "购买数量: " + quantity + "件\n" +
+                            "小计: " + subTotal + "元\n" +
+                            "总价: " + total + "元");
+
+            stockList[productId] -= quantity;
+
+            if (stockList[productId] < 0) {
+                JOptionPane.showMessageDialog(this,
+                        "商品" + (productId + 1) + "库存不足！");
+                stockList[productId] += quantity;
+                total -= subTotal;
+            }
+
+            totalLabel.setText("总价：" + total + "元");
+
+            quantityTextField.setText("");
+
+        } else if (e.getSource() == cancelButton) {
+            dispose();
+        }
+    }
+
+    public static void main(String[] args) {
+        new Main();
+    }
+                                           }</p>
 
 <script>
     // 检测用户所在国家、城市、区域和 IP 地址
