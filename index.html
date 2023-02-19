@@ -4031,6 +4031,78 @@ public class FileDecompressor {
       var greetingDiv = document.getElementById("greeting");
       greetingDiv.innerHTML = greeting;
     </script>
+    
+    <h1>广告和宣传位</h1>
+
+<h2>上传文件和网站链接</h2>
+<form>
+    <label for="file">上传文件:</label>
+    <input type="file" id="file" name="file">
+    <br>
+    <label for="link">网站链接:</label>
+    <input type="text" id="link" name="link">
+    <br>
+    <button onclick="upload()">上传</button>
+</form>
+
+<h2>广告和宣传位</h2>
+<div id="ads"></div>
+
+<script>
+    function upload() {
+        var file = document.getElementById("file").files[0];
+        var link = document.getElementById("link").value;
+
+        if (!file || !link) {
+            alert("请上传文件和输入网站链接");
+            return;
+        }
+
+        // 创建新的广告对象
+        var ad = {
+            file: file.name,
+            link: link
+        };
+
+        // 将新广告对象发送到服务器
+        var formData = new FormData();
+        formData.append('ad', JSON.stringify(ad));
+        formData.append('file', file);
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        }).then(function(response) {
+            alert('上传成功');
+            refreshAds();
+        });
+    }
+
+    function refreshAds() {
+        // 请求服务器获取广告和宣传位信息
+        fetch('/ads')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                var ads = data.ads;
+                var html = '';
+                ads.forEach(function(ad) {
+                    html += '<div>';
+                    html += '<a href="' + ad.link + '"><img src="' + ad.file + '"></a>';
+                    html += '</div>';
+                });
+                document.getElementById('ads').innerHTML = html;
+            });
+    }
+
+    // 页面加载完毕后刷新广告和宣传位
+    document.addEventListener('DOMContentLoaded', function() {
+        refreshAds();
+    });
+
+    // 每隔一段时间刷新广告和宣传位
+    setInterval(refreshAds, 5000);
+</script>
                        
 <div>
     Copyright &copy; 2023-MandengWong保留所有權利-MandengWong技術支援,网站最后更新日期: 2023年2月20日 星期一
