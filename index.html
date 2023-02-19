@@ -35,6 +35,163 @@
 <img src="MandengWongsAlipaycollectioncode.png" alt="donation">
 
 <h2>程式設計語言代碼C/C++</h2>
+    <p>C++文本编辑器程序，以下位代码</p>
+    <p>#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+// 函数声明
+void new_file();
+void open_file();
+void save_file();
+void zoom_in();
+void zoom_out();
+void show_line_number();
+
+// 定义全局变量
+string file_name = "";
+string file_content = "";
+int zoom_factor = 1;
+
+int main() {
+    // 主循环
+    while (true) {
+        // 显示菜单
+        cout << "请选择功能：" << endl;
+        cout << "1. 新建" << endl;
+        cout << "2. 打开" << endl;
+        cout << "3. 保存" << endl;
+        cout << "4. 放大" << endl;
+        cout << "5. 缩小" << endl;
+        cout << "6. 显示行数" << endl;
+        cout << "7. 退出" << endl;
+
+        // 读取用户选择
+        int choice;
+        cin >> choice;
+
+        // 根据用户选择调用不同的函数
+        switch (choice) {
+            case 1:
+                new_file();
+                break;
+            case 2:
+                open_file();
+                break;
+            case 3:
+                save_file();
+                break;
+            case 4:
+                zoom_in();
+                break;
+            case 5:
+                zoom_out();
+                break;
+            case 6:
+                show_line_number();
+                break;
+            case 7:
+                return 0;
+            default:
+                cout << "无效的选择，请重新输入。" << endl;
+        }
+    }
+}
+
+void new_file() {
+    // 读取文件名
+    cout << "请输入文件名：" << endl;
+    cin >> file_name;
+
+    // 清空文件内容
+    file_content = "";
+
+    // 提示用户已创建新文件
+    cout << "已创建新文件 " << file_name << "。" << endl;
+}
+
+void open_file() {
+    // 读取文件名
+    cout << "请输入文件名：" << endl;
+    cin >> file_name;
+
+    // 打开文件
+    ifstream file(file_name);
+
+    // 检查文件是否存在
+    if (!file.good()) {
+        cout << "文件 " << file_name << " 不存在。" << endl;
+        return;
+    }
+
+    // 读取文件内容
+    string line;
+    file_content = "";
+    while (getline(file, line)) {
+        file_content += line + "\n";
+    }
+
+    // 关闭文件
+    file.close();
+
+    // 提示用户已打开文件
+    cout << "已打开文件 " << file_name << "。" << endl;
+}
+
+void save_file() {
+    // 检查是否有打开的文件
+    if (file_name == "") {
+        cout << "没有打开的文件。" << endl;
+        return;
+    }
+
+    // 保存文件
+    ofstream file(file_name);
+    file << file_content;
+    file.close();
+
+    // 提示用户已保存文件
+    cout << "已保存文件 " << file_name << "。" << endl;
+}
+
+void zoom_in() {
+    // 增加缩放因子
+    zoom_factor++;
+
+    // 提示用户已放大
+    cout << "已放大 " << zoom_factor << " 倍。" << endl;
+}
+
+void zoom_out() {
+
+// 减小缩放因子
+if (zoom_factor > 1) {
+zoom_factor--;
+}
+
+// 提示用户已缩小
+cout << "已缩小 " << zoom_factor << " 倍。" << endl;
+
+}
+
+void show_line_number() {
+// 统计文件行数
+int line_count = 1;
+for (char c : file_content) {
+if (c == '\n') {
+line_count++;
+}
+}
+
+// 根据缩放因子调整行数
+line_count /= zoom_factor;
+
+// 显示行数
+cout << "文件 " << file_name << " 有 " << line_count << " 行。" << endl;
+
+        }</p>
     <p>C++文件解压缩程序，以下为代码和操作步骤</p>
     <p>在zlib的官方网站上下载zlib库的源代码，https://www.zlib.net/
 找到最新的zlib源代码，并选择适合你的操作系统和编译器的版本。下载完成后，将源代码解压缩到你想要放置zlib的目录中。
@@ -1317,6 +1474,87 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+                            <p>Python文本编辑器程序，以下为代码</p>
+                            <p>import tkinter as tk
+from tkinter import filedialog, messagebox
+
+# 创建主窗口
+root = tk.Tk()
+root.title("记事本程序")
+
+# 定义全局变量
+file_name = ""
+file_content = ""
+zoom_factor = 1
+
+# 函数定义
+def new_file():
+    global file_name, file_content
+    file_name = ""
+    file_content = ""
+    text.delete(1.0, tk.END)
+    messagebox.showinfo("提示", "已创建新文件")
+
+def open_file():
+    global file_name, file_content
+    file_name = filedialog.askopenfilename()
+    if file_name:
+        with open(file_name, "r") as f:
+            file_content = f.read()
+        text.delete(1.0, tk.END)
+        text.insert(1.0, file_content)
+        messagebox.showinfo("提示", "已打开文件")
+
+def save_file():
+    global file_name, file_content
+    if not file_name:
+        file_name = filedialog.asksaveasfilename()
+    if file_name:
+        file_content = text.get(1.0, tk.END)
+        with open(file_name, "w") as f:
+            f.write(file_content)
+        messagebox.showinfo("提示", "已保存文件")
+
+def zoom_in():
+    global zoom_factor
+    zoom_factor += 1
+    text.config(font=("Arial", 12*zoom_factor))
+    messagebox.showinfo("提示", "已放大")
+
+def zoom_out():
+    global zoom_factor
+    if zoom_factor > 1:
+        zoom_factor -= 1
+    text.config(font=("Arial", 12*zoom_factor))
+    messagebox.showinfo("提示", "已缩小")
+
+def show_line_number():
+    global file_content, zoom_factor
+    lines = file_content.split("\n")
+    line_count = len(lines)
+    line_count /= zoom_factor
+    messagebox.showinfo("提示", f"文件 {file_name} 有 {int(line_count)} 行")
+
+# 创建菜单栏
+menu_bar = tk.Menu(root)
+file_menu = tk.Menu(menu_bar, tearoff=0)
+file_menu.add_command(label="新建", command=new_file)
+file_menu.add_command(label="打开", command=open_file)
+file_menu.add_command(label="保存", command=save_file)
+menu_bar.add_cascade(label="文件", menu=file_menu)
+view_menu = tk.Menu(menu_bar, tearoff=0)
+view_menu.add_command(label="放大", command=zoom_in)
+view_menu.add_command(label="缩小", command=zoom_out)
+view_menu.add_command(label="显示行数", command=show_line_number)
+menu_bar.add_cascade(label="视图", menu=view_menu)
+
+# 创建文本框
+text = tk.Text(root, font=("Arial", 12*zoom_factor))
+text.pack(expand=True, fill="both")
+
+# 启动主循环
+root.config(menu=menu_bar)
+                                root.mainloop()</p>
                             <p>Python文件解压缩代码，以下为代码和操作步骤</p>
                             <p>import gzip
 
@@ -3952,6 +4190,148 @@ public class FileDecompressor {
 在写入完成后，我们使用close函数来关闭所有打开的文件句柄。在这个示例中，我们使用try-with-resources语句来自动管理文件句柄的打开和关闭，这样可以确保在程序运行过程中出现任何异常时，文件句柄都能被正确关闭。
 
                             在编写Java文件解压缩程序时，你需要导入java.util.zip包，并使用其中的类和方法来解压缩文件</p>
+                        <p>Java文本编辑器程序，以下为代码</p>
+                        <p>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.io.*;
+
+public class Notepad extends JFrame {
+
+    private JTextArea textArea;
+    private JLabel statusBar;
+
+    public Notepad() {
+        super("Java记事本");
+
+        // 创建菜单栏
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+
+        // 创建文件菜单
+        JMenu fileMenu = new JMenu("文件");
+        menuBar.add(fileMenu);
+
+        // 创建新建菜单项
+        JMenuItem newMenuItem = new JMenuItem("新建");
+        newMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                textArea.setText("");
+                statusBar.setText("行数: 1");
+            }
+        });
+        fileMenu.add(newMenuItem);
+
+        // 创建打开菜单项
+        JMenuItem openMenuItem = new JMenuItem("打开");
+        openMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showOpenDialog(Notepad.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        BufferedReader reader = new BufferedReader(new FileReader(file));
+                        textArea.read(reader, null);
+                        reader.close();
+                        statusBar.setText("行数: " + textArea.getLineCount());
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(Notepad.this, "打开文件失败: " + ex.getMessage());
+                    }
+                }
+            }
+        });
+        fileMenu.add(openMenuItem);
+
+        // 创建保存菜单项
+        JMenuItem saveMenuItem = new JMenuItem("保存");
+        saveMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showSaveDialog(Notepad.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                        textArea.write(writer);
+                        writer.close();
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(Notepad.this, "保存文件失败: " + ex.getMessage());
+                    }
+                }
+            }
+        });
+        fileMenu.add(saveMenuItem);
+
+        // 创建放大缩小菜单
+        JMenu zoomMenu = new JMenu("放大/缩小");
+        menuBar.add(zoomMenu);
+
+        // 创建放大菜单项
+        JMenuItem zoomInMenuItem = new JMenuItem("放大");
+        zoomInMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Font font = textArea.getFont();
+                int size = font.getSize();
+                textArea.setFont(new Font(font.getName(), font.getStyle(), size + 2));
+            }
+        });
+        zoomMenu.add(zoomInMenuItem);
+
+        // 创建缩小菜单项
+        JMenuItem zoomOutMenuItem = new JMenuItem("缩小");
+        zoomOutMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Font font = textArea.getFont();
+                int size = font.getSize();
+                if (size > 2) {
+                    textArea.setFont(new Font(font.getName(), font.getStyle(), size - 2));
+                }
+            }
+        });
+        zoomMenu.add(zoomOutMenuItem);
+
+        // 创建文本区域
+        textArea = new JTextArea();
+                            
+       textArea.setFont(new Font("宋体", Font.PLAIN, 16));
+textArea.setLineWrap(true);
+textArea.setWrapStyleWord(true);
+JScrollPane scrollPane = new JScrollPane(textArea);
+add(scrollPane, BorderLayout.CENTER);
+                            
+                             // 创建状态栏
+    statusBar = new JLabel("行数: 1");
+    add(statusBar, BorderLayout.SOUTH);
+
+    // 监听文本变化事件，更新行数
+    textArea.getDocument().addDocumentListener(new DocumentListener() {
+        public void insertUpdate(DocumentEvent e) {
+            updateLineCount();
+        }
+        public void removeUpdate(DocumentEvent e) {
+            updateLineCount();
+        }
+        public void changedUpdate(DocumentEvent e) {
+            updateLineCount();
+        }
+        private void updateLineCount() {
+            int lineCount = textArea.getLineCount();
+            statusBar.setText("行数: " + lineCount);
+        }
+    });
+
+    // 设置窗口大小和位置
+    setSize(900, 600);
+    setLocationRelativeTo(null);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setVisible(true);
+}
+
+public static void main(String[] args) {
+    new Notepad();
+}
+                            }</p>
 
 <script>
     // 检测用户所在国家、城市、区域和 IP 地址
