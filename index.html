@@ -7,34 +7,6 @@
 </head>
 <body>
     <h1>MandengWong個人官方網站</h1>
-      <div id="greeting"></div>
-
-    <script>
-      // 获取当前时间
-      var now = new Date();
-      var hour = now.getHours();
-
-      // 根据当前时间显示不同的问候语
-      var greeting;
-      if (hour < 6) {
-        greeting = "凌晨好";
-      } else if (hour < 9) {
-        greeting = "早上好";
-      } else if (hour < 12) {
-        greeting = "上午好";
-      } else if (hour < 14) {
-        greeting = "中午好";
-      } else if (hour < 18) {
-        greeting = "下午好";
-      } else {
-        greeting = "晚上好";
-      }
-
-      // 在页面上显示问候语
-      var greetingDiv = document.getElementById("greeting");
-      greetingDiv.innerHTML = greeting;
-    </script>
-  </body>
     
     <h2>關於我</h>
     <p>我來自中華人民共和國，中文名:黄文定，男，生日：7月18日，擅長程式設計語言：Scratch，Python，C/C++，Java和Web</p>
@@ -4031,9 +4003,35 @@ public class FileDecompressor {
     }, 1000);
 </script>
 <p>當前時間<span id="time"></span></p>
+    
+    <div id="greeting"></div>
 
-</div>
+    <script>
+      // 获取当前时间
+      var now = new Date();
+      var hour = now.getHours();
 
+      // 根据当前时间显示不同的问候语
+      var greeting;
+      if (hour < 6) {
+        greeting = "凌晨好";
+      } else if (hour < 9) {
+        greeting = "早上好";
+      } else if (hour < 12) {
+        greeting = "上午好";
+      } else if (hour < 14) {
+        greeting = "中午好";
+      } else if (hour < 18) {
+        greeting = "下午好";
+      } else {
+        greeting = "晚上好";
+      }
+
+      // 在页面上显示问候语
+      var greetingDiv = document.getElementById("greeting");
+      greetingDiv.innerHTML = greeting;
+    </script>
+                       
 <div>
     Copyright &copy; 2023-MandengWong保留所有權利-MandengWong技術支援,网站最后更新日期: 2023年2月20日 星期一
 </div>
