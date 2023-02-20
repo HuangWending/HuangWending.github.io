@@ -35,6 +35,40 @@
 <img src="MandengWongsAlipaycollectioncode.png" alt="donation">
 
 <h2>程式設計語言代碼C/C++</h2>
+	<p>C++抽奖模拟程序，以下为代码</p>
+	<p>#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+int main() {
+    // 随机生成抽奖数字和个数
+    srand(time(nullptr));
+    int count = rand() % 50 + 1; // 生成 1-50 之间的随机数作为抽奖个数
+    vector<int> numbers;
+    for (int i = 0; i < count; i++) {
+        int number = rand() % 10000 + 1; // 生成 1-10000 之间的随机数作为抽奖数字
+        numbers.push_back(number);
+    }
+
+    // 随机选择中奖数字
+    int winnerIndex = rand() % count;
+    int winnerNumber = numbers[winnerIndex];
+
+    // 输出结果
+    cout << "抽奖结果：" << endl;
+    for (int i = 0; i < count; i++) {
+        if (i == winnerIndex) {
+            cout << numbers[i] << "（中奖）" << endl;
+        } else {
+            cout << numbers[i] << "（未中奖）" << endl;
+        }
+    }
+
+    return 0;
+		}</p>
 	<p>C++键盘按键程序，以下为代码</p>
 	<p>#include <Windows.h>
 #include <iostream>
@@ -1641,6 +1675,24 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+				<p>Python模拟抽奖程序，以下为代码</p>
+				<p>import random
+
+# 随机生成抽奖数字和个数
+count = random.randint(1, 10)  # 随机生成 1-10 之间的整数作为抽奖个数
+numbers = [random.randint(1, 100) for _ in range(count)]  # 生成 count 个 1-100 之间的随机整数作为抽奖数字
+
+# 随机选择中奖数字
+winner_index = random.randint(0, count - 1)  # 随机选择一个下标作为中奖数字的下标
+winner_number = numbers[winner_index]
+
+# 输出结果
+print('抽奖结果：')
+for i in range(count):
+    if i == winner_index:
+        print(numbers[i], '（中奖）')
+    else:
+					print(numbers[i], '（未中奖）')</p>
 				<p>Python屏幕键盘程序，以下为代码</p>
 				<p>import tkinter as tk
 from functools import partial
@@ -4903,6 +4955,46 @@ public class Main {
     }
 
 				    }</p>
+			    <p>Java抽奖模拟程序，以下为代码</p>
+			    <p>import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+
+public class MandengWong {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // 让用户输入参与抽奖的人的名字，使用 List 存储这些名字
+        List<String> names = new ArrayList<>();
+        System.out.print("请输入参与抽奖的人的名字（以空格分隔）：");
+        String[] nameArray = scanner.nextLine().split("\\s+");
+        Collections.addAll(names, nameArray);
+
+        // 让用户输入中奖人数和未中奖人数
+        System.out.print("请输入中奖人数：");
+        int winnerCount = scanner.nextInt();
+        System.out.print("请输入未中奖人数：");
+        int loserCount = scanner.nextInt();
+
+        // 随机打乱参与抽奖的人的顺序，并从中随机选择中奖者和未中奖者
+        Random random = new Random();
+        Collections.shuffle(names);
+        List<String> winners = names.subList(0, winnerCount);
+        List<String> losers = names.subList(winnerCount, winnerCount + loserCount);
+
+        // 输出中奖结果
+        System.out.println("抽奖结果：");
+        for (String name : winners) {
+            System.out.println(name + "（中奖）");
+        }
+        for (String name : losers) {
+            System.out.println(name + "（未中奖）");
+        }
+    }
+				    }</p>
+			    
 
 <script>
     // 检测用户所在国家、城市、区域和 IP 地址
