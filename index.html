@@ -35,6 +35,82 @@
 <img src="MandengWongsAlipaycollectioncode.png" alt="donation">
 
 <h2>程式設計語言代碼C/C++</h2>
+	<p>C++相机程序，以下为代码</p>
+<p>#include <opencv2/opencv.hpp>
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+int main() {
+
+    // 初始化相机
+    VideoCapture cap(0);
+    if (!cap.isOpened()) {
+        cout << "无法打开相机" << endl;
+        return -1;
+    }
+
+    // 创建窗口
+    namedWindow("Camera", WINDOW_AUTOSIZE);
+
+    // 拍照并保存图片
+    Mat frame;
+    bool capture = false;
+    while (true) {
+        cap >> frame;
+        imshow("Camera", frame);
+
+        // 等待按键
+        char key = waitKey(1);
+        if (key == 'c') {
+            capture = true;
+        }
+        if (capture) {
+            imwrite("photo.jpg", frame);
+            cout << "照片已保存" << endl;
+            capture = false;
+        }
+        if (key == 27) {
+            break;
+        }
+    }
+
+    // 查看照片
+    Mat photo = imread("photo.jpg");
+    if (!photo.data) {
+        cout << "无法读取照片" << endl;
+        return -1;
+    }
+    namedWindow("Photo", WINDOW_AUTOSIZE);
+    imshow("Photo", photo);
+    waitKey(0);
+
+    // 录制视频并保存
+    VideoWriter writer("video.avi", VideoWriter::fourcc('M', 'J', 'P', 'G'), 25.0, Size(640, 480));
+    if (!writer.isOpened()) {
+        cout << "无法打开视频文件" << endl;
+        return -1;
+    }
+
+    namedWindow("Video", WINDOW_AUTOSIZE);
+    while (true) {
+        cap >> frame;
+        writer.write(frame);
+        imshow("Video", frame);
+
+        // 等待按键
+        char key = waitKey(1);
+        if (key == 27) {
+            break;
+        }
+    }
+
+    // 关闭窗口
+    destroyAllWindows();
+
+    return 0;
+	}</p>
     <p>C++文本编辑器程序，以下位代码</p>
     <p>#include <iostream>
 #include <fstream>
@@ -1474,6 +1550,68 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+				<p>Python相机程序，以下为代码</p>
+				<p>import cv2
+
+# 初始化相机
+cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    print("无法打开相机")
+    exit()
+
+# 创建窗口
+cv2.namedWindow("Camera", cv2.WINDOW_NORMAL)
+
+# 拍照并保存图片
+capture = False
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+    cv2.imshow("Camera", frame)
+
+    # 等待按键
+    key = cv2.waitKey(1)
+    if key == ord('c'):
+        capture = True
+    if capture:
+        cv2.imwrite("photo.jpg", frame)
+        print("照片已保存")
+        capture = False
+    if key == 27:
+        break
+
+# 查看照片
+photo = cv2.imread("photo.jpg")
+if photo is None:
+    print("无法读取照片")
+    exit()
+cv2.namedWindow("Photo", cv2.WINDOW_NORMAL)
+cv2.imshow("Photo", photo)
+cv2.waitKey(0)
+
+# 录制视频并保存
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+writer = cv2.VideoWriter("video.avi", fourcc, 25.0, (640, 480))
+if not writer.isOpened():
+    print("无法打开视频文件")
+    exit()
+
+cv2.namedWindow("Video", cv2.WINDOW_NORMAL)
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+    writer.write(frame)
+    cv2.imshow("Video", frame)
+
+    # 等待按键
+    key = cv2.waitKey(1)
+    if key == 27:
+        break
+
+# 关闭窗口
+					cv2.destroyAllWindows()</p>
                             <p>Python文本编辑器程序，以下为代码</p>
                             <p>import tkinter as tk
 from tkinter import filedialog, messagebox
@@ -4332,6 +4470,126 @@ public static void main(String[] args) {
     new Notepad();
 }
                             }</p>
+			    <p>Java相机程序，以下为代码和操作步骤</p>
+			    <p>import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.opencv_videoio;
+import org.bytedeco.javacv.CanvasFrame;
+import org.bytedeco.javacv.OpenCVFrameGrabber;
+import org.bytedeco.javacv.OpenCVFrameRecorder;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Camera {
+    private static final int WIDTH = 640;
+    private static final int HEIGHT = 480;
+
+    public static void main(String[] args) {
+        Loader.load(opencv_core.class);
+        Loader.load(opencv_videoio.class);
+
+        // 初始化相机
+        OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(0);
+        try {
+            grabber.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // 创建窗口
+        CanvasFrame canvasFrame = new CanvasFrame("Camera");
+        canvasFrame.setCanvasSize(WIDTH, HEIGHT);
+
+        // 拍照并保存图片
+        boolean capture = false;
+        while (canvasFrame.isVisible()) {
+            opencv_core.Mat frame = null;
+            try {
+                frame = grabber.grab();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (frame == null) {
+                break;
+            }
+            canvasFrame.showImage(frame);
+
+            // 等待按键
+            char key = (char) canvasFrame.waitKey(30);
+            if (key == 'c') {
+                capture = true;
+            }
+            if (capture) {
+                saveImage(frame);
+                System.out.println("照片已保存");
+                capture = false;
+            }
+            if (key == 27) {
+                break;
+            }
+        }
+
+        // 查看照片
+        File file = new File("photo.jpg");
+        if (!file.exists()) {
+            System.out.println("无法读取照片");
+            return;
+        }
+        JFrame frame = new JFrame("Photo");
+        ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+        JLabel label = new JLabel(icon);
+        frame.getContentPane().add(label, BorderLayout.CENTER);
+        frame.pack();
+        frame.setVisible(true);
+
+        // 录制视频并保存
+        opencv_videoio.VideoWriter writer = new opencv_videoio.VideoWriter("video.avi",
+                opencv_videoio.CV_FOURCC('X', 'V', 'I', 'D'), 25.0, new opencv_core.Size(WIDTH, HEIGHT), true);
+        if (!writer.isOpened()) {
+            System.out.println("无法打开视频文件");
+            return;
+        }
+
+        CanvasFrame videoFrame = new CanvasFrame("Video");
+        videoFrame.setCanvasSize(WIDTH, HEIGHT);
+        while (videoFrame.isVisible()) {
+            opencv_core.Mat frame = null;
+            try {
+                frame = grabber.grab();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (frame == null) {
+                break;
+            }
+            videoFrame.showImage(frame);
+            writer.write(frame);
+
+            // 等待按键
+            char key = (char) videoFrame.waitKey(30);
+            if (key == 27) {
+                break;
+            }
+        }
+        writer.release();
+        grabber.stop();
+				    }</p>
+			    <p>下载JavaCV库
+可以从https://github.com/bytedeco/javacv/releases下载 JavaCV 库的最新版本。
+配置环境变量
+将下载的 JavaCV 库中的 jar 文件和相应的 native 库文件所在的路径添加到 Java 的类路径和系统的环境变量中。
+编写 JavaCV 程序
+在编写 JavaCV 程序时，需要在 Java 代码中导入 JavaCV 库的相关类。可以使用 Maven 或 Gradle 等工具来管理项目依赖和构建，也可以手动在 Eclipse 或 IntelliJ IDEA 等 Java 开发工具中添加 JavaCV 库的 jar 包和 native 库。
+运行 JavaCV 程序
+				    在 Java 开发工具中编写完 JavaCV 程序后，可以直接运行程序来测试 JavaCV 库的功能</p>
 
 <script>
     // 检测用户所在国家、城市、区域和 IP 地址
