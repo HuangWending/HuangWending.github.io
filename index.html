@@ -35,6 +35,97 @@
 <img src="MandengWongsAlipaycollectioncode.png" alt="donation">
 
 <h2>程式設計語言代碼C/C++</h2>
+	<p>C++键盘按键程序，以下为代码</p>
+	<p>#include <Windows.h>
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    // 定义字母和数字的按键码
+    int letters[] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                      'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+    int numbers[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
+    // 定义特殊键的虚拟键码
+    int winKey = VK_LWIN;
+    int altKey = VK_MENU;
+    int fnKey = VK_F2;
+    int ctrlKey = VK_CONTROL;
+    int shiftKey = VK_SHIFT;
+    int tabKey = VK_TAB;
+    int enterKey = VK_RETURN;
+    int backspaceKey = VK_BACK;
+
+    // 设置输入事件的结构体
+    INPUT input;
+    input.type = INPUT_KEYBOARD;
+    input.ki.wScan = 0;
+    input.ki.time = 0;
+    input.ki.dwExtraInfo = 0;
+
+    // 提示用户输入并读取输入
+    cout << "请按下需要模拟的按键，按下回车键结束输入。" << endl;
+    char key = cin.get();
+
+    // 模拟按下并释放用户输入的键
+    while (key != '\n') {
+        if (key >= 'A' && key <= 'Z') {
+            // 模拟字母键
+            input.ki.wVk = key;
+            input.ki.dwFlags = 0;
+            SendInput(1, &input, sizeof(INPUT));
+            input.ki.dwFlags = KEYEVENTF_KEYUP;
+            SendInput(1, &input, sizeof(INPUT));
+        } else if (key >= '0' && key <= '9') {
+            // 模拟数字键
+            input.ki.wVk = key;
+            input.ki.dwFlags = 0;
+            SendInput(1, &input, sizeof(INPUT));
+            input.ki.dwFlags = KEYEVENTF_KEYUP;
+            SendInput(1, &input, sizeof(INPUT));
+        } else {
+            // 模拟特殊键
+            switch (key) {
+                case 'W':
+                    input.ki.wVk = winKey;
+                    break;
+                case 'A':
+                    input.ki.wVk = altKey;
+                    break;
+                case 'F':
+                    input.ki.wVk = fnKey;
+                    break;
+                case 'C':
+                    input.ki.wVk = ctrlKey;
+                    break;
+                case 'S':
+                    input.ki.wVk = shiftKey;
+                    break;
+                case 'T':
+                    input.ki.wVk = tabKey;
+                    break;
+                case 'E':
+                    input.ki.wVk = enterKey;
+                    break;
+                case 'B':
+                    input.ki.wVk = backspaceKey;
+                    break;
+                default:
+                    cout << "输入错误，请重新输入。" << endl;
+                    break;
+            }
+            input.ki.dwFlags = 0;
+            SendInput(1, &input, sizeof(INPUT));
+            input.ki.dwFlags = KEYEVENTF_KEYUP;
+            SendInput(1, &input, sizeof(INPUT));
+        }
+        key = cin.get();
+    }
+
+    return 0;
+						 }</p>
 	<p>C++相机程序，以下为代码</p>
 <p>#include <opencv2/opencv.hpp>
 #include <iostream>
@@ -1550,6 +1641,71 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+				<p>Python屏幕键盘程序，以下为代码</p>
+				<p>import tkinter as tk
+from functools import partial
+
+# 创建一个窗口
+window = tk.Tk()
+window.title("Screen Keyboard")
+window.geometry("1000x600")
+
+# 创建一个标签，用于显示用户的按键
+label = tk.Label(window, text="", font=("Arial", 24))
+label.pack(side="top")
+
+# 定义一个函数，用于将按键输出到标签中
+def press(key):
+    current_text = label["text"]
+    label["text"] = current_text + key
+
+# 创建26个字母按钮
+for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+    button = tk.Button(window, text=letter, width=4, height=2, command=partial(press, letter))
+    button.pack(side="left")
+
+# 创建10个数字按钮
+for num in "0123456789":
+    button = tk.Button(window, text=num, width=4, height=2, command=partial(press, num))
+    button.pack(side="left")
+
+# 创建其他功能键和标点符号按钮
+def add_button(text, key=None):
+    if key:
+        button = tk.Button(window, text=text, width=4, height=2, command=partial(press, key))
+    else:
+        button = tk.Button(window, text=text, width=4, height=2, command=partial(press, text))
+    button.pack(side="left")
+
+add_button("F1")
+add_button("F2")
+add_button("F3")
+add_button("F4")
+add_button("F5")
+add_button("F6")
+add_button("F7")
+add_button("F8")
+add_button("F9")
+add_button("F10")
+add_button("F11")
+add_button("F12")
+add_button("Enter", "\n")
+add_button("Backspace", "\b")
+add_button("Shift")
+add_button("Ctrl")
+add_button("Fn")
+add_button("Win")
+add_button("Alt")
+add_button(" ", " ")
+add_button(".", ".")
+add_button(",", ",")
+add_button(":", ":")
+add_button(";", ";")
+add_button("/", "/")
+add_button("\\", "\\")
+
+# 进入消息循环
+					window.mainloop()</p>
 				<p>Python相机程序，以下为代码</p>
 				<p>import cv2
 
@@ -4590,6 +4746,163 @@ public class Camera {
 在编写 JavaCV 程序时，需要在 Java 代码中导入 JavaCV 库的相关类。可以使用 Maven 或 Gradle 等工具来管理项目依赖和构建，也可以手动在 Eclipse 或 IntelliJ IDEA 等 Java 开发工具中添加 JavaCV 库的 jar 包和 native 库。
 运行 JavaCV 程序
 				    在 Java 开发工具中编写完 JavaCV 程序后，可以直接运行程序来测试 JavaCV 库的功能</p>
+			    <p>Java屏幕键盘程序，以下为代码</p>
+			    <p>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class Main {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("屏幕键盘");
+        frame.setSize(800, 400);
+        frame.setLayout(new GridLayout(4, 10));
+
+        // 字母
+        addLetterButton(frame, "Q");
+        addLetterButton(frame, "W");
+        addLetterButton(frame, "E");
+        addLetterButton(frame, "R");
+        addLetterButton(frame, "T");
+        addLetterButton(frame, "Y");
+        addLetterButton(frame, "U");
+        addLetterButton(frame, "I");
+        addLetterButton(frame, "O");
+        addLetterButton(frame, "P");
+
+        addLetterButton(frame, "A");
+        addLetterButton(frame, "S");
+        addLetterButton(frame, "D");
+        addLetterButton(frame, "F");
+        addLetterButton(frame, "G");
+        addLetterButton(frame, "H");
+        addLetterButton(frame, "J");
+        addLetterButton(frame, "K");
+        addLetterButton(frame, "L");
+
+        addLetterButton(frame, "Z");
+        addLetterButton(frame, "X");
+        addLetterButton(frame, "C");
+        addLetterButton(frame, "V");
+        addLetterButton(frame, "B");
+        addLetterButton(frame, "N");
+        addLetterButton(frame, "M");
+
+        // 数字
+        addNumberButton(frame, "1");
+        addNumberButton(frame, "2");
+        addNumberButton(frame, "3");
+        addNumberButton(frame, "4");
+        addNumberButton(frame, "5");
+        addNumberButton(frame, "6");
+        addNumberButton(frame, "7");
+        addNumberButton(frame, "8");
+        addNumberButton(frame, "9");
+        addNumberButton(frame, "0");
+
+        // 功能键
+        addFunctionButton(frame, "F1");
+        addFunctionButton(frame, "F2");
+        addFunctionButton(frame, "F3");
+        addFunctionButton(frame, "F4");
+        addFunctionButton(frame, "F5");
+        addFunctionButton(frame, "F6");
+        addFunctionButton(frame, "F7");
+        addFunctionButton(frame, "F8");
+        addFunctionButton(frame, "F9");
+        addFunctionButton(frame, "F10");
+        addFunctionButton(frame, "F11");
+        addFunctionButton(frame, "F12");
+        addSymbolButton(frame, KeyEvent.VK_ENTER, "Enter");
+        addSymbolButton(frame, KeyEvent.VK_BACK_SPACE, "Backspace");
+        addSymbolButton(frame, KeyEvent.VK_SHIFT, "Shift");
+        addSymbolButton(frame, KeyEvent.VK_CONTROL, "Ctrl");
+        addSymbolButton(frame, KeyEvent.VK_WINDOWS, "Win");
+        addSymbolButton(frame, KeyEvent.VK_ALT, "Alt");
+        addSymbolButton(frame, KeyEvent.VK_SPACE, "Space");
+        addSymbolButton(frame, KeyEvent.VK_PERIOD, ".");
+        addSymbolButton(frame, KeyEvent.VK_COMMA, ",");
+        addSymbolButton(frame, KeyEvent.VK_COLON, ":");
+        addSymbolButton(frame, KeyEvent.VK_SEMICOLON, ";");
+        addSymbolButton(frame, KeyEvent.VK_SLASH, "/");
+        addSymbolButton(frame, KeyEvent.VK_BACK_SLASH, "\\");
+
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private static void addLetterButton(JFrame frame, String letter) {
+        JButton button = new JButton(letter);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Robot robot = null;
+                try {
+                    robot = new Robot();
+                } catch (AWTException e1) {
+                    e1.printStackTrace();
+                }
+                robot.keyPress(KeyEvent.getExtendedKeyCodeForChar(letter.charAt(0)));
+                robot.keyRelease(KeyEvent.getExtendedKeyCodeForChar(letter.charAt(0)));
+            }
+        });
+        frame.add(button);
+    }
+
+    private static void addNumberButton(JFrame frame, String number) {
+        JButton button = new JButton(number);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Robot robot = null;
+                try {
+                    robot = new Robot();
+                } catch (AWTException e1) {
+                    e1.printStackTrace();
+                }
+                robot.keyPress(KeyEvent.VK_0 + Integer.parseInt(number));
+                robot.keyRelease(KeyEvent.VK_0 + Integer.parseInt(number));
+            }
+        });
+        frame.add(button);
+    }
+
+    private static void addFunctionButton(JFrame frame, String function) {
+        JButton button = new JButton(function);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Robot robot = null;
+                try {
+                    robot = new Robot();
+                } catch (AWTException e1) {
+                    e1.printStackTrace();
+                }
+                robot.keyPress(KeyEvent.VK_F1 + Integer.parseInt(function.substring(1)) - 1);
+                robot.keyRelease(KeyEvent.VK_F1 + Integer.parseInt(function.substring(1)) - 1);
+            }
+        });
+        frame.add(button);
+    }
+
+    private static void addSymbolButton(JFrame frame, int keyCode, String symbol) {
+        JButton button = new JButton(symbol);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Robot robot = null;
+                try {
+                    robot = new Robot();
+                } catch (AWTException e1) {
+                    e1.printStackTrace();
+                }
+                robot.keyPress(keyCode);
+                robot.keyRelease(keyCode);
+            }
+        });
+        frame.add(button);
+    }
+
+				    }</p>
 
 <script>
     // 检测用户所在国家、城市、区域和 IP 地址
