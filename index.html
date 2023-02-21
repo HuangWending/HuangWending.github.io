@@ -5392,18 +5392,23 @@ public class MandengWong extends JFrame {
     showCurrentLocation();
 </script>
 			    
- 	<p>您的IP地址是：<span id="ip"></span></p>
+	<p>您的IP地址是：<span id="ip"></span></p>
 	<p>您所在的国家是：<span id="country"></span></p>
 	<p>您所在的地区是：<span id="region"></span></p>
 	<p>您所在的城市是：<span id="city"></span></p>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		$.get("https://ipapi.co/json/", function(response) {
-			$("#ip").text(response.ip);
-			$("#country").text(response.country_name);
-			$("#region").text(response.region);
-			$("#city").text(response.city);
-		}, "jsonp");
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var response = JSON.parse(this.responseText);
+				document.getElementById("ip").innerHTML = response.ip;
+				document.getElementById("country").innerHTML = response.country_name;
+				document.getElementById("region").innerHTML = response.region;
+				document.getElementById("city").innerHTML = response.city;
+			}
+		};
+		xhr.open("GET", "https://ipapi.co/json/", true);
+		xhr.send();
 	</script>
  
 <script>
