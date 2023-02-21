@@ -1735,6 +1735,38 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+				<p>Python日历程序，以下为代码</p>
+				<p>import calendar
+import tkinter as tk
+
+
+def showCal():
+    #输入年份和月份
+    year = int(yearInput.get())
+    month = int(monthInput.get())
+    #输出日历
+    cal = calendar.month(year, month)
+    #创建新窗口显示日历
+    win = tk.Tk()
+    win.title("日历")
+    tk.Label(win, text=cal, font=('Arial', 14), justify='left', padx=10).pack()
+    win.mainloop()
+
+#创建窗口
+win = tk.Tk()
+win.title("日历")
+win.geometry('400x300')
+
+#创建并放置各种控件
+tk.Label(win, text="年").grid(row=0, column=0)
+tk.Label(win, text="月").grid(row=1, column=0)
+yearInput = tk.Entry(win)
+monthInput = tk.Entry(win)
+yearInput.grid(row=0, column=1)
+monthInput.grid(row=1, column=1)
+tk.Button(win, text="显示日历", command=showCal).grid(row=3, column=0, columnspan=2, pady=10)
+
+					win.mainloop()</p>
 				<p>Python模拟抽奖程序，以下为代码</p>
 				<p>import random
 
@@ -5054,6 +5086,54 @@ public class MandengWong {
         }
     }
 				    }</p>
+				    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <style>
+        #map {
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+
+<!-- 引入Leaflet JavaScript -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script>
+    // 在地图中显示访客当前位置
+    function showMap(lat, lng) {
+        // 创建地图对象
+        var map = L.map('map').setView([lat, lng], 13);
+
+        // 添加地图瓦片图层
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '地理位置地图 &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> 检测并显示',
+            maxZoom: 18
+        }).addTo(map);
+
+        // 添加标记
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup("您当前所在的位置:").openPopup();
+    }
+
+    // 获取当前位置并显示地图
+    function showCurrentLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                showMap(position.coords.latitude, position.coords.longitude);
+            }, function() {
+                alert("暂时无法获取您的位置。");
+            });
+        } else {
+            alert("您的浏览器不支持地理定位。");
+        }
+    }
+
+    // 显示地图
+    showCurrentLocation();
+</script>
 			    
 
 <script>
