@@ -5196,6 +5196,158 @@ public class SmsSender {
 在程序中，我创建了一个静态方法sendSms，该方法可以接收两个参数：一个接收短信的电话号码和一个短信内容。方法中使用Twilio API来发送短信，并将发送结果输出到控制台。
 
 					    在main方法中，我测试了sendSms</p>
+				    <p>Java日历程序，以下为代码</p>
+				    <p>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.*;
+
+public class MandengWong extends JFrame {
+    private int month, year, day;
+    private JLabel monthLabel, yearLabel, dayLabel;
+    private JButton prevButton, nextButton;
+    private JPanel monthPanel, calendarPanel;
+
+    public MandengWong() {
+        // 获取当前日期
+        Calendar calendar = Calendar.getInstance();
+        month = calendar.get(Calendar.MONTH) + 1;
+        year = calendar.get(Calendar.YEAR);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // 创建月份标签
+        monthLabel = new JLabel(getMonthString(month));
+
+        // 创建年份标签
+        yearLabel = new JLabel(Integer.toString(year));
+
+        // 创建日标签
+        dayLabel = new JLabel(Integer.toString(day));
+
+        // 创建“上个月”按钮
+        prevButton = new JButton("<");
+
+        // 添加“上个月”按钮的事件监听器
+        prevButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (month == 1) {
+                    month = 12;
+                    year--;
+                } else {
+                    month--;
+                }
+                monthLabel.setText(getMonthString(month));
+                yearLabel.setText(Integer.toString(year));
+                updateCalendar();
+            }
+        });
+
+        // 创建“下个月”按钮
+        nextButton = new JButton(">");
+
+        // 添加“下个月”按钮的事件监听器
+        nextButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (month == 12) {
+                    month = 1;
+                    year++;
+                } else {
+                    month++;
+                }
+                monthLabel.setText(getMonthString(month));
+                yearLabel.setText(Integer.toString(year));
+                updateCalendar();
+            }
+        });
+
+        // 创建月份和日历面板
+        monthPanel = new JPanel(new FlowLayout());
+        calendarPanel = new JPanel(new GridLayout(7, 7));
+
+        // 向月份面板中添加组件
+        monthPanel.add(prevButton);
+        monthPanel.add(monthLabel);
+        monthPanel.add(yearLabel);
+        monthPanel.add(nextButton);
+        monthPanel.add(dayLabel);
+
+        // 向日历面板中添加日期
+        updateCalendar();
+
+        // 将月份和日历面板添加到窗口中
+        add(monthPanel, BorderLayout.NORTH);
+        add(calendarPanel, BorderLayout.CENTER);
+
+        // 设置窗口属性
+        setTitle("日历程序");
+        setSize(300, 300);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+
+    // 获取月份字符串
+    private String getMonthString(int month) {
+        String[] months = {"", "一月", "二月", "三月", "四月", "五月", "六月",
+                "七月", "八月", "九月", "十月", "十一月", "十二月"};
+        return months[month];
+    }
+
+    // 更新日历
+    private void updateCalendar() {
+        calendarPanel.removeAll();
+
+        // 添加星期标签
+        calendarPanel.add(new JLabel("日"));
+        calendarPanel.add(new JLabel("一"));
+        calendarPanel.add(new JLabel("二"));
+        calendarPanel.add(new JLabel("三"));
+        calendarPanel.add(new JLabel("四"));
+        calendarPanel.add(new JLabel("五"));
+        calendarPanel.add(new JLabel("六"));
+        
+        // 获取当前月份的第一天
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, 1);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        
+        // 添加空标签
+        for (int i = 1; i < dayOfWeek; i++) {
+            calendarPanel.add(new JLabel(""));
+        }
+        
+        // 添加日期标签
+        int days = getDays(month, year);
+        for (int i = 1; i <= days; i++) {
+            JLabel label = new JLabel(Integer.toString(i));
+            if (i == day) {
+                label.setForeground(Color.RED);
+            }
+            calendarPanel.add(label);
+        }
+        
+        // 更新窗口
+        calendarPanel.updateUI();
+    }
+    
+    // 获取指定月份的天数
+    private int getDays(int month, int year) {
+        int[] days = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        if (month == 2 && isLeapYear(year)) {
+            return 29;
+        }
+        return days[month];
+    }
+    
+    // 判断是否为闰年
+    private boolean isLeapYear(int year) {
+        return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
+    }
+    
+    public static void main(String[] args) {
+        new MandengWong();
+    }
+					    }</p>
 				    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
