@@ -5136,23 +5136,20 @@ public class SmsSender {
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
 <script>
-    // 在地图中显示访客当前位置
+
     function showMap(lat, lng) {
-        // 创建地图对象
+
         var map = L.map('map').setView([lat, lng], 13);
 
-        // 添加地图瓦片图层
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '地理位置地图 &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> 检测并显示',
+            attribution: '地理位置地图 &copy; <a href="https://www.openstreetmap.org/">地图API</a> 检测并显示',
             maxZoom: 18
         }).addTo(map);
 
-        // 添加标记
         L.marker([lat, lng]).addTo(map)
             .bindPopup("您当前所在的位置:").openPopup();
     }
 
-    // 获取当前位置并显示地图
     function showCurrentLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -5165,7 +5162,6 @@ public class SmsSender {
         }
     }
 
-    // 显示地图
     showCurrentLocation();
 </script>
 			    
@@ -5206,7 +5202,7 @@ public class SmsSender {
     var dateTimeParts = todayGMT.split(/\D/); //["2020","4","4","14","32","42"]
     document.write("你進入此網站的時間:" + dateTimeParts[0]+"-"+dateTimeParts[1]+"-"+dateTimeParts[2]+" "+dateTimeParts[3]+":"+dateTimeParts[4]+":"+dateTimeParts[5]);
     setInterval(function(){
-        // 每秒更新一次
+
         var today = new Date();
         var todayGMT = today.toLocaleString('chinese', { hour12: false, timeZone: 'Asia/Shanghai' });
         var dateTimeParts = todayGMT.split(/\D/); //["2020","4","4","14","32","42"]
@@ -5218,11 +5214,10 @@ public class SmsSender {
     <div id="greeting"></div>
 
     <script>
-      // 获取当前时间
+
       var now = new Date();
       var hour = now.getHours();
 
-      // 根据当前时间显示不同的问候语
       var greeting;
       if (hour < 6) {
         greeting = "凌晨好";
@@ -5238,7 +5233,6 @@ public class SmsSender {
         greeting = "晚上好";
       }
 
-      // 在页面上显示问候语
       var greetingDiv = document.getElementById("greeting");
       greetingDiv.innerHTML = greeting;
     </script>
