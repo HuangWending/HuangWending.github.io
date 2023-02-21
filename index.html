@@ -35,6 +35,66 @@
 <img src="MandengWongsAlipaycollectioncode.png" alt="donation">
 
 <h2>程式設計語言代碼C/C++</h2>
+	<p>C++日历程序，以下为代码</p>
+	<p>#include <iostream>
+
+using namespace std;
+
+int get_day_of_week(int year, int month, int day) {
+    // 使用蔡勒公式计算日期的星期几
+    int a = (14 - month) / 12;
+    int y = year - a;
+    int m = month + 12 * a - 2;
+    int d = (day + y + y / 4 - y / 100 + y / 400 + (31 * m) / 12) % 7;
+    return d;
+}
+
+void print_calendar(int year, int month) {
+    // 打印月份和星期几
+    cout << "     " << month << "月 " << year << endl;
+    cout << "日 一 二 三 四 五 六" << endl;
+
+    // 计算该月的天数和第一天的星期几
+    int days_in_month;
+    switch (month) {
+        case 2:
+            if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+                days_in_month = 29;
+            } else {
+                days_in_month = 28;
+            }
+            break;
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+            days_in_month = 30;
+            break;
+        default:
+            days_in_month = 31;
+    }
+    int first_day_of_month = get_day_of_week(year, month, 1);
+
+    // 输出日历表格
+    for (int i = 0; i < first_day_of_month; i++) {
+        cout << "   ";
+    }
+    for (int i = 1; i <= days_in_month; i++) {
+        printf("%2d ", i);
+        if ((i + first_day_of_month) % 7 == 0) {
+            cout << endl;
+        }
+    }
+    cout << endl;
+}
+
+int main() {
+    int year, month;
+    cout << "请输入年份和月份（例如2023空格2）：" << endl;
+    cin >> year >> month;
+    print_calendar(year, month);
+    return 0;
+		}</p>
 	<p>C++抽奖模拟程序，以下为代码</p>
 	<p>#include <iostream>
 #include <vector>
