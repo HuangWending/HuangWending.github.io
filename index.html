@@ -35,6 +35,56 @@
 <img src="MandengWongsAlipaycollectioncode.png" alt="donation">
 
 <h2>程式設計語言代碼C/C++</h2>
+	<p>C++短信发送程序，以下为代码和操作步骤</p>
+	<p>从curl的官方网站下载预编译的库文件：https://curl.se/windows/，使用以下代码发送短信</p>
+	<p>#include <iostream>
+#include <curl/curl.h>
+
+int main()
+{
+    CURL *curl;
+    CURLcode res;
+
+    curl_global_init(CURL_GLOBAL_ALL);
+
+    curl = curl_easy_init();
+    if(curl)
+    {
+        std::string to_number = "+1xxxxxxxxxx"; // 接收短信的电话号码，需要加上区号
+        std::string from_number = "+1xxxxxxxxxx"; // Twilio手机号，也需要加上区号
+        std::string body = "Hello, World!"; // 短信内容
+
+        std::string api_key = "Your_API_Key"; // Twilio的API Key
+        std::string api_secret = "Your_API_Secret"; // Twilio的API Secret
+
+        std::string url = "https://api.twilio.com/2010-04-01/Accounts/" + api_key + "/Messages.json";
+        std::string post_fields = "To=" + to_number + "&From=" + from_number + "&Body=" + body;
+
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_fields.c_str());
+
+        curl_easy_setopt(curl, CURLOPT_USERNAME, api_key.c_str());
+        curl_easy_setopt(curl, CURLOPT_PASSWORD, api_secret.c_str());
+
+        res = curl_easy_perform(curl);
+
+        if(res != CURLE_OK)
+        {
+            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+        }
+        else
+        {
+            std::cout << "Message sent successfully." << std::endl;
+        }
+
+        curl_easy_cleanup(curl);
+    }
+
+    curl_global_cleanup();
+    return 0;
+		}</p>
+		<p>使用Twilio的API。首先，我需要在Twilio中创建一个账号并获取API Key和API Secret。然后，需要在Twilio中申请一个可用的Twilio手机号。在程序中，我将接收短信的电话号码、Twilio手机号和短信内容作为变量传递给post_fields字符串。Twilio的API使用HTTP POST请求发送短信，我们需要将这些变量拼接成一个字符串，并将其作为POST请求的数据发送。
+在程序中，我使用curl库发送HTTP POST请求。我需要设置请求的URL、POST请求的数据、Twilio的API Key和API Secret。最后，我使用curl_easy_perform函数发送HTTP POST请求，并检查请求是否成功。如果成功，会显示出消息发送成功的信息</p>
 	<p>C++日历程序，以下为代码</p>
 	<p>#include <iostream>
 
