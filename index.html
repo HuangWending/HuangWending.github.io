@@ -5086,6 +5086,40 @@ public class MandengWong {
         }
     }
 				    }</p>
+				    <p>Java免费短信发送程序，以下为代码和操作步骤</p>
+				    <p>import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
+
+public class SmsSender {
+    // Twilio账号信息
+    private static final String ACCOUNT_SID = "Your_Account_SID";
+    private static final String AUTH_TOKEN = "Your_Auth_Token";
+
+    // 发送短信的方法
+    public static void sendSms(String toNumber, String messageBody) {
+        try {
+            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+            Message message = Message.creator(new PhoneNumber(toNumber),
+                    new PhoneNumber("+1YOUR_TWILIO_PHONE_NUMBER"), messageBody).create();
+            System.out.println("短信已发送: " + message.getSid());
+        } catch (Exception e) {
+            System.out.println("短信发送失败: " + e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        // 测试发送短信
+        String toNumber = "+86your_phone_number"; // 接收短信的电话号码
+        String messageBody = "Hello, 这是一条测试短信!"; // 短信内容
+        sendSms(toNumber, messageBody);
+    }
+					    }</p>
+				    <p>该程序使用Twilio API来发送短信。首先，您需要注册一个Twilio账号，用来获取ACCOUNT_SID和AUTH_TOKEN的信息。然后，您需要在Twilio账号中注册一个电话号码，作为短信发送方的电话号码。
+
+在程序中，我创建了一个静态方法sendSms，该方法可以接收两个参数：一个接收短信的电话号码和一个短信内容。方法中使用Twilio API来发送短信，并将发送结果输出到控制台。
+
+					    在main方法中，我测试了sendSms</p>
 				    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
