@@ -5392,36 +5392,33 @@ public class MandengWong extends JFrame {
     showCurrentLocation();
 </script>
 			    
+    <p>您的 IP 地址是：<span id="ip-address"></span></p>
+    <p>您所在的国家是：<span id="country"></span></p>
+    <p>您所在的省份/州是：<span id="region"></span></p>
+    <p>您所在的城市是：<span id="city"></span></p>
 
-<script>
-    function detectLocation() {
-      
-        var xhr = new XMLHttpRequest();
-	    
-        var url = "http://ip-api.com/json/?lang=zh-CN";
+    <script>
+   
+      const apiUrl = 'http://ip-api.com/json/?lang=zh-CN';
 
-        xhr.open("GET", url, true);
+      const ipAddressElement = document.getElementById('ip-address');
+      const countryElement = document.getElementById('country');
+      const regionElement = document.getElementById('region');
+      const cityElement = document.getElementById('city');
 
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var data = JSON.parse(xhr.responseText);
-
-                document.getElementById("ip-address").innerHTML = "你的 IP 地址是：" + data.ip;
-                document.getElementById("country").innerHTML = "你所在的国家/地区是：" + data.country_name;
-                document.getElementById("city").innerHTML = "你所在的城市是：" + data.city;
-                document.getElementById("region").innerHTML = "你所在的省份是：" + data.region;
-            }
-        };
-
-        xhr.send();
-    }
-</script>
-</head>
-<body onload="detectLocation();">
-<p id="ip-address"></p>
-<p id="country"></p>
-<p id="city"></p>
-<p id="region"></p>
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          
+          ipAddressElement.textContent = data.query;
+          countryElement.textContent = data.country;
+          regionElement.textContent = data.regionName;
+          cityElement.textContent = data.city;
+        })
+        .catch(error => {
+          console.error('发生错误：', error);
+        });
+    </script>
  
 <script>
     var today = new Date();
