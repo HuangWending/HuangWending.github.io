@@ -1735,6 +1735,32 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
+				<p>Python短信发送程序，以下为代码</p>
+				<p>安装第三方库：pip install twilio
+					from twilio.rest import Client
+
+# Your Account Sid and Auth Token from twilio.com/console
+account_sid = 'Your_Account_Sid'
+auth_token = 'Your_Auth_Token'
+client = Client(account_sid, auth_token)
+
+def send_sms(to_number, from_number, body):
+    message = client.messages.create(
+        to=to_number, 
+        from_=from_number,
+        body=body)
+
+    print("Message sent successfully. SID:", message.sid)
+
+if __name__ == "__main__":
+    to_number = "+1xxxxxxxxxx" # 接收短信的电话号码，需要加上区号
+    from_number = "+1xxxxxxxxxx" # Twilio手机号，也需要加上区号
+    body = "Hello, World!" # 短信内容
+
+					send_sms(to_number, from_number, body)</p>
+				<p>使用了Twilio的API。首先，需要在Twilio中创建一个账号并获取Account Sid和Auth Token。然后，需要在Twilio中申请一个可用的Twilio手机号。在程序中，在程序中电话号码、Twilio 手机号码和短信内容作为参数传给send_sms函数。
+
+					send_sms：接收三：接收电话电话号码手机号。在Client函数client.messages.create函数的SID</p>
 				<p>Python日历程序，以下为代码</p>
 				<p>import calendar
 import tkinter as tk
