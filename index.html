@@ -5171,23 +5171,18 @@ public class SmsSender {
 			    
 
 <script>
-    // 检测用户所在国家、城市、区域和 IP 地址
     function detectLocation() {
-        // 创建一个 XMLHttpRequest 对象
+      
         var xhr = new XMLHttpRequest();
-
-        // 指定获取 IP 地址、国家、城市和区域信息的 API
+	    
         var url = "https://ipapi.co/json/";
 
-        // 发送 GET 请求
         xhr.open("GET", url, true);
 
-        // 处理返回结果
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 var data = JSON.parse(xhr.responseText);
 
-               
                 document.getElementById("ip-address").innerHTML = "你的 IP 地址是：" + data.ip;
                 document.getElementById("country").innerHTML = "你所在的国家/地区是：" + data.country_name;
                 document.getElementById("city").innerHTML = "你所在的城市是：" + data.city;
@@ -5195,13 +5190,12 @@ public class SmsSender {
             }
         };
 
-        // 发送请求
         xhr.send();
     }
 </script>
 </head>
 <body onload="detectLocation();">
-<p id="ip-address">正在检测你的位置，请稍候...</p>
+<p id="ip-address"></p>
 <p id="country"></p>
 <p id="city"></p>
 <p id="region"></p>
