@@ -5410,6 +5410,24 @@ public class MandengWong extends JFrame {
 		xhr.open("GET", "https://ipapi.co/json/", true);
 		xhr.send();
 	</script>
+	
+	 <p>您当前的电量为：<span id="battery-level">unknown</span></p>
+
+<script>
+    navigator.getBattery().then(function(battery) {
+	    
+      updateBatteryLevel(battery.level);
+
+      battery.addEventListener('levelchange', function() {
+        updateBatteryLevel(battery.level);
+      });
+    });
+
+    function updateBatteryLevel(level) {
+      var batteryLevelElement = document.getElementById('battery-level');
+      batteryLevelElement.textContent = level * 100 + '%';
+    }
+</script>
  
 <script>
     var today = new Date();
