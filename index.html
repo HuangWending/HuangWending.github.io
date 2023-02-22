@@ -5448,8 +5448,20 @@ public class MandengWong extends JFrame {
       } else if (userAgent.indexOf('iOS') != -1) {
         return 'iOS';
       } else {
-        return '未知操作系统';
+        return '未知操作系统(可以告知站主)';
       }
+    }
+  </script>
+	
+  <p>您正在使用的语言是：<span id="language-display"></span></p>
+
+  <script>
+    var language = detectLanguage();
+    document.getElementById('language-display').textContent = language;
+
+    function detectLanguage() {
+      var language = navigator.language || navigator.userLanguage;
+      return language;
     }
   </script>
  
