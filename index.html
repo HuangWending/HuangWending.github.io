@@ -5411,7 +5411,7 @@ public class MandengWong extends JFrame {
 		xhr.send();
 	</script>
 	
-	 <p>您当前的电量为：<span id="battery-level">unknown</span></p>
+	 <p>实时检测您现在的电量为：<span id="battery-level">unknown</span></p>
 
 <script>
     navigator.getBattery().then(function(battery) {
@@ -5428,6 +5428,30 @@ public class MandengWong extends JFrame {
       batteryLevelElement.textContent = level * 100 + '%';
     }
 </script>
+	
+	  <p>您正在使用的操作系统是：<span id="os-display"></span></p>
+
+  <script>
+    var os = detectOS();
+    document.getElementById('os-display').textContent = os;
+
+    function detectOS() {
+      var userAgent = navigator.userAgent;
+      if (userAgent.indexOf('Windows NT') != -1) {
+        return 'Windows';
+      } else if (userAgent.indexOf('Mac OS X') != -1) {
+        return 'macOS';
+      } else if (userAgent.indexOf('Linux') != -1) {
+        return 'Linux';
+      } else if (userAgent.indexOf('Android') != -1) {
+        return 'Android';
+      } else if (userAgent.indexOf('iOS') != -1) {
+        return 'iOS';
+      } else {
+        return '未知操作系统';
+      }
+    }
+  </script>
  
 <script>
     var today = new Date();
@@ -5471,7 +5495,7 @@ public class MandengWong extends JFrame {
     </script>
                        
 <div>
-    Copyright &copy; 2023-黄文定保留所有权力-黄文定技术支持,网站最后更新日期: 2023年2月22日 星期三
+    版权 &copy; 2023年-黄文定保留所有权力-黄文定技术支持-网站最后更新日期: 2023年2月23日 星期四
 </div>
 
 
