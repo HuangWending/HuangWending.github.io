@@ -5352,6 +5352,30 @@ public class MandengWong extends JFrame {
         new MandengWong();
     }
 					    }</p>
+				   
+				    <h1>视频播放功能</h1>
+</head>
+<body>
+<input type="file" id="fileInput">
+<button onclick="playVideo()">播放</button>
+<video id="videoPlayer" controls></video>
+<script>
+   function playVideo() {
+   const fileInput = document.getElementById('fileInput');
+   const videoPlayer = document.getElementById('videoPlayer');
+
+    const videoFile = fileInput.files[0];
+
+if (!videoFile.type.match('video.*')) {
+alert("请选择视频文件！");
+return;
+}
+
+const videoPlayerSource = URL.createObjectURL(videoFile);
+videoPlayer.src = videoPlayerSource;
+}
+</script>
+				    
 	<h1>音乐播放功能</h1>		  
 	<script>
         var audio = new Audio();
