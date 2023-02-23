@@ -5349,7 +5349,52 @@ public class MandengWong extends JFrame {
         new MandengWong();
     }
 					    }</p>
+
+				    <h1>网站留言区域</h1>
 				    
+<script>
+    var messages = []; // 保存留言的数组
+
+    function addMessage() {
+        var name = document.getElementById("name").value;
+        var message = document.getElementById("message").value;
+
+        messages.push({name: name, message: message});
+
+        displayMessages();
+    }
+
+    function displayMessages() {
+        var messageList = document.getElementById("message-list");
+        messageList.innerHTML = "";
+
+        for (var i = 0; i < messages.length; i++) {
+            var messageItem = document.createElement("li");
+            var messageName = document.createElement("span");
+            var messageText = document.createElement("span");
+
+            messageName.innerText = messages[i].name + ": ";
+            messageText.innerText = messages[i].message;
+
+            messageItem.appendChild(messageName);
+            messageItem.appendChild(messageText);
+            messageList.appendChild(messageItem);
+        }
+    }
+</script>
+</head>
+<body>
+<form>
+    <label for="name">Name:</label>
+    <input type="text" id="name" placeholder="输入你的名字">
+    <br>
+    <label for="message">Message:</label>
+    <textarea id="message" placeholder="输入留言"></textarea>
+    <br>
+    <button type="button" onclick="addMessage()">提交</button>
+</form>
+<ul id="message-list"></ul>
+	
    <h1>计算器</h1>
     <script>
         function calculate() {
