@@ -5350,6 +5350,51 @@ public class MandengWong extends JFrame {
     }
 					    }</p>
 				    
+   <h1>计算器</h1>
+    <script>
+        function calculate() {
+            var num1 = parseFloat(document.getElementById("num1").value);
+            var num2 = parseFloat(document.getElementById("num2").value);
+            var operator = document.getElementById("operator").value;
+            var result = "";
+
+            switch(operator) {
+                case "+":
+                    result = num1 + num2;
+                    break;
+                case "-":
+                    result = num1 - num2;
+                    break;
+                case "*":
+                    result = num1 * num2;
+                    break;
+                case "/":
+                    result = num1 / num2;
+                    break;
+                default:
+                    result = "Invalid operator";
+                    break;
+            }
+
+            document.getElementById("result").innerHTML = result;
+        }
+    </script>
+</head>
+<body>
+<h1>Calculator</h1>
+<form>
+    <input type="number" id="num1" placeholder="输入第一个数字" required>
+    <select id="operator" required>
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+    </select>
+    <input type="number" id="num2" placeholder="输入第二个数字" required>
+    <button type="button" onclick="calculate()">点击计算</button>
+</form>
+<p id="result"></p>
+				    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
     <style>
@@ -5389,9 +5434,8 @@ public class MandengWong extends JFrame {
             alert("您的浏览器不支持地理定位。");
         }
     }
-
     showCurrentLocation();
-</script>
+	</script>
 			    
 	<p>您的IP地址是：<span id="ip"></span></p>
 	<p>您所在的国家/地区是：<span id="country"></span></p>
