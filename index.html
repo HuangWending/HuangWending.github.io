@@ -5352,9 +5352,54 @@ public class MandengWong extends JFrame {
         new MandengWong();
     }
 					    }</p>
-				    
+	<h1>音乐播放功能</h1>		  
+	<script>
+        var audio = new Audio();
+
+        function playFile(file) {
+            var fileUrl = URL.createObjectURL(file);
+            audio.src = fileUrl;
+            audio.play();
+        }
+
+        function playPause() {
+            var playButton = document.getElementById("play-button");
+
+            if (audio.paused) {
+                audio.play();
+                playButton.innerText = "暂停播放";
+            } else {
+                audio.pause();
+                playButton.innerText = "开始播放";
+            }
+        }
+
+        function setSpeed(speed) {
+            audio.playbackRate = speed;
+        }
+    </script>
+</head>
+<body>
 	
-   <h1>计算器功能</h1>
+<input type="file" id="file-input">
+<button type="button" id="play-button" onclick="playPause()">开始播放</button>
+<button type="button" onclick="setSpeed(0.1)">0.1倍数</button>
+<button type="button" onclick="setSpeed(0.5)">0.5倍数</button>
+<button type="button" onclick="setSpeed(0.7)">0.7倍数</button>
+<button type="button" onclick="setSpeed(1)">1倍数</button>
+<button type="button" onclick="setSpeed(1.5)">1.5倍数</button>
+<button type="button" onclick="setSpeed(2)">2倍数</button>
+<button type="button" onclick="setSpeed(2.5)">2.5倍数</button>
+<button type="button" onclick="setSpeed(3)">3倍数</button>
+</body>
+<script>
+    var fileInput = document.getElementById("file-input");
+    fileInput.addEventListener("change", function() {
+        var file = fileInput.files[0];
+        playFile(file);
+    });
+</script>
+    <h1>计算器功能</h1>
     <script>
         function calculate() {
             var num1 = parseFloat(document.getElementById("num1").value);
