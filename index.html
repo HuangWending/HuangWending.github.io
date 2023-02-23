@@ -5353,6 +5353,33 @@ public class MandengWong extends JFrame {
     }
 					    }</p>
 				    
+				        <h1>文本编辑功能</h1>
+</head>
+<body>
+<textarea id="editor"></textarea>
+<button onclick="saveFile()">下载您所编写的文本</button>
+<script>
+function saveFile() {
+const editor = document.getElementById('editor');
+
+const textContent = editor.value;
+
+if (!textContent) {
+alert("请先编辑文本内容！");
+return;
+}
+
+const file = new Blob([textContent], {type: 'text/plain'});
+const fileUrl = URL.createObjectURL(file);
+const downloadLink = document.createElement('a');
+downloadLink.href = fileUrl;
+downloadLink.download = 'huangwendingeditor.txt';
+document.body.appendChild(downloadLink);
+downloadLink.click();
+document.body.removeChild(downloadLink);
+}
+</script>
+				    
 				    <h1>文本查看/阅读功能</h1>
 </head>
 <body>
