@@ -5352,6 +5352,33 @@ public class MandengWong extends JFrame {
         new MandengWong();
     }
 					    }</p>
+				    
+				    <h1>文本查看/阅读功能</h1>
+</head>
+<body>
+<input type="file" id="fileInput">
+<button onclick="viewText()">查看文本内容</button>
+<pre id="textView"></pre>
+
+<script>
+    function viewText() {
+        const fileInput = document.getElementById('fileInput');
+        const textView = document.getElementById('textView');
+
+        const textFile = fileInput.files[0];
+
+        if (!textFile.type.match('text.*')) {
+            alert("请选择文本文件！");
+            return;
+        }
+
+        const fileReader = new FileReader();
+        fileReader.onload = function() {
+            textView.textContent = fileReader.result;
+        }
+        fileReader.readAsText(textFile);
+    }
+</script>
 				   
 				    <h1>视频播放功能</h1>
 </head>
