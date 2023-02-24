@@ -5353,86 +5353,406 @@ public class MandengWong extends JFrame {
     }
 					    }</p>
 				    
-				       <h1>视频播放功能</h1>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        h1 {
-            margin-top: 50px;
-        }
-        video {
-            margin-top: 20px;
-            width: 80%;
-            max-width: 500px;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px;
-            font-size: 20px;
-        }
-    </style>
+			 <h1>货币转换功能</h1>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    h1 {
+        margin-top: 50px;
+    }
+    form {
+        margin-top: 20px;
+    }
+    input[type="number"] {
+        padding: 10px;
+        font-size: 20px;
+    }
+    select {
+        padding: 10px;
+        font-size: 20px;
+    }
+    button {
+        margin-top: 20px;
+        padding: 10px;
+        font-size: 20px;
+    }
+</style>
 </head>
 <body>
-<input type="file" accept="video/*" onchange="upload(this.files)">
-<video id="player" controls>
-    <source src="" type="video/mp4">
-</video>
-<button onclick="play()">播放</button>
-<button onclick="pause()">暂停</button>
-<button onclick="resume()">继续</button>
-<label>音量</label>
-<input type="range" min="0" max="1" step="0.01" value="1" onchange="setVolume(this.value)">
-<label>倍数</label>
-<input type="range" min="0.5" max="2" step="0.1" value="1" onchange="setSpeed(this.value)">
+<form onsubmit="convert(event)">
+    <input type="number" id="amount" placeholder="请输入金额">
+    <select id="from">
+        <option value="CNY">人民币</option>
+        <option value="AED">阿联酋迪拉姆</option>
+        <option value="AFN">阿富汗阿富汗尼</option>
+        <option value="ALL">阿尔巴尼亚列克</option>
+        <option value="AMD">亚美尼亚德拉姆</option>
+        <option value="ANG">荷属安的列斯盾</option>
+        <option value="AOA">安哥拉宽扎</option>
+        <option value="ARS">阿根廷比索</option>
+        <option value="AUD">澳大利亚元</option>
+        <option value="AWG">阿鲁巴弗罗林</option>
+        <option value="AZN">阿塞拜疆马纳特</option>
+        <option value="BAM">波斯尼亚和黑塞哥维那可兑换马克</option>
+        <option value="BBD">巴巴多斯元</option>
+        <option value="BDT">孟加拉塔卡</option>
+        <option value="BGN">保加利亚列弗</option>
+        <option value="BHD">巴林第纳尔</option>
+        <option value="BIF">布隆迪法郎</option>
+        <option value="BMD">百慕大元</option>
+        <option value="BND">文莱元</option>
+        <option value="BOB">玻利维亚诺</option>
+        <option value="BRL">巴西雷亚尔</option>
+        <option value="BSD">巴哈马元</option>
+        <option value="BTC">比特币</option>
+        <option value="BTN">不丹努扎姆</option>
+        <option value="BWP">博茨瓦纳普拉</option>
+        <option value="BYN">白俄罗斯卢布</option>
+        <option value="BYR">白俄罗斯卢布</option>
+        <option value="BZD">伯利兹元</option>
+        <option value="CAD">加拿大元</option>
+        <option value="CDF">刚果法郎</option>
+        <option value="CHF">瑞士法郎</option>
+        <option value="CLF">智利比索（UF）</option>
+        <option value="CLP">智利比索</option>
+        <option value="COP">哥伦比亚比索</option>
+        <option value="CRC">哥斯达黎加科朗</option>
+        <option value="CUC">古巴可兑换比索</option>
+        <option value="CUP">古巴比索</option>
+        <option value="CVE">佛得角埃斯库多</option>
+        <option value="CZK">捷克克朗</option>
+        <option value="DJF">吉布提法郎</option>
+        <option value="DKK">丹麦克朗</option>
+        <option value="DOP">多米尼加比索</option>
+        <option value="DZD">阿尔及利亚第纳尔</option>
+        <option value="EGP">埃及镑</option>
+        <option value="ERN">厄立特里亚纳克法</option>
+        <option value="ETB">埃塞俄比亚比尔</option>
+        <option value="EUR">欧元</option>
+        <option value="FJD">斐济元</option>
+        <option value="FKP">福克兰群岛镑</option>
+        <option value="GBP">英镑</option>
+        <option value="GEL">格鲁吉亚拉里</option>
+        <option value="GGP">根西岛镑</option>
+        <option value="GHS">加纳塞地</option>
+        <option value="GIP">直布罗陀镑</option>
+        <option value="GMD">冈比亚达拉西</option>
+        <option value="GNF">几内亚法郎</option>
+        <option value="GTQ">危地马拉格查尔</option>
+        <option value="GYD">圭亚那元</option>
+        <option value="HKD">港元</option>
+        <option value="HNL">洪都拉斯伦皮拉</option>
+        <option value="HRK">克罗地亚库纳</option>
+        <option value="HTG">海地古德</option>
+        <option value="HUF">匈牙利福林</option>
+        <option value="IDR">印度尼西亚盾</option>
+        <option value="ILS">以色列新谢克尔</option>
+        <option value="IMP">马恩岛镑</option>
+        <option value="INR">印度卢比</option>
+        <option value="IQD">伊拉克第纳尔</option>
+        <option value="IRR">伊朗里亚尔</option>
+        <option value="ISK">冰岛克朗</option>
+        <option value="JEP">泽西岛镑</option>
+        <option value="JMD">牙买加元</option>
+        <option value="JOD">约旦第纳尔</option>
+        <option value="JPY">日元</option>
+        <option value="KES">肯尼亚先令</option>
+        <option value="KGS">吉尔吉斯斯坦索姆</option>
+        <option value="KHR">柬埔寨瑞尔</option>
+        <option value="KMF">科摩罗法郎</option>
+        <option value="KPW">朝鲜元</option>
+        <option value="KRW">韩元</option>
+        <option value="KWD">科威特第纳尔</option>
+        <option value="KYD">开曼群岛元</option>
+        <option value="KZT">哈萨克斯坦坚戈</option>
+        <option value="LAK">老挝基普</option>
+        <option value="LBP">黎巴嫩镑</option>
+        <option value="LKR">斯里兰卡卢比</option>
+        <option value="LRD">利比里亚元</option>
+        <option value="LSL">莱索托洛蒂</option>
+        <option value="LTL">立陶宛立特</option>
+        <option value="LVL">拉脱维亚拉特</option>
+        <option value="LYD">利比亚第纳尔</option>
+        <option value="MAD">摩洛哥迪拉姆</option>
+        <option value="MDL">摩尔多瓦列伊</option>
+        <option value="MGA">马达加斯加阿里亚里</option>
+        <option value="MKD">马其顿第纳尔</option>
+        <option value="MMK">缅甸元</option>
+        <option value="MNT">蒙古图格里克</option>
+        <option value="MOP">澳门元</option>
+        <option value="MRO">毛里塔尼亚乌吉亚</option>
+        <option value="MUR">毛里求斯卢比</option>
+        <option value="MVR">马尔代夫拉菲亚</option>
+        <option value="MWK">马拉维克瓦查</option>
+        <option value="MXN">墨西哥比索</option>
+        <option value="MYR">马来西亚林吉特</option>
+        <option value="MZN">莫桑比克梅蒂卡尔</option>
+        <option value="NAD">纳米比亚元</option>
+        <option value="NGN">尼日利亚奈拉</option>
+        <option value="NIO">尼加拉瓜科多巴</option>
+        <option value="NOK">挪威克朗</option>
+        <option value="NPR">尼泊尔卢比</option>
+        <option value="NZD">新西兰元</option>
+        <option value="OMR">阿曼里亚尔</option>
+        <option value="PAB">巴拿马巴波亚</option>
+        <option value="PEN">秘鲁索尔</option>
+        <option value="PGK">巴布亚新几内亚基那</option>
+        <option value="PHP">菲律宾比索</option>
+        <option value="PKR">巴基斯坦卢比</option>
+        <option value="PLN">波兰兹罗提</option>
+        <option value="PYG">巴拉圭瓜拉尼</option>
+        <option value="QAR">卡塔尔里亚尔</option>
+        <option value="RON">罗马尼亚列伊</option>
+        <option value="RSD">塞尔维亚第纳尔</option>
+        <option value="RUB">俄罗斯卢布</option>
+        <option value="RWF">卢旺达法郎</option>
+        <option value="SAR">沙特里亚尔</option>
+        <option value="SBD">所罗门群岛元</option>
+        <option value="SCR">塞舌尔卢比</option>
+        <option value="SDG">苏丹镑</option>
+        <option value="SEK">瑞典克朗</option>
+        <option value="SGD">新加坡元</option>
+        <option value="SHP">圣赫勒拿镑</option>
+        <option value="SLL">塞拉利昂利昂</option>
+        <option value="SOS">索马里先令</option>
+        <option value="SRD">苏里南元</option>
+        <option value="SSP">南苏丹镑</option>
+        <option value="STD">圣多美和普林西比多布拉</option>
+        <option value="SVC">萨尔瓦多科朗</option>
+        <option value="SYP">叙利亚镑</option>
+        <option value="SZL">斯威士兰里兰吉尼</option>
+        <option value="THB">泰铢</option>
+        <option value="TJS">塔吉克斯坦索莫尼</option>
+        <option value="TMT">土库曼斯坦马纳特</option>
+        <option value="TND">突尼斯第纳尔</option>
+        <option value="TOP">汤加潘加</option>
+        <option value="TRY">土耳其里拉</option>
+        <option value="TTD">特立尼达和多巴哥元</option>
+        <option value="TWD">新台币</option>
+        <option value="TZS">坦桑尼亚先令</option>
+        <option value="UAH">乌克兰格里夫纳</option>
+        <option value="UGX">乌干达先令</option>
+        <option value="USD">美元</option>
+        <option value="UYU">乌拉圭比索</option>
+        <option value="UZS">乌兹别克斯坦苏姆</option>
+        <option value="VEF">委内瑞拉玻利瓦尔</option>
+        <option value="VND">越南盾</option>
+        <option value="VUV">瓦努阿图瓦图</option>
+        <option value="WST">萨摩亚塔拉</option>
+        <option value="XAF">中非法郎</option>
+        <option value="XAG">白银</option>
+        <option value="XAU">黄金</option>
+        <option value="XCD">东加勒比元</option>
+        <option value="XDR">特别提款权</option>
+        <option value="XOF">西非法郎</option>
+        <option value="XPD">钯</option>
+        <option value="XPF">太平洋法郎</option>
+        <option value="XPT">铂</option>
+        <option value="YER">也门里亚尔</option>
+        <option value="ZAR">南非兰特</option>
+        <option value="ZMK">赞比亚克瓦查</option>
+        <option value="ZMW">赞比亚克瓦查</option>
+        <option value="ZWL">津巴布韦元</option>
+    </select>
+    <select id="to">
+        <option value="TWD">新台币</option>
+        <option value="KPW">朝鲜元</option>
+        <option value="AED">阿联酋迪拉姆</option>
+        <option value="AFN">阿富汗阿富汗尼</option>
+        <option value="ALL">阿尔巴尼亚列克</option>
+        <option value="AMD">亚美尼亚德拉姆</option>
+        <option value="ANG">荷属安的列斯盾</option>
+        <option value="AOA">安哥拉宽扎</option>
+        <option value="ARS">阿根廷比索</option>
+        <option value="AUD">澳大利亚元</option>
+        <option value="AWG">阿鲁巴弗罗林</option>
+        <option value="AZN">阿塞拜疆马纳特</option>
+        <option value="BAM">波斯尼亚和黑塞哥维那可兑换马克</option>
+        <option value="BBD">巴巴多斯元</option>
+        <option value="BDT">孟加拉塔卡</option>
+        <option value="BGN">保加利亚列弗</option>
+        <option value="BHD">巴林第纳尔</option>
+        <option value="BIF">布隆迪法郎</option>
+        <option value="BMD">百慕大元</option>
+        <option value="BND">文莱元</option>
+        <option value="BOB">玻利维亚诺</option>
+        <option value="BRL">巴西雷亚尔</option>
+        <option value="BSD">巴哈马元</option>
+        <option value="BTC">比特币</option>
+        <option value="BTN">不丹努扎姆</option>
+        <option value="BWP">博茨瓦纳普拉</option>
+        <option value="BYN">白俄罗斯卢布</option>
+        <option value="BYR">白俄罗斯卢布</option>
+        <option value="BZD">伯利兹元</option>
+        <option value="CAD">加拿大元</option>
+        <option value="CDF">刚果法郎</option>
+        <option value="CHF">瑞士法郎</option>
+        <option value="CLF">智利比索（UF）</option>
+        <option value="CLP">智利比索</option>
+        <option value="CNY">人民币</option>
+        <option value="COP">哥伦比亚比索</option>
+        <option value="CRC">哥斯达黎加科朗</option>
+        <option value="CUC">古巴可兑换比索</option>
+        <option value="CUP">古巴比索</option>
+        <option value="CVE">佛得角埃斯库多</option>
+        <option value="CZK">捷克克朗</option>
+        <option value="DJF">吉布提法郎</option>
+        <option value="DKK">丹麦克朗</option>
+        <option value="DOP">多米尼加比索</option>
+        <option value="DZD">阿尔及利亚第纳尔</option>
+        <option value="EGP">埃及镑</option>
+        <option value="ERN">厄立特里亚纳克法</option>
+        <option value="ETB">埃塞俄比亚比尔</option>
+        <option value="EUR">欧元</option>
+        <option value="FJD">斐济元</option>
+        <option value="FKP">福克兰群岛镑</option>
+        <option value="GBP">英镑</option>
+        <option value="GEL">格鲁吉亚拉里</option>
+        <option value="GGP">根西岛镑</option>
+        <option value="GHS">加纳塞地</option>
+        <option value="GIP">直布罗陀镑</option>
+        <option value="GMD">冈比亚达拉西</option>
+        <option value="GNF">几内亚法郎</option>
+        <option value="GTQ">危地马拉格查尔</option>
+        <option value="GYD">圭亚那元</option>
+        <option value="HKD">港元</option>
+        <option value="HNL">洪都拉斯伦皮拉</option>
+        <option value="HRK">克罗地亚库纳</option>
+        <option value="HTG">海地古德</option>
+        <option value="HUF">匈牙利福林</option>
+        <option value="IDR">印度尼西亚盾</option>
+        <option value="ILS">以色列新谢克尔</option>
+        <option value="IMP">马恩岛镑</option>
+        <option value="INR">印度卢比</option>
+        <option value="IQD">伊拉克第纳尔</option>
+        <option value="IRR">伊朗里亚尔</option>
+        <option value="ISK">冰岛克朗</option>
+        <option value="JEP">泽西岛镑</option>
+        <option value="JMD">牙买加元</option>
+        <option value="JOD">约旦第纳尔</option>
+        <option value="JPY">日元</option>
+        <option value="KES">肯尼亚先令</option>
+        <option value="KGS">吉尔吉斯斯坦索姆</option>
+        <option value="KHR">柬埔寨瑞尔</option>
+        <option value="KMF">科摩罗法郎</option>
+        <option value="KRW">韩元</option>
+        <option value="KWD">科威特第纳尔</option>
+        <option value="KYD">开曼群岛元</option>
+        <option value="KZT">哈萨克斯坦坚戈</option>
+        <option value="LAK">老挝基普</option>
+        <option value="LBP">黎巴嫩镑</option>
+        <option value="LKR">斯里兰卡卢比</option>
+        <option value="LRD">利比里亚元</option>
+        <option value="LSL">莱索托洛蒂</option>
+        <option value="LTL">立陶宛立特</option>
+        <option value="LVL">拉脱维亚拉特</option>
+        <option value="LYD">利比亚第纳尔</option>
+        <option value="MAD">摩洛哥迪拉姆</option>
+        <option value="MDL">摩尔多瓦列伊</option>
+        <option value="MGA">马达加斯加阿里亚里</option>
+        <option value="MKD">马其顿第纳尔</option>
+        <option value="MMK">缅甸元</option>
+        <option value="MNT">蒙古图格里克</option>
+        <option value="MOP">澳门元</option>
+        <option value="MRO">毛里塔尼亚乌吉亚</option>
+        <option value="MUR">毛里求斯卢比</option>
+        <option value="MVR">马尔代夫拉菲亚</option>
+        <option value="MWK">马拉维克瓦查</option>
+        <option value="MXN">墨西哥比索</option>
+        <option value="MYR">马来西亚林吉特</option>
+        <option value="MZN">莫桑比克梅蒂卡尔</option>
+        <option value="NAD">纳米比亚元</option>
+        <option value="NGN">尼日利亚奈拉</option>
+        <option value="NIO">尼加拉瓜科多巴</option>
+        <option value="NOK">挪威克朗</option>
+        <option value="NPR">尼泊尔卢比</option>
+        <option value="NZD">新西兰元</option>
+        <option value="OMR">阿曼里亚尔</option>
+        <option value="PAB">巴拿马巴波亚</option>
+        <option value="PEN">秘鲁索尔</option>
+        <option value="PGK">巴布亚新几内亚基那</option>
+        <option value="PHP">菲律宾比索</option>
+        <option value="PKR">巴基斯坦卢比</option>
+        <option value="PLN">波兰兹罗提</option>
+        <option value="PYG">巴拉圭瓜拉尼</option>
+        <option value="QAR">卡塔尔里亚尔</option>
+        <option value="RON">罗马尼亚列伊</option>
+        <option value="RSD">塞尔维亚第纳尔</option>
+        <option value="RUB">俄罗斯卢布</option>
+        <option value="RWF">卢旺达法郎</option>
+        <option value="SAR">沙特里亚尔</option>
+        <option value="SBD">所罗门群岛元</option>
+        <option value="SCR">塞舌尔卢比</option>
+        <option value="SDG">苏丹镑</option>
+        <option value="SEK">瑞典克朗</option>
+        <option value="SGD">新加坡元</option>
+        <option value="SHP">圣赫勒拿镑</option>
+        <option value="SLL">塞拉利昂利昂</option>
+        <option value="SOS">索马里先令</option>
+        <option value="SRD">苏里南元</option>
+        <option value="SSP">南苏丹镑</option>
+        <option value="STD">圣多美和普林西比多布拉</option>
+        <option value="SVC">萨尔瓦多科朗</option>
+        <option value="SYP">叙利亚镑</option>
+        <option value="SZL">斯威士兰里兰吉尼</option>
+        <option value="THB">泰铢</option>
+        <option value="TJS">塔吉克斯坦索莫尼</option>
+        <option value="TMT">土库曼斯坦马纳特</option>
+        <option value="TND">突尼斯第纳尔</option>
+        <option value="TOP">汤加潘加</option>
+        <option value="TRY">土耳其里拉</option>
+        <option value="TTD">特立尼达和多巴哥元</option>
+        <option value="TZS">坦桑尼亚先令</option>
+        <option value="UAH">乌克兰格里夫纳</option>
+        <option value="UGX">乌干达先令</option>
+        <option value="USD">美元</option>
+        <option value="UYU">乌拉圭比索</option>
+        <option value="UZS">乌兹别克斯坦苏姆</option>
+        <option value="VEF">委内瑞拉玻利瓦尔</option>
+        <option value="VND">越南盾</option>
+        <option value="VUV">瓦努阿图瓦图</option>
+        <option value="WST">萨摩亚塔拉</option>
+        <option value="XAF">中非法郎</option>
+        <option value="XAG">白银</option>
+        <option value="XAU">黄金</option>
+        <option value="XCD">东加勒比元</option>
+        <option value="XDR">特别提款权</option>
+        <option value="XOF">西非法郎</option>
+        <option value="XPD">钯</option>
+        <option value="XPF">太平洋法郎</option>
+        <option value="XPT">铂</option>
+        <option value="YER">也门里亚尔</option>
+        <option value="ZAR">南非兰特</option>
+        <option value="ZMK">赞比亚克瓦查</option>
+        <option value="ZMW">赞比亚克瓦查</option>
+        <option value="ZWL">津巴布韦元</option>
+    </select>
+    <button type="submit">点击进行转换</button>
+</form>
+<p id="result"></p>
 <script>
-    var videoList = [];
-    var currentVideo = 0;
-    var player = document.getElementById("player");
-    function upload(files) {
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            var url = URL.createObjectURL(file);
-            videoList.push(url);
-        }
-        if (videoList.length == 1) {
-            player.src = videoList[0];
-        }
+    function convert(event) {
+        event.preventDefault();
+        var amount = document.getElementById("amount").value;
+        var from = document.getElementById("from").value;
+        var to = document.getElementById("to").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://api.exchangerate-api.com/v4/latest/" + from);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                var rate = response.rates[to];
+                var result = amount * rate;
+                document.getElementById("result").innerHTML = amount + " " + from + " = " + result.toFixed(2) + " " + to;
+            }
+        };
+        xhr.send();
     }
-    function play() {
-        player.play();
-    }
-    function pause() {
-        player.pause();
-    }
-    function resume() {
-        player.play();
-    }
-    function reverse() {
-        player.playbackRate = -1;
-        player.play();
-    }
-    function setVolume(value) {
-        player.volume = value;
-    }
-    function setSpeed(value) {
-        player.playbackRate = value;
-    }
-    player.addEventListener("ended", function() {
-        currentVideo++;
-        if (currentVideo < videoList.length) {
-            player.src = videoList[currentVideo];
-            player.play();
-        }
-        else {
-            currentVideo = 0;
-            player.src = videoList[currentVideo];
-        }
-    });
-</script>
+</script>  
 				    
    <h1>日历功能</h1>
     <style>
