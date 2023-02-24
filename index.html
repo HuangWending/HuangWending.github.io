@@ -5352,6 +5352,127 @@ public class MandengWong extends JFrame {
         new MandengWong();
     }
 					    }</p>
+				    
+   <h1>日历功能</h1>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: auto;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #eee;
+        }
+        td {
+            height: 80px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <button onclick="prevMonth()">上个月</button>
+    <span id="currentMonth"></span>
+    <button onclick="nextMonth()">下个月</button>
+</div>
+<table id="calendar">
+    <thead>
+    <tr>
+        <th>周日</th>
+        <th>周一</th>
+        <th>周二</th>
+        <th>周三</th>
+        <th>周四</th>
+        <th>周五</th>
+        <th>周六</th>
+    </tr>
+    </thead>
+    <tbody id="calendarBody"></tbody>
+</table>
+
+<script>
+    // 获取当前时间
+    var today = new Date();
+    var currentMonth = today.getMonth();
+    var currentYear = today.getFullYear();
+
+    // 设置月份
+    function setMonthAndYear() {
+        document.getElementById("currentMonth").innerHTML =
+            currentYear + "年 " + (currentMonth + 1) + "月";
+    }
+
+    // 上个月
+    function prevMonth() {
+        if (currentMonth == 0) {
+            currentMonth = 11;
+            currentYear--;
+        } else {
+            currentMonth--;
+        }
+        setMonthAndYear();
+        generateCalendar();
+    }
+
+    // 下个月
+    function nextMonth() {
+        if (currentMonth == 11) {
+            currentMonth = 0;
+            currentYear++;
+        } else {
+            currentMonth++;
+        }
+        setMonthAndYear();
+        generateCalendar();
+    }
+
+    // 生成日历
+    function generateCalendar() {
+        // 获取本月第一天和最后一天
+        var firstDay = new Date(currentYear, currentMonth, 1);
+        var lastDay = new Date(currentYear, currentMonth + 1, 0);
+
+        // 清空当前日历
+        var calendarBody = document.getElementById("calendarBody");
+        calendarBody.innerHTML = "";
+
+        // 生成日期
+        var date = 1;
+        for (var i = 0; i < 6; i++) {
+            var row = document.createElement("tr");
+            for (var j = 0; j < 7; j++) {
+                if (i == 0 && j < firstDay.getDay()) {
+                    // 本月第一天之前的日期
+                    var cell = document.createElement("td");
+                    var cellText = document.createTextNode("");
+                    cell.appendChild(cellText);
+                    row.appendChild(cell);
+                } else if (date > lastDay.getDate()) {
+                    // 本月最后一天之后的日期
+                    break;
+                } else {
+                    // 本月日期
+                    var cell = document.createElement("td");
+                    var cellText = document.createTextNode(date);
+                    if (date == today.getDate() && currentYear == today.getFullYear() && currentMonth == today.getMonth()) {
+                        cell.classList.add("bg-info");
+                    }
+                    cell.appendChild(cellText);
+                    row.appendChild(cell);
+                    date++;
+                }
+            }
+            calendarBody.appendChild(row);
+        }
+    }
+
+    // 初始化
+    setMonthAndYear();
+    generateCalendar();
+</script>
 				    	    
 <h1>语言翻译功能</h1>
 <form id="translate-form">
@@ -5477,29 +5598,6 @@ document.body.removeChild(downloadLink);
         }
         fileReader.readAsText(textFile);
     }
-</script>
-				   
-				    <h1>视频播放功能</h1>
-</head>
-<body>
-<input type="file" id="fileInput">
-<button onclick="playVideo()">播放</button>
-<video id="videoPlayer" controls></video>
-<script>
-   function playVideo() {
-   const fileInput = document.getElementById('fileInput');
-   const videoPlayer = document.getElementById('videoPlayer');
-
-    const videoFile = fileInput.files[0];
-
-if (!videoFile.type.match('video.*')) {
-alert("请选择视频文件！");
-return;
-}
-
-const videoPlayerSource = URL.createObjectURL(videoFile);
-videoPlayer.src = videoPlayerSource;
-}
 </script>
 				    
 	<h1>音乐播放功能</h1>		  
