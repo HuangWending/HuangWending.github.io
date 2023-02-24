@@ -5353,6 +5353,87 @@ public class MandengWong extends JFrame {
     }
 					    }</p>
 				    
+				       <h1>视频播放功能</h1>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 50px;
+        }
+        video {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 500px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<input type="file" accept="video/*" onchange="upload(this.files)">
+<video id="player" controls>
+    <source src="" type="video/mp4">
+</video>
+<button onclick="play()">播放</button>
+<button onclick="pause()">暂停</button>
+<button onclick="resume()">继续</button>
+<label>音量</label>
+<input type="range" min="0" max="1" step="0.01" value="1" onchange="setVolume(this.value)">
+<label>倍数</label>
+<input type="range" min="0.5" max="2" step="0.1" value="1" onchange="setSpeed(this.value)">
+<script>
+    var videoList = [];
+    var currentVideo = 0;
+    var player = document.getElementById("player");
+    function upload(files) {
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var url = URL.createObjectURL(file);
+            videoList.push(url);
+        }
+        if (videoList.length == 1) {
+            player.src = videoList[0];
+        }
+    }
+    function play() {
+        player.play();
+    }
+    function pause() {
+        player.pause();
+    }
+    function resume() {
+        player.play();
+    }
+    function reverse() {
+        player.playbackRate = -1;
+        player.play();
+    }
+    function setVolume(value) {
+        player.volume = value;
+    }
+    function setSpeed(value) {
+        player.playbackRate = value;
+    }
+    player.addEventListener("ended", function() {
+        currentVideo++;
+        if (currentVideo < videoList.length) {
+            player.src = videoList[currentVideo];
+            player.play();
+        }
+        else {
+            currentVideo = 0;
+            player.src = videoList[currentVideo];
+        }
+    });
+</script>
+				    
    <h1>日历功能</h1>
     <style>
         table {
@@ -5877,7 +5958,7 @@ document.body.removeChild(downloadLink);
     </script>
                        
 <div>
-    版权 &copy; 2023年-黄文定保留所有权力-黄文定技术支持-网站最后更新日期: 2023年2月24日 星期五
+    版权 &copy; 2023年-黄文定保留所有权力-黄文定技术支持-网站最后更新日期: 2023年2月25日 星期六
 </div>
 
 
