@@ -5600,53 +5600,259 @@ document.body.removeChild(downloadLink);
     }
 </script>
 				    
-	<h1>音乐播放功能</h1>		  
-	<script>
-        var audio = new Audio();
-
-        function playFile(file) {
-            var fileUrl = URL.createObjectURL(file);
-            audio.src = fileUrl;
-            audio.play();
+	<h1>音乐播放器</h1>
+    <style>
+        #audioPlayer {
+            display: none;
         }
-
-        function playPause() {
-            var playButton = document.getElementById("play-button");
-
-            if (audio.paused) {
-                audio.play();
-                playButton.innerText = "暂停播放";
-            } else {
-                audio.pause();
-                playButton.innerText = "开始播放";
-            }
+        #lyrics {
+            height: 300px;
+            overflow: auto;
+            white-space: pre-wrap;
         }
-
-        function setSpeed(speed) {
-            audio.playbackRate = speed;
-        }
-    </script>
+    </style>
 </head>
 <body>
-	
-<input type="file" id="file-input">
-<button type="button" id="play-button" onclick="playPause()">开始播放</button>
-<button type="button" onclick="setSpeed(0.1)">0.1倍数</button>
-<button type="button" onclick="setSpeed(0.5)">0.5倍数</button>
-<button type="button" onclick="setSpeed(0.7)">0.7倍数</button>
-<button type="button" onclick="setSpeed(1)">1倍数</button>
-<button type="button" onclick="setSpeed(1.5)">1.5倍数</button>
-<button type="button" onclick="setSpeed(2)">2倍数</button>
-<button type="button" onclick="setSpeed(2.5)">2.5倍数</button>
-<button type="button" onclick="setSpeed(3)">3倍数</button>
-</body>
+<div>
+    <label for="fileInput">选择音乐：</label>
+    <input type="file" id="fileInput">
+    <button onclick="addFile()">添加</button>
+</div>
+<div>
+    <button onclick="playPrev()">上一首</button>
+    <button onclick="playPause()">播放/暂停</button>
+    <button onclick="playNext()">下一首</button>
+    <button onclick="setPlayMode('sequence')">顺序播放</button>
+    <button onclick="setPlayMode('random')">随机播放</button>
+    <button onclick="setPlayMode('custom')">自定义播放顺序</button>
+    <label for="playbackRate">播放速度：</label>
+    <input type="range" id="playbackRate" min="0.5" max="2" step="0.1" value="1" onchange="setPlaybackRate(this.value)">
+</div>
+<div>
+    <p>播放列表：</p>
+    <ul id="fileList"></ul>
+</div>
+<audio id="audioPlayer" src=""></audio>
+<div>
+    <h2 id="songTitle"></h2>
+    <div id="lyrics"></div>
+</div>
+
 <script>
-    var fileInput = document.getElementById("file-input");
-    fileInput.addEventListener("change", function() {
+    var fileList = [];
+    var currentIndex = 0;
+    var audioPlayer = document.getElementById("audioPlayer");
+    var songTitle = document.getElementById("songTitle");
+    var lyrics = document.getElementById("lyrics");
+    var playMode = "sequence"; // sequence, random, custom
+    var playbackRate = 1;
+
+    // 添加文件
+    var fileInput = document.getElementById("fileInput");
+    function addFile() {
         var file = fileInput.files[0];
-        playFile(file);
+        if (file) {
+            file.number = fileList.length + 1;
+            fileList.push(file);
+            currentIndex = 0;
+            playFile();
+            displayFileList();
+        }
+    }
+
+    // 播放文件
+    function playFile() {
+        var file = fileList[currentIndex];
+        var url = URL.createObjectURL(file);
+        audioPlayer.src = url;
+        audioPlayer.playbackRate = playbackRate;
+        songTitle.innerHTML = file.name;
+        getLyrics(file);
+        audioPlayer.play();
+    }
+
+    // 播放下一首
+    function playNext() {
+        if (playMode == "random") {
+            currentIndex = Math.floor(Math.random() * fileList.length);
+        } else if (playMode == "custom") {
+            var customIndex = prompt("请输入下一首要播放的序号：");
+            if (customIndex && customIndex <= fileList.length) {
+                currentIndex = customIndex - 1;
+            } else {
+                alert("请输入有效的序号！");
+                return;
+            }
+        } else {
+            currentIndex = (currentIndex + 1) % fileList.length;
+        }
+        playFile();
+    }
+
+    // 播放上一首
+    function playPrev() {
+        if (playMode == "random") {
+            currentIndex = Math.floor(Math.random() * fileList.length);
+        } else if (playMode == "custom") {
+            var customIndex = prompt("请输入上一首要播放的序号：");
+            if (customIndex && customIndex <= fileList.length) {
+                currentIndex = customIndex - 1;
+            } else {
+                alert("请输入有效的序号！");
+                return;
+            }
+        } else {
+            currentIndex = (currentIndex - 1 + fileList.length) % fileList.length;
+        }
+        playFile();
+    }
+
+    // 播放/暂停
+    function playPause() {
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+        } else {
+            audioPlayer.pause();
+        }
+    }
+
+    // 设置播放模式
+    function setPlayMode(mode) {
+        playMode = mode;
+    }
+
+    // 设置播放速度
+    function setPlaybackRate(rate) {
+        playbackRate = rate;
+        audioPlayer.playbackRate = rate;
+    }
+
+    // 显示播放列表
+    function displayFileList() {
+        var fileListElement = document.getElementById("fileList");
+        fileListElement.innerHTML = "";
+        for (var i = 0; i < fileList.length; i++) {
+            var file = fileList[i];
+            var li = document.createElement("li");
+            li.innerHTML = file.number + ". " + file.name;
+            fileListElement.appendChild(li);
+        }
+    }
+
+    // 获取歌词
+    function getLyrics(file) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var arrayBuffer = this.result;
+            var dataView = new DataView(arrayBuffer);
+            var lyrics = "";
+            for (var i = 0; i < dataView.byteLength; i++) {
+                var byte = dataView.getUint8(i);
+                if (byte == 0) {
+                    break;
+                }
+                lyrics += String.fromCharCode(byte);
+            }
+            document.getElementById("lyrics").innerHTML = lyrics;
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    // 播放结束时自动播放下一首
+    audioPlayer.addEventListener("ended", function() {
+        playNext();
     });
-</script>
+
+    // 播放时自动滚动歌词
+    audioPlayer.addEventListener("timeupdate", function() {
+        var currentTime = audioPlayer.currentTime;
+        var lines = lyrics.getElementsByTagName("p");
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            var time = line.getAttribute("time");
+            if (time && currentTime >= time) {
+                lyrics.scrollTop = line.offsetTop - 150;
+            }
+        }
+    });
+
+    // 播放时自动高亮歌词
+    audioPlayer.addEventListener("timeupdate", function() {
+        var currentTime = audioPlayer.currentTime;
+        var lines = lyrics.getElementsByTagName("p");
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            var time = line.getAttribute("time");
+            if (time && currentTime >= time) {
+                line.style.color = "red";
+            } else {
+                line.style.color = "black";
+            }
+        }
+    });
+
+    // 播放时自动更新播放进度
+    audioPlayer.addEventListener("timeupdate", function() {
+        var currentTime = audioPlayer.currentTime;
+        var duration = audioPlayer.duration;
+        var progress = document.getElementById("progress");
+        progress.value = currentTime / duration * 100;
+    });
+
+    // 拖动进度条时自动跳转到指定位置
+    var progress = document.getElementById("progress");
+    progress.addEventListener("change", function() {
+        var value = progress.value;
+        var duration = audioPlayer.duration;
+        audioPlayer.currentTime = value / 100 * duration;
+    });
+
+// 播放时自动更新播放速度
+    audioPlayer.addEventListener("timeupdate", function() {
+        var currentTime = audioPlayer.currentTime;
+        var duration = audioPlayer.duration;
+        var progress = document.getElementById("progress");
+        progress.value = currentTime / duration * 100;
+    });
+
+    // 拖动进度条时自动跳转到指定位置
+    var progress = document.getElementById("progress");
+    progress.addEventListener("change", function() {
+        var value = progress.value;
+        var duration = audioPlayer.duration;
+        audioPlayer.currentTime = value / 100 * duration;
+    });
+
+    // 拖动播放速度时自动更新播放速度
+    var playbackRate = document.getElementById("playbackRate");
+    playbackRate.addEventListener("change", function() {
+        var value = playbackRate.value;
+        audioPlayer.playbackRate = value;
+    });
+
+    // 拖动音量时自动更新音量
+    var volume = document.getElementById("volume");
+    volume.addEventListener("change", function() {
+        var value = volume.value;
+        audioPlayer.volume = value / 100;
+    });
+
+    // 拖动音量时自动更新音量图标
+    var volume = document.getElementById("volume");
+    volume.addEventListener("change", function() {
+        var value = volume.value;
+        var volumeIcon = document.getElementById("volumeIcon");
+        if (value == 0) {
+            volumeIcon.className = "fa fa-volume-off";
+        } else if (value < 50) {
+            volumeIcon.className = "fa fa-volume-down";
+        } else {
+            volumeIcon.className = "fa fa-volume-up";
+        }
+    });
+    
+    </script>
+	
     <h1>计算器功能</h1>
     <script>
         function calculate() {
