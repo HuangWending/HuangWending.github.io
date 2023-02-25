@@ -24,6 +24,9 @@
 	
 <p>2023年2月23日</p>
 <p>今天添加了网站新功能，可以去底页看看</p>
+	
+	<p>2023年2月25日</p>
+	<p>今天开始发布教程视频</p>
 
 <h1>聯繫我</h1>
 <p>电子邮件：2110951913@qq.com或hwdstudioshuangwending@gmail.com</p>
@@ -5352,6 +5355,66 @@ public class MandengWong extends JFrame {
         new MandengWong();
     }
 					    }</p>
+				    
+				    <h1>图片修改和下载功能</h1>
+<input type="file" id="file-input" accept="image/*">
+<br>
+<img id="image">
+<br>
+<div id="exif-info"></div>
+<br>
+<label for="dpi-input">DPI(分辨率):</label>
+<input type="number" id="dpi-input" value="72">
+<br>
+<label for="width-input">Width(宽度):</label>
+<input type="number" id="width-input" value="500">
+<br>
+<label for="height-input">Height(高度):</label>
+<input type="number" id="height-input" value="500">
+<br>
+<label for="watermark-input">Watermark(水印):</label>
+<input type="text" id="watermark-input">
+<br>
+<button id="download-button">Download(下载)</button>
+</body>
+<script>
+    const fileInput = document.getElementById('file-input');
+    const image = document.getElementById('image');
+    const exifInfo = document.getElementById('exif-info');
+    const dpiInput = document.getElementById('dpi-input');
+    const widthInput = document.getElementById('width-input');
+    const heightInput = document.getElementById('height-input');
+    const watermarkInput = document.getElementById('watermark-input');
+    const downloadButton = document.getElementById('download-button');
+
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            image.src = reader.result;
+            // Show EXIF information
+            const exif = piexif.load(reader.result);
+            exifInfo.innerHTML = JSON.stringify(exif);
+        }
+    });
+
+    downloadButton.addEventListener('click', () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = widthInput.value;
+        canvas.height = heightInput.value;
+        const context = canvas.getContext('2d');
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        // Add watermark
+        context.font = '20px Arial';
+        context.fillText(watermarkInput.value, 10, 50);
+        // Download image
+        const link = document.createElement('a');
+        link.download = 'image.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
+</script>
 				    
 			 <h1>货币转换功能</h1>
 <meta charset="UTF-8">
