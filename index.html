@@ -5356,6 +5356,44 @@ public class MandengWong extends JFrame {
     }
 					    }</p>
 				    
+				    <h1>随机密码生成功能</h1>
+<form>
+    <label for="length">设置您的密码的长度：</label>
+    <input type="number" id="length" min="6" max="20" value="12"><br><br>
+    <label for="letters">密码包含字母吗?：</label>
+    <input type="checkbox" id="letters" checked><br><br>
+    <label for="numbers">密码包含数字吗?：</label>
+    <input type="checkbox" id="numbers" checked><br><br>
+    <label for="symbols">密码包含特殊符号吗?：</label>
+    <input type="checkbox" id="symbols"><br><br>
+    <input type="button" value="点击生成密码" onclick="generatePassword()">
+</form>
+<br>
+<p id="password"></p>
+<script>
+    function generatePassword() {
+        var length = document.getElementById("length").value;
+        var letters = document.getElementById("letters").checked;
+        var numbers = document.getElementById("numbers").checked;
+        var symbols = document.getElementById("symbols").checked;
+        var password = "";
+        var charset = "";
+        if (letters) {
+            charset += "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        }
+        if (numbers) {
+            charset += "0123456789";
+        }
+        if (symbols) {
+            charset += "!@#$%^&*()_+~`|}{[]\:;?><,./-=";
+        }
+        for (var i = 0, n = charset.length; i < length; ++i) {
+            password += charset.charAt(Math.floor(Math.random() * n));
+        }
+        document.getElementById("password").innerHTML = password;
+    }
+</script>
+				    
 				    <h1>图片修改和下载功能</h1>
 <input type="file" id="file-input" accept="image/*">
 <br>
@@ -6341,7 +6379,7 @@ document.body.removeChild(downloadLink);
     </script>
                        
 <div>
-    版权 &copy; 2023年-黄文定保留所有权力-黄文定技术支持-网站最后更新日期: 2023年2月27日 星期一
+    版权 &copy; 2023年-黄文定保留所有权力-黄文定技术支持-网站最后更新日期: 2023年2月28日 星期二
 </div>
 
 
