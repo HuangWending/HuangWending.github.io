@@ -6213,50 +6213,32 @@ document.body.removeChild(downloadLink);
     });
 </script>
 	
-<h1>计算功能</h1>
+	<h1>综合计算功能</h1>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.3.2/math.js"></script>
 	<script type="text/javascript">
 		function calculate() {
-			var num1 = parseFloat(document.getElementById("num1").value);
-			var num2 = parseFloat(document.getElementById("num2").value);
-			var operator = document.getElementById("operator").value;
-			var result;
+			var expr = document.getElementById("expr").value;
 
-			if (operator == "+") {
-				result = num1 + num2;
-			} else if (operator == "-") {
-				result = num1 - num2;
-			} else if (operator == "*") {
-				result = num1 * num2;
-			} else if (operator == "/") {
-				result = num1 / num2;
+			try {
+				var result = math.evaluate(expr);
+				document.getElementById("result").value = result;
+			} catch (error) {
+				document.getElementById("result").value = "错误";
 			}
-
-			document.getElementById("result").value = result;
 		}
 	</script>
 </head>
 <body>
+	<h1>综合计算器</h1>
 	<form>
-		<label for="num1">输入第一个数字：</label>
-		<input type="number" id="num1">
-
-		<label for="operator">选择运算符：</label>
-		<select id="operator">
-			<option value="+">+</option>
-			<option value="-">-</option>
-			<option value="*">*</option>
-			<option value="/">/</option>
-		</select>
-
-		<label for="num2">输入第二个数字：</label>
-		<input type="number" id="num2">
+		<label for="expr">表达式：</label>
+		<input type="text" id="expr" placeholder="请输入计算表达式">
 
 		<button type="button" onclick="calculate()">点击计算</button>
 
 		<label for="result">计算结果：</label>
-		<input type="number" id="result">
+		<input type="text" id="result">
 	</form>
-				    </body>
 	
 				    <h1>地图功能</h1>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
