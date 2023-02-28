@@ -6213,48 +6213,51 @@ document.body.removeChild(downloadLink);
     });
 </script>
 	
-    <h1>计算器功能</h1>
-    <script>
-        function calculate() {
-            var num1 = parseFloat(document.getElementById("num1").value);
-            var num2 = parseFloat(document.getElementById("num2").value);
-            var operator = document.getElementById("operator").value;
-            var result = "";
+<h1>计算功能</h1>
+	<script type="text/javascript">
+		function calculate() {
+			var num1 = parseFloat(document.getElementById("num1").value);
+			var num2 = parseFloat(document.getElementById("num2").value);
+			var operator = document.getElementById("operator").value;
+			var result;
 
-            switch(operator) {
-                case "+":
-                    result = num1 + num2;
-                    break;
-                case "-":
-                    result = num1 - num2;
-                    break;
-                case "*":
-                    result = num1 * num2;
-                    break;
-                case "/":
-                    result = num1 / num2;
-                    break;
-                default:
-                    result = "Invalid operator";
-                    break;
-            }
+			if (operator == "+") {
+				result = num1 + num2;
+			} else if (operator == "-") {
+				result = num1 - num2;
+			} else if (operator == "*") {
+				result = num1 * num2;
+			} else if (operator == "/") {
+				result = num1 / num2;
+			}
 
-            document.getElementById("result").innerHTML = result;
-        }
-    </script>
-				    
-<form>
-    <input type="number" id="num1" placeholder="输入第一个数字" required>
-    <select id="operator" required>
-        <option value="+">+</option>
-        <option value="-">-</option>
-        <option value="*">*</option>
-        <option value="/">/</option>
-    </select>
-    <input type="number" id="num2" placeholder="输入第二个数字" required>
-    <button type="button" onclick="calculate()">点击计算</button>
-</form>
-<p id="result"></p>
+			document.getElementById("result").value = result;
+		}
+	</script>
+</head>
+<body>
+	<form>
+		<label for="num1">输入第一个数字：</label>
+		<input type="number" id="num1">
+
+		<label for="operator">选择运算符：</label>
+		<select id="operator">
+			<option value="+">+</option>
+			<option value="-">-</option>
+			<option value="*">*</option>
+			<option value="/">/</option>
+		</select>
+
+		<label for="num2">输入第二个数字：</label>
+		<input type="number" id="num2">
+
+		<button type="button" onclick="calculate()">点击计算</button>
+
+		<label for="result">计算结果：</label>
+		<input type="number" id="result">
+	</form>
+				    </body>
+	
 				    <h1>地图功能</h1>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
