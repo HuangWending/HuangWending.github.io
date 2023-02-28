@@ -6213,31 +6213,7 @@ document.body.removeChild(downloadLink);
     });
 </script>
 	
-	<h1>综合计算功能</h1>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.3.2/math.js"></script>
-	<script type="text/javascript">
-		function calculate() {
-			var expr = document.getElementById("expr").value;
-
-			try {
-				var result = math.evaluate(expr);
-				document.getElementById("result").value = result;
-			} catch (error) {
-				document.getElementById("result").value = "错误";
-			}
-		}
-	</script>
-</head>
-<body>
-	<form>
-		<label for="expr">表达式：</label>
-		<input type="text" id="expr" placeholder="请输入计算表达式">
-
-		<button type="button" onclick="calculate()">点击计算</button>
-
-		<label for="result">计算结果：</label>
-		<input type="text" id="result">
-	</form>
+	
 	
 				    <h1>地图功能</h1>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
