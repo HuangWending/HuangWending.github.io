@@ -5356,6 +5356,40 @@ public class MandengWong extends JFrame {
     }
 					    }</p>
 				    
+<h1>人员查询功能(您可以通过认证和任何方式加入)</h1>
+<label for="search">输入姓名或关键字：</label>
+<input type="text" id="search" placeholder="在这里输入姓名或关键字">
+<button onclick="search()">点击搜索</button>
+
+<div id="results"></div>
+
+<script>
+    var members = [
+        { name: "姓名:黄文定(Huang Wending;Mandeng Wong)", title: "网站认证:站长", bio: "认证信息:黄文定是中华人民共和国人，中文名:黄文定，拼音英文:HuangWending,注音:ㄏㄨㄤˊㄨㄣˊㄉㄧㄥˋ，擅长:Web,Java，Python，C/C++编程语言，是本网站的所有者(站长)和管理员!" },
+    ];
+
+    function search() {
+
+        var searchTerm = document.getElementById("search").value;
+
+        var output = "";
+
+        for (var i = 0; i < members.length; i++) {
+            if (members[i].name.indexOf(searchTerm) !== -1 || members[i].title.indexOf(searchTerm) !== -1 || members[i].bio.indexOf(searchTerm) !== -1) {
+                output += "<h2>" + members[i].name + "</h2>";
+                output += "<p><strong>" + members[i].title + "</strong></p>";
+                output += "<p>" + members[i].bio + "</p>";
+            }
+        }
+
+        if (output === "") {
+            output = "<p>没有找到此人的信息</p>";
+        }
+
+        document.getElementById("results").innerHTML = output;
+    }
+</script>
+				    
 				    <h1>随机密码生成功能</h1>
 <form>
     <label for="length">设置您的密码的长度：</label>
