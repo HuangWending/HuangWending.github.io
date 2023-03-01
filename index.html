@@ -5386,6 +5386,95 @@ public class MandengWong extends JFrame {
         new MandengWong();
     }
 					    }</p>
+				    
+				    
+				   <h1>录音功能</h1>
+<button onclick="startRecording()">点击开始录音</button>
+<button onclick="stopRecording()">点击停止录音</button>
+<button onclick="playRecording()">点击播放录音</button>
+<button onclick="downloadRecording()">点击下载录音</button>
+<button onclick="deleteRecording()">点击删除录音</button>
+<hr>
+<audio id="player"></audio>
+<ul id="recordingsList"></ul>
+<script>
+   
+    let recorder;
+    let chunks = [];
+    const constraints = { audio: true };
+    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+        recorder = new MediaRecorder(stream);
+        recorder.ondataavailable = e => chunks.push(e.data);
+        recorder.onstop = e => {
+            const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+            chunks = [];
+            const url = URL.createObjectURL(blob);
+            const li = document.createElement('li');
+            const audio = document.createElement('audio');
+            const deleteButton = document.createElement('button');
+            const downloadButton = document.createElement('a');
+            const filename = new Date().toISOString() + 'huangwending.ogg';
+            audio.controls = true;
+            downloadButton.download = filename;
+            downloadButton.innerHTML = '点击下载录音';
+            deleteButton.innerHTML = '点击删除录音';
+            deleteButton.onclick = () => {
+                URL.revokeObjectURL(url);
+                li.remove();
+            }
+            audio.src = url;
+            downloadButton.href = url;
+            li.appendChild(audio);
+            li.appendChild(deleteButton);
+            li.appendChild(downloadButton);
+            document.getElementById('recordingsList').appendChild(li);
+        };
+    }).catch(console.error);
+
+    function startRecording() {
+        recorder.start();
+    }
+
+    function stopRecording() {
+        recorder.stop();
+    }
+
+    function playRecording() {
+        const player = document.getElementById('player');
+        const selected = document.querySelector('li.selected');
+        if (selected) {
+            const audio = selected.querySelector('audio');
+            player.src = audio.src;
+            player.play();
+        }
+    }
+
+    function downloadRecording() {
+        const selected = document.querySelector('li.selected');
+        if (selected) {
+            const downloadButton = selected.querySelector('a');
+            downloadButton.click();
+        }
+    }
+
+    function deleteRecording() {
+        const selected = document.querySelector('li.selected');
+        if (selected) {
+            selected.querySelector('button').click();
+        }
+    }
+
+    document.addEventListener('click', e => {
+        const target = e.target;
+        if (target.tagName === 'LI') {
+            const selected = document.querySelector('li.selected');
+            if (selected) {
+                selected.classList.remove('selected');
+            }
+            target.classList.add('selected');
+        }
+    });
+</script>
 				 
 				    
 				        <h1>相机功能</h1>
