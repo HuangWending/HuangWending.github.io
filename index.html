@@ -3,38 +3,70 @@
 <head>
     <meta charset="utf-8">
     <img src="The%20People's%20Republic%20of%20China.png" alt="中华人民共和国国旗">
-    <title>MandengWong(HuangWending)</title>
+    <title>黄文定(HuangWending;Mandeng Wong)</title>
 </head>
 <body>
-    <h1>MandengWong個人官方網站</h1>
+    <h1>黄文定(HuangWending;Mandeng Wong)的個人網站</h1>
 	
-    <h2>關於我</h>
-    <p>我來自中華人民共和國，中文名:黄文定，男，生日：7月18日，擅長程式設計語言：Scratch，Python，C/C++，Java和Web</p>
+	<h1>人员查询功能(您可以通过认证和其它任何方式加入)</h1>
+<label for="search">输入姓名或关键字：</label>
+<input type="text" id="search" placeholder="在这里输入姓名或关键字">
+<button onclick="search()">点击搜索</button>
+
+<div id="results"></div>
+
+<script>
+    var members = [
+        { name: "认证姓名Ⓥ:黄文定(Huang Wending;Mandeng Wong)", title: "网站认证Ⓥ:站长和其他", bio: "认证信息Ⓥ:黄文定是中华人民共和国人，中文名:黄文定，拼音英文:HuangWending,注音:ㄏㄨㄤˊㄨㄣˊㄉㄧㄥˋ，擅长:Web,Java，Python，C/C++编程语言，他是本网站的所有者(站长)和管理员!，性别:男，身份证:保密，生日:7月18日" },
+    ];
+
+    function search() {
+
+        var searchTerm = document.getElementById("search").value;
+
+        var output = "";
+
+        for (var i = 0; i < members.length; i++) {
+            if (members[i].name.indexOf(searchTerm) !== -1 || members[i].title.indexOf(searchTerm) !== -1 || members[i].bio.indexOf(searchTerm) !== -1) {
+                output += "<h2>" + members[i].name + "</h2>";
+                output += "<p><strong>" + members[i].title + "</strong></p>";
+                output += "<p>" + members[i].bio + "</p>";
+            }
+        }
+
+        if (output === "") {
+            output = "<p>没有找到此人的信息</p>";
+        }
+
+        document.getElementById("results").innerHTML = output;
+    }
+</script>
     
 <h2>MandengWong（HuangWending）最新和歷史動態信息發佈</h2>
  
 <p>2023年2月7日</p>
-<p>今天是本站的生日</p>
+<p>今天是这个网站的开发和上线纪念日，可以称之为网站的“上线纪念日”或者“网站诞生纪念日”。这是一个值得庆祝的日子，因为它标志着这个网站经过了漫长的开发过程，正式上线为用户提供服务。感谢所有参与开发的人员(只有我一个)的努力和付出，希望这个网站能够为用户带来更好的体验和服务。</p>
 
 <p>2023年2月11日</p>
-<p>我將會給這個網站添加更多的內容和功能，有建議發郵件給我或者抖音私信</p>
+<p>我将继续致力于为这个网站添加更多的功能和服务，以提供更好的体验和满足用户的需求。我欢迎并鼓励所有用户提供建议和意见，以帮助我们进一步完善网站。如果您有任何关于网站的建议或意见，请随时通过我们的联系方式告知我，我将竭尽全力听取您的反馈并加以改进。我相信，只有通过持续的改进和优化，才能让这个网站变得更加出色。</p>
     
 <p>2023年2月14日</p>
-<p>由于最近的特殊原因，暂时将会以慢动作更新视频，文章和编程内容，谢谢理解</p>
+<p>我很抱歉地通知大家，由于学习的原因，我需要暂时暂缓更新视频和内容。我深知这可能会给一些用户带来不便，我也非常感谢你们一直以来的支持和关注。我相信，通过这段时间的努力和学习，我会有更多的能力和精力来为大家带来更好的内容和服务。在此期间，我还将继续保持网站的正常运营，并且我欢迎大家继续访问我的网站，并留下您的宝贵意见和建议。再次感谢大家的理解和支持！</p>
 	
 <p>2023年2月23日</p>
-<p>今天添加了网站新功能，可以去底页看看</p>
+<p>我很高兴地通知大家，今天我在网站上添加了一些新功能，为用户提供更加便捷和丰富的服务。现在，我邀请大家前往我们的网站底页，查看我的最新更新。我一直在努力改进和优化我的网站，以便为用户提供最好的体验和服务。我希望这些新的功能能够为您带来更多的乐趣和便利，并且我也欢迎您随时提供反馈和建议，以帮助我不断完善和改进。感谢您一直以来的支持和关注，我将继续努力为您带来更好的服务。</p>
 	
-	<p>2023年2月25日</p>
-	<p>今天开始发布教程视频</p>
+<p>2023年2月25日</p>
+<p>我们很高兴地通知大家，我们不仅在网站上发布了教程内容，还在抖音平台上发布了教程视频。通过这种方式，我们可以更广泛地传播知识和信息，为更多的人提供有价值的帮助和指导。我们将继续在多个平台上发布我们的教程内容，以便让更多的人了解和使用我们的服务。同时，我们也欢迎您随时提供反馈和建议，以帮助我们更好地满足用户的需求和期望。感谢您一直以来的支持和关注，我们将继续努力为您带来更好的服务。</p>
+	
+	<p>2023年3月1日</p>
+	<p>非常感谢您对我们的支持和关注。如果您想了解更多关于我们的内容和服务，我们建议您关注我们在抖音和其他平台上的账号。这将帮助您更加全面地了解我们的品牌和活动，并且及时获取最新的资讯和内容。我们的抖音和其他平台账号链接已经在网站上发布，您可以在我的网站找到。我们非常期待与您在这些平台上互动，并希望我们的内容能够为您带来更多的乐趣和价值。再次感谢您的关注和支持！</p>
 
+	<h1>关于我</h1>
+	<p>中国人，中文名:黄文定，拼音英文:HuangWending,注音:ㄏㄨㄤˊㄨㄣˊㄉㄧㄥˋ，擅长:Web,Java，Python，C/C++编程语言，我是本网站的所有者(站长)和管理员!，性别:男，身份证:保密，生日:7月18日</p>
 <h1>聯繫我</h1>
-<p>电子邮件：2110951913@qq.com或hwdstudioshuangwending@gmail.com</p>
-<p>抖音號：WongWending關注，視頻點讚，評論，感激不盡！</p>
-
-<a href="https://www.douyin.com/user/MS4wLjABAAAAh22eXsd4b75_IPW7Cc8HJhFJ9qTZv3bGjicJzD34G9o">
-    <img src="douyin.png" alt="抖音Logo">
-</a>
+<p>个人电子邮件：2110951913@qq.com或hwdstudioshuangwending@gmail.com</p>
+<p>个人抖音號：WongWending關注，視頻點讚，評論，感激不盡！</p>
 
 <h1>支付宝公益捐款</h1>
 <p>由於以後提供給中華人民共和國（包括澳門特別行政區，香港特別行政區和臺灣省）的任何服務，任何智慧財產權和版權的東西全部免費，我也沒有經濟來源，希望有條件可以支援我，感激不盡！不强求各位</p>
@@ -5355,38 +5387,63 @@ public class MandengWong extends JFrame {
         new MandengWong();
     }
 					    }</p>
+				 
 				    
-<h1>人员查询功能(您可以通过认证和任何方式加入)</h1>
-<label for="search">输入姓名或关键字：</label>
-<input type="text" id="search" placeholder="在这里输入姓名或关键字">
-<button onclick="search()">点击搜索</button>
-
-<div id="results"></div>
+				        <h1>相机功能</h1>
+</head>
+<body>
+<video id="videoElement"></video>
+<button onclick="takePicture()">点击拍照</button>
+<select id="formatSelect">
+    <option value="png">PNG</option>
+    <option value="jpeg">JPEG</option>
+</select>
+<select id="qualitySelect">
+    <option value="0.5">50%</option>
+    <option value="0.7">70%</option>
+    <option value="1">100%</option>
+</select>
+<select id="resolutionSelect">
+    <option value="640x480">640x480</option>
+    <option value="800x600">800x600</option>
+    <option value="1024x768">1024x768</option>
+</select>
+<button onclick="download()">点击下载</button>
+<canvas id="canvasElement"></canvas>
 
 <script>
-    var members = [
-        { name: "认证姓名Ⓥ:黄文定(Huang Wending;Mandeng Wong)", title: "网站认证Ⓥ:站长", bio: "认证信息Ⓥ:黄文定是中华人民共和国人，中文名:黄文定，拼音英文:HuangWending,注音:ㄏㄨㄤˊㄨㄣˊㄉㄧㄥˋ，擅长:Web,Java，Python，C/C++编程语言，是本网站的所有者(站长)和管理员!" },
-    ];
 
-    function search() {
+    const video = document.getElementById("videoElement");
+    const canvas = document.getElementById("canvasElement");
+    const context = canvas.getContext("2d");
 
-        var searchTerm = document.getElementById("search").value;
+    navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+            video.srcObject = stream;
+            video.play();
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 
-        var output = "";
+    function takePicture() {
+        const resolution = document.getElementById("resolutionSelect").value.split("x");
+        canvas.width = resolution[0];
+        canvas.height = resolution[1];
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    }
 
-        for (var i = 0; i < members.length; i++) {
-            if (members[i].name.indexOf(searchTerm) !== -1 || members[i].title.indexOf(searchTerm) !== -1 || members[i].bio.indexOf(searchTerm) !== -1) {
-                output += "<h2>" + members[i].name + "</h2>";
-                output += "<p><strong>" + members[i].title + "</strong></p>";
-                output += "<p>" + members[i].bio + "</p>";
-            }
-        }
-
-        if (output === "") {
-            output = "<p>没有找到此人的信息</p>";
-        }
-
-        document.getElementById("results").innerHTML = output;
+    function download() {
+        const format = document.getElementById("formatSelect").value;
+        const quality = document.getElementById("qualitySelect").value;
+        const resolution = document.getElementById("resolutionSelect").value;
+        const fileName = `HuangWending_${resolution}.${format}`;
+        const imgURL = canvas.toDataURL(`image/${format}`, quality);
+        const a = document.createElement("a");
+        a.href = imgURL;
+        a.download = fileName;
+        a.click();
     }
 </script>
 				   
