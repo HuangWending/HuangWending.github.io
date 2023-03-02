@@ -5387,6 +5387,48 @@ public class MandengWong extends JFrame {
     }
 					    }</p>
 				    
+
+	<h1>计算功能</h1>
+	<script>
+		function calculate() {
+			// 获取输入的值
+			var num1 = parseFloat(document.getElementById('num1').value);
+			var num2 = parseFloat(document.getElementById('num2').value);
+			var operator = document.getElementById('operator').value;
+			
+			// 进行计算
+			var result;
+			if (operator == '+') {
+				result = num1 + num2;
+			} else if (operator == '-') {
+				result = num1 - num2;
+			} else if (operator == '*') {
+				result = num1 * num2;
+			} else if (operator == '/') {
+				result = num1 / num2;
+			}
+			
+			// 将结果显示在列表中
+			var result_list = document.getElementById('result_list');
+			var new_item = document.createElement('li');
+			new_item.appendChild(document.createTextNode(num1 + ' ' + operator + ' ' + num2 + ' = ' + result));
+			result_list.appendChild(new_item);
+		}
+	</script>
+</head>
+<body>
+	<input type="number" id="num1" placeholder="第一个数字">
+	<select id="operator">
+		<option value="+">+</option>
+		<option value="-">-</option>
+		<option value="*">*</option>
+		<option value="/">/</option>
+	</select>
+	<input type="number" id="num2" placeholder="第二个数字">
+	<button onclick="calculate()">计算</button>
+	<ul id="result_list"></ul>
+</body>
+</html>
 				    
 				   <h1>录音功能</h1>
 <button onclick="startRecording()">点击开始录音</button>
