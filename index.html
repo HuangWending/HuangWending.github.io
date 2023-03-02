@@ -13,41 +13,6 @@
 </head>
 <body>
     <h1>黄文定(HuángWénDìng;Mandeng Wong;ㄏㄨㄤˊㄨㄣˊㄉㄧㄥˋ)的個人網站</h1>
-    <a href="https://www.douyin.com/user/MS4wLjABAAAAh22eXsd4b75_IPW7Cc8HJhFJ9qTZv3bGjicJzD34G9o"><img src="douyin.png" alt="抖音(国内版)"></a>
-	 
-	<h1>人员查询功能(您可以通过认证和其它任何方式加入)</h1>
-<label for="search">输入姓名或关键字：</label>
-<input type="text" id="search" placeholder="在这里输入姓名或关键字">
-<button onclick="search()">点击搜索</button>
-
-<div id="results"></div>
-
-<script>
-    var members = [
-        { name: "认证姓名Ⓥ:黄文定(Huáng Wén Dìng;Mandeng Wong)", title: "网站认证Ⓥ:站长和其他", bio: "认证信息Ⓥ:黄文定是中华人民共和国人，中文名:黄文定，拼音:Huáng Wén Dìng英文:Mandeng Wong,注音:ㄏㄨㄤˊㄨㄣˊㄉㄧㄥˋ，擅长:Web,Java，Python，C/C++编程语言，他是本网站的所有者(站长)和管理员!，性别:男，身份证:保密，生日:7月18日" },
-    ];
-
-    function search() {
-
-        var searchTerm = document.getElementById("search").value;
-
-        var output = "";
-
-        for (var i = 0; i < members.length; i++) {
-            if (members[i].name.indexOf(searchTerm) !== -1 || members[i].title.indexOf(searchTerm) !== -1 || members[i].bio.indexOf(searchTerm) !== -1) {
-                output += "<h2>" + members[i].name + "</h2>";
-                output += "<p><strong>" + members[i].title + "</strong></p>";
-                output += "<p>" + members[i].bio + "</p>";
-            }
-        }
-
-        if (output === "") {
-            output = "<p>没有找到此人的信息</p>";
-        }
-
-        document.getElementById("results").innerHTML = output;
-    }
-</script>
     
 <h2>MandengWong（HuangWending）最新和歷史動態信息發佈</h2>
 	
@@ -6577,6 +6542,42 @@ document.body.removeChild(downloadLink);
       var greetingDiv = document.getElementById("greeting");
       greetingDiv.innerHTML = greeting;
     </script>
+	
+	<h1>人员查询功能(您可以通过认证和其它任何方式加入)</h1>
+<label for="search">输入姓名或关键字：</label>
+<input type="text" id="search" placeholder="在这里输入姓名或关键字">
+<button onclick="search()">点击搜索</button>
+
+<div id="results"></div>
+
+<script>
+    var members = [
+        { name: "认证姓名Ⓥ:黄文定(Huáng Wén Dìng;Mandeng Wong)", title: "网站认证Ⓥ:站长和其他", bio: "认证信息Ⓥ:黄文定是中华人民共和国人，中文名:黄文定，拼音:Huáng Wén Dìng英文:Mandeng Wong,注音:ㄏㄨㄤˊㄨㄣˊㄉㄧㄥˋ，擅长:Web,Java，Python，C/C++编程语言，他是本网站的所有者(站长)和管理员!，性别:男，身份证:保密，生日:7月18日" },
+    ];
+
+    function search() {
+
+        var searchTerm = document.getElementById("search").value;
+
+        var output = "";
+
+        for (var i = 0; i < members.length; i++) {
+            if (members[i].name.indexOf(searchTerm) !== -1 || members[i].title.indexOf(searchTerm) !== -1 || members[i].bio.indexOf(searchTerm) !== -1) {
+                output += "<h2>" + members[i].name + "</h2>";
+                output += "<p><strong>" + members[i].title + "</strong></p>";
+                output += "<p>" + members[i].bio + "</p>";
+            }
+        }
+
+        if (output === "") {
+            output = "<p>没有找到此人的信息</p>";
+        }
+
+        document.getElementById("results").innerHTML = output;
+    }
+</script>
+	
+	 <a href="https://www.douyin.com/user/MS4wLjABAAAAh22eXsd4b75_IPW7Cc8HJhFJ9qTZv3bGjicJzD34G9o"><img src="douyin.png" alt="抖音(国内版)"></a>
                        
 <div>
     版权 &copy; 2023年-黄文定保留所有权力-黄文定技术支持-网站最后更新日期: 2023年3月2日 星期四
