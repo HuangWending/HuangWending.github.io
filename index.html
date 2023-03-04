@@ -5485,91 +5485,142 @@ public class MandengWong extends JFrame {
 </html>
 				    
 				   <h1>录音功能</h1>
-<button onclick="startRecording()">点击开始录音</button>
-<button onclick="stopRecording()">点击停止录音</button>
-<button onclick="playRecording()">点击播放录音</button>
-<button onclick="downloadRecording()">点击下载录音</button>
-<button onclick="deleteRecording()">点击删除录音</button>
-<hr>
-<audio id="player"></audio>
+<button id="startButton" disabled>开始录音</button>
+<button id="pauseButton" disabled>暂停录音</button>
+<button id="stopButton" disabled>停止录音</button>
+<button id="downloadButton" disabled>下载录音</button>
+<button id="deleteButton" disabled>删除录音</button>
+<br><br>
+<progress id="progressBar" max="100" value="0"></progress>
+<br><br>
+<h2>录音列表</h2>
 <ul id="recordingsList"></ul>
 <script>
-   
-    let recorder;
+    // 获取HTML元素
+    const startButton = document.getElementById('startButton');
+    const pauseButton = document.getElementById('pauseButton');
+    const stopButton = document.getElementById('stopButton');
+    const downloadButton = document.getElementById('downloadButton');
+    const deleteButton = document.getElementById('deleteButton');
+    const progressBar = document.getElementById('progressBar');
+    const recordingsList = document.getElementById('recordingsList');
+
+    // 定义变量
+    let mediaRecorder;
     let chunks = [];
-    const constraints = { audio: true };
-    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-        recorder = new MediaRecorder(stream);
-        recorder.ondataavailable = e => chunks.push(e.data);
-        recorder.onstop = e => {
-            const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
-            chunks = [];
-            const url = URL.createObjectURL(blob);
-            const li = document.createElement('li');
-            const audio = document.createElement('audio');
-            const deleteButton = document.createElement('button');
-            const downloadButton = document.createElement('a');
-            const filename = new Date().toISOString() + 'huangwending.ogg';
-            audio.controls = true;
-            downloadButton.download = filename;
-            downloadButton.innerHTML = '点击下载录音';
-            deleteButton.innerHTML = '点击删除录音';
-            deleteButton.onclick = () => {
-                URL.revokeObjectURL(url);
-                li.remove();
-            }
-            audio.src = url;
-            downloadButton.href = url;
-            li.appendChild(audio);
-            li.appendChild(deleteButton);
-            li.appendChild(downloadButton);
-            document.getElementById('recordingsList').appendChild(li);
-        };
-    }).catch(console.error);
+    let isRecording = false;
 
-    function startRecording() {
-        recorder.start();
-    }
+    // 开始录音
+    startButton.addEventListener('click', () => {
+        // 获取用户的麦克风
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                // 创建MediaRecorder
+                mediaRecorder = new MediaRecorder(stream);
 
-    function stopRecording() {
-        recorder.stop();
-    }
+                // 开始录制并设置按钮状态
+                mediaRecorder.start();
+                isRecording = true;
+                startButton.disabled = true;
+                pauseButton.disabled = false;
+                stopButton.disabled = false;
+                progressBar.value = 0;
 
-    function playRecording() {
-        const player = document.getElementById('player');
-        const selected = document.querySelector('li.selected');
-        if (selected) {
-            const audio = selected.querySelector('audio');
-            player.src = audio.src;
-            player.play();
-        }
-    }
+                // 更新进度条
+                mediaRecorder.addEventListener('dataavailable', event => {
+                    chunks.push(event.data);
+                    const duration = Math.floor(chunks.reduce((acc, chunk) => acc + chunk.size, 0) / 16000);
+                    progressBar.value = duration;
+                });
 
-    function downloadRecording() {
-        const selected = document.querySelector('li.selected');
-        if (selected) {
-            const downloadButton = selected.querySelector('a');
-            downloadButton.click();
-        }
-    }
+                // 结束录音并将结果添加到列表
+                mediaRecorder.addEventListener('stop', () => {
+                    isRecording = false;
+                    startButton.disabled = false;
+                    pauseButton.disabled = true;
+                    stopButton.disabled = true;
+                    downloadButton.disabled = false;
+                    deleteButton.disabled = false;
+                    progressBar.value = 0;
 
-    function deleteRecording() {
-        const selected = document.querySelector('li.selected');
-        if (selected) {
-            selected.querySelector('button').click();
-        }
-    }
+                    const blob = new Blob(chunks, { type: 'audio/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const li = document.createElement('li');
+                    const audio = document.createElement('audio');
+                    const downloadLink = document.createElement('a');
+                    const deleteLink = document.createElement('a');
 
-    document.addEventListener('click', e => {
-        const target = e.target;
-        if (target.tagName === 'LI') {
-            const selected = document.querySelector('li.selected');
-            if (selected) {
-                selected.classList.remove('selected');
-            }
-            target.classList.add('selected');
+                    audio.controls = true;
+                    audio.src = url;
+                    downloadLink.href = url;
+                    downloadLink.download = 'HuangWending.webm';
+                    downloadLink.textContent = '下载';
+                    deleteLink.href = '#';
+                    deleteLink.textContent = '删除';
+
+                    li.appendChild(audio);
+                    li.appendChild(downloadLink);
+                    li.appendChild(deleteLink);
+                    recordingsList.appendChild(li);
+
+                    // 点击下载链接下载录音
+                    downloadLink.addEventListener('click', () => {
+                        downloadLink.href = url;
+                        downloadLink.download = 'HuangWending.webm';
+                    });
+
+                    // 点击删除链接删除录音
+                    deleteLink.addEventListener('click', () => {
+                        recordingsList.removeChild(li);
+                    });
+
+                    // 重置变量
+                    mediaRecorder = null;
+                    chunks = [];
+                });
+            })
+            .catch(err => {
+                console.error(err);
+                alert('无法访问麦克风');
+            });
+
+    });
+
+    // 暂停录音
+    pauseButton.addEventListener('click', () => {
+        if (isRecording) {
+            mediaRecorder.pause();
+            isRecording = false;
+            pauseButton.textContent = '继续录音';
+        } else {
+            mediaRecorder.resume();
+            isRecording = true;
+            pauseButton.textContent = '暂停录音';
         }
     });
+
+    // 停止录音
+    stopButton.addEventListener('click', () => {
+        mediaRecorder.stop();
+    });
+
+    // 禁用按钮直到用户点击开始录音
+    pauseButton.disabled = true;
+    stopButton.disabled = true;
+    downloadButton.disabled = true;
+    deleteButton.disabled = true;
+    startButton.addEventListener('click', () => {
+        pauseButton.disabled = false;
+        stopButton.disabled = false;
+    });
+
+    // 删除所有录音
+    deleteButton.addEventListener('click', () => {
+        while (recordingsList.firstChild) {
+            recordingsList.removeChild(recordingsList.firstChild);
+        }
+    });
+
 </script>
 				 
 				    
