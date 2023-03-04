@@ -5441,6 +5441,114 @@ public class MandengWong extends JFrame {
     }
 					    }</p>
 				    
+				    
+				    <h1>视频播放功能</h1>
+<input type="file" id="fileInput">
+<button onclick="upload()">上传到播放栏</button>
+<video id="videoPlayer" controls></video>
+
+<div>
+    <button onclick="play()">点击播放</button>
+    <button onclick="pause()">点击暂停</button>
+    <button onclick="restart()">点击重新播放</button>
+    <button onclick="reverse()">倒放</button>
+    <button onclick="zoomIn()">放大</button>
+    <button onclick="zoomOut()">缩小</button>
+    <select id="colorSelect" onchange="setColor()">
+        <option value="normal">普通</option>
+        <option value="grayscale">灰度</option>
+        <option value="sepia">棕褐色</option>
+        <option value="invert">反色</option>
+        <option value="hue">色调</option>
+        <option value="saturate">饱和度</option>
+        <option value="contrast">对比度</option>
+    </select>
+    <input type="range" id="frameRange" min="0" max="100" step="1" onchange="setFrame()">
+    <button onclick="interpolate()">插值</button>
+    <button onclick="toggleHDR()">HDR</button>
+    <button onclick="toggleLoop()">循环播放</button>
+</div>
+
+<script>
+    var fileInput = document.getElementById('fileInput');
+    var videoPlayer = document.getElementById('videoPlayer');
+    var colorSelect = document.getElementById('colorSelect');
+    var frameRange = document.getElementById('frameRange');
+
+    // 上传视频文件
+    function upload() {
+        var file = fileInput.files[0];
+        var url = URL.createObjectURL(file);
+        videoPlayer.src = url;
+    }
+
+    // 播放视频
+    function play() {
+        videoPlayer.play();
+    }
+
+    // 暂停视频
+    function pause() {
+        videoPlayer.pause();
+    }
+
+    // 重新播放视频
+    function restart() {
+        videoPlayer.currentTime = 0;
+        play();
+    }
+
+    // 倒放视频
+    function reverse() {
+        videoPlayer.playbackRate = -1;
+        play();
+    }
+
+    // 视频缩放
+    function zoomIn() {
+        videoPlayer.width += 10;
+    }
+
+    function zoomOut() {
+        videoPlayer.width -= 10;
+    }
+
+    // 色彩管理
+    function setColor() {
+        var color = colorSelect.value;
+        videoPlayer.style.filter = color;
+    }
+
+    // 帧定时
+    function setFrame() {
+        var frameNumber = frameRange.value;
+        var duration = videoPlayer.duration;
+        var newTime = (duration * frameNumber) / 100;
+        videoPlayer.currentTime = newTime;
+    }
+
+    // 插值
+    function interpolate() {
+        // 仅当视频处于暂停状态时才进行插值操作
+        if (videoPlayer.paused) {
+            var currentFrame = videoPlayer.currentTime;
+            var nextFrame = currentFrame + (1 / 30); // 假设视频每秒有30帧
+            if (nextFrame <= videoPlayer.duration) {
+                videoPlayer.currentTime = nextFrame;
+            }
+        }
+    }
+
+    // HDR
+    function toggleHDR() {
+        videoPlayer.style.filter = "contrast(200%) brightness(150%)";
+    }
+
+    // 循环播放
+    function toggleLoop() {
+        videoPlayer.loop = !videoPlayer.loop;
+    }
+</script>
 
 	<h1>计算功能</h1>
 	<script>
