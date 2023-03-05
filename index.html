@@ -1957,6 +1957,66 @@ int main()
                         
 <h2>程式設計語言代碼Python</h2>
 				<p>Python短信发送程序，以下为代码</p>
+				
+				<p>Python字典程序，以下为代码</p>
+				<p>支持多语言字典查询：用户可以选择要查询的语言，程序会根据语言选择相应的字典进行查询。
+支持模糊匹配：当用户输入一个单词无法匹配时，程序会尝试查找类似的单词，并列出可选项供用户选择。
+支持用户新增单词和修改单词：当用户查询一个不存在的单词时，程序会提示用户是否添加该单词，用户可以选择新增该单词，并输入对应的定义；当用户查询一个已存在的单词时，程序会提示用户是否修改该单词的定义，用户可以选择修改单词的定义。</p>
+				<p># 定义多语言字典
+dictionary = {
+    "中文": {
+        "你好": "hello",
+        "世界": "world",
+        "编程": "programming",
+        "算法": "algorithm",
+        "数据": "data",
+        "函数": "function"
+	"中国": "China"
+    },
+    "英文": {
+        "hello": "你好",
+        "world": "世界",
+        "programming": "编程",
+        "algorithm": "算法",
+        "data": "数据",
+        "function": "函数"
+	"China": "中国"
+    }
+}
+
+# 定义模糊匹配函数
+def fuzzy_match(word, word_list):
+    return [w for w in word_list if word in w]
+
+# 用户选择语言
+language = input("请选择查询语言（中文/英文）：")
+
+# 用户输入单词
+word = input("请输入要查询的单词：")
+
+# 查询单词
+if word in dictionary[language]:
+    print(dictionary[language][word])
+else:
+    # 尝试模糊匹配
+    candidates = fuzzy_match(word, dictionary[language].keys())
+    if candidates:
+        print("未找到该单词，以下为可能的匹配项：")
+        for i, candidate in enumerate(candidates):
+            print(f"{i+1}. {candidate}: {dictionary[language][candidate]}")
+        choice = input("请选择匹配项的编号（或输入0以取消）：")
+        if choice.isdigit() and int(choice) > 0 and int(choice) <= len(candidates):
+            print(dictionary[language][candidates[int(choice)-1]])
+    else:
+        # 未找到该单词，询问是否添加
+        add_choice = input("抱歉，该单词不在字典中。是否添加该单词？（是/否）")
+        if add_choice == "是":
+            definition = input("请输入该单词的定义：")
+            dictionary[language][word] = definition
+            print("单词已添加至字典。")
+        else:
+										  print("取消添加。")</p>
+										  
 				<p>安装第三方库：pip install twilio
 					from twilio.rest import Client
 
