@@ -5722,6 +5722,125 @@ public class MandengWong extends JFrame {
     }
 					    }</p>
 				    
+				    <p>Java语音识别程序，以下为代码</p>
+				    <p>import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
+
+public class SpeechRecognizer {
+
+    // 训练数据路径
+    private static final String TRAIN_PATH = "train/";
+
+    // 测试数据路径
+    private static final String TEST_PATH = "test/";
+
+    // 模型保存路径
+    private static final String MODEL_PATH = "model/";
+
+    // MFCC参数
+    private static final int MFCC_DIM = 13;
+    private static final int MFCC_FRAME_LENGTH = 25;
+    private static final int MFCC_FRAME_SHIFT = 10;
+    private static final int MFCC_NUM_FILTERBANKS = 26;
+    private static final int MFCC_LOW_FREQ = 300;
+    private static final int MFCC_HIGH_FREQ = 8000;
+
+    // GMM-HMM参数
+    private static final int GMM_NUM_COMPONENTS = 8;
+    private static final int GMM_NUM_MIXTURES = 2;
+    private static final int HMM_NUM_STATES = 5;
+    private static final int HMM_NUM_ITERS = 20;
+
+    public static void main(String[] args) throws IOException, UnsupportedAudioFileException {
+        // 读取训练数据
+        List<MFCCFeature> trainFeatures = readFeatures(TRAIN_PATH);
+
+        // 训练GMM-HMM模型
+        GMMHMMModel model = trainModel(trainFeatures);
+
+        // 读取测试数据
+        List<MFCCFeature> testFeatures = readFeatures(TEST_PATH);
+
+        // 进行识别
+        for (MFCCFeature feature : testFeatures) {
+            String label = recognize(feature, model);
+            System.out.println("Label: " + label);
+        }
+    }
+
+    // 读取MFCC特征
+    private static List<MFCCFeature> readFeatures(String path) throws IOException, UnsupportedAudioFileException {
+        File dir = new File(path);
+        List<MFCCFeature> features = new ArrayList<>();
+        for (File file : dir.listFiles()) {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+            int sampleRate = (int) audioInputStream.getFormat().getSampleRate();
+            double[][] frames = MFCC.extract(audioInputStream, sampleRate, MFCC_FRAME_LENGTH, MFCC_FRAME_SHIFT, MFCC_NUM_FILTERBANKS, MFCC_LOW_FREQ, MFCC_HIGH_FREQ);
+            for (double[] frame : frames) {
+                features.add(new MFCCFeature(file.getName(), frame));
+            }
+        }
+        return features;
+    }
+
+    // 训练GMM-HMM模型
+    private static GMMHMMModel trainModel(List<MFCCFeature> trainFeatures) {
+        // 提取特征
+        RealMatrix features = MFCCFeature.toMatrix(trainFeatures);
+
+        // 初始化GMM-HMM模型
+        GMMHMMModel model = new GMMHMMModel(GMM_NUM_COMPONENTS, GMM_NUM_MIXTURES, HMM_NUM_STATES, MFCC_DIM);
+
+        // 初始化GMM参数
+        model.initGMM(features);
+
+        // 训练GMM
+        for (int i = 0; i < HMM_NUM_ITERS; i++) {
+            model.trainGMM(features);
+            System.out.println("GMM iteration " + (i + 1) + " completed.");
+        }
+
+        // 训练HMM
+        model.trainHMM(trainFeatures);
+        System.out.println("HMM training completed.");
+
+        // 保存模型
+        model.save(MODEL_PATH);
+
+        return model;
+    }
+
+    // 进行识别
+    private static String recognize(MFCCFeature feature, GMMHMMModel model) {
+        double[] logProb = model.getFeatureLogProb(feature);
+        int[] stateSeq = model.decodeStateSeq(feature);
+
+        String label = null;
+        double maxLogProb = Double.NEGATIVE_INFINITY;
+        for (String key : model.getLabelSet()) {
+            double labelLogProb = model.getLabelLogProb(key, logProb, stateSeq);
+            if (labelLogProb > maxLogProb) {
+                label = key;
+                maxLogProb = labelLogProb;
+            }
+        }
+
+        return label;
+    }
+					    }</p>
+					    
+					    <p>所需要的第三方库:Apache Commons Math：用于矩阵计算和高斯混合模型计算
+						    javax.sound.sampled：用来读取音频文件的
+						    该程序实现语音识别系统，包含了训练模型和识别两个步骤。其中，训练模型使用了MFCC和GMM-HMM算法以及Viterbi算法。</p>
+				    
 				    
 				    <h1>视频播放功能</h1>
 <input type="file" id="fileInput">
