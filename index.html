@@ -1956,8 +1956,66 @@ int main()
                                                   }</p>
                         
 <h2>程式設計語言代碼Python</h2>
-				<p>Python短信发送程序，以下为代码</p>
+				<p>Python语音识别程序，以下为代码</p>
+				<p>import numpy as np
+import scipy.io.wavfile as wav
+from python_speech_features import mfcc
+from sklearn import preprocessing
+from hmmlearn import hmm
+
+# 读取音频文件并提取MFCC特征
+def extract_features(file_path):
+    # 读取音频文件
+    rate, signal = wav.read(file_path)
+
+    # 计算MFCC特征
+    mfcc_features = mfcc(signal, rate, numcep=13, nfilt=26, nfft=512)
+    mfcc_features = preprocessing.scale(mfcc_features)
+
+    return mfcc_features
+
+# 训练HMM模型
+def train_model(features):
+    # 初始化HMM模型
+    model = hmm.GaussianHMM(n_components=4, covariance_type="diag", n_iter=1000)
+
+    # 训练HMM模型
+    model.fit(features)
+
+    return model
+
+# 预测语音文本
+def predict_text(model, features):
+    # 预测序列
+    logprob, pred = model.decode(features.transpose())
+
+    # 将预测序列转换为文本
+    text = ""
+    for i in range(len(pred)):
+        if i == 0 or pred[i] != pred[i-1]:
+            text += str(pred[i])
+
+    return text
+
+# 主函数
+if __name__ == "__main__":
+    # 提取MFCC特征
+    features = extract_features("sample.wav")
+
+    # 训练HMM模型
+    model = train_model(features)
+
+    # 预测语音文本
+    text = predict_text(model, features)
+
+					print("预测结果：", text)</p>
 				
+				<p>在特征提取步骤中，使用Python Speech Features库，该库提供了多种音频信号处理方法，包括MFCC特征提取。读取音频文件，计算MFCC特征，并对特征进行标准化处理。
+
+在模型训练步骤中，使用HMM（隐马尔可夫模型），它是一种统计模型，常用于对时间序列数据进行建模。使用HMM学习输入音频序列的状态序列，并训练出一个能够识别语音的模型。
+
+					在预测步骤中，我们使用训练好的HMM模型预测输入音频序列的状态序列，并将状态序列转换为文本。</p>
+					
 				<p>Python字典程序，以下为代码</p>
 				<p>支持多语言字典查询：用户可以选择要查询的语言，程序会根据语言选择相应的字典进行查询。
 支持模糊匹配：当用户输入一个单词无法匹配时，程序会尝试查找类似的单词，并列出可选项供用户选择。
@@ -2016,7 +2074,9 @@ else:
             print("单词已添加至字典。")
         else:
 										  print("取消添加。")</p>
-										  
+					
+					
+				<p>Python短信发送程序，以下为代码</p>					  
 				<p>安装第三方库：pip install twilio
 					from twilio.rest import Client
 
