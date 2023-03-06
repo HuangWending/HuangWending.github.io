@@ -206,6 +206,88 @@ Scratch是一种基于块的编程语言，它使用图形化的块代替传统�
 
 <h2>程式設計語言代碼C/C++</h2>
 	
+	<p>C++语音识别程序，以下为代码</p>
+	<p>音频输入：从麦克风、音频文件或流等源读取音频数据。
+特征提取：将音频数据转换为一系列特征向量，如Mel频率倒谱系数（MFCC）、滤波器组频率（FBANK）等。
+模型训练：使用标注好的音频数据训练语音识别模型，隐马尔可夫模型（HMM）、深度学习模型等。
+		识别：将特征向量序列输入到训练好的模型中，得到最有可能的文本输出。</p>
+	<p>#include <iostream>
+#include "feat/feature-functions.h"
+#include "feat/wave-reader.h"
+#include "feat/feature-mfcc.h"
+#include "ivector/ivector-extractor.h"
+#include "gmm/am-diag-gmm.h"
+#include "decoder/lattice-faster-decoder.h"
+#include "fstext/fstext-lib.h"
+#include "lat/lattice-functions.h"
+#include "lat/sausages.h"
+#include "util/common-utils.h"
+#include "base/kaldi-common.h"
+#include "matrix/kaldi-matrix.h"
+#include "util/common-utils.h"
+#include "base/timer.h"
+
+int main(int argc, char* argv[]) {
+    using namespace kaldi;
+
+    try {
+        // 读取特征
+        Input ki("ark:feat.ark");
+        Matrix<BaseFloat> features;
+        std::string key;
+        ki.Read(key, features);
+
+        // 加载模型
+        TransitionModel trans_model;
+        AmDiagGmm am_gmm;
+        {
+            bool binary;
+            Input model_in("model", &binary);
+            trans_model.Read(model_in.Stream(), binary);
+            am_gmm.Read(model_in.Stream(), binary);
+            SetBatchnormTestMode(true, &(am_gmm.GetNnet()));
+            SetDropoutTestMode(true, &(am_gmm.GetNnet()));
+        }
+
+        // 初始化解码器
+        LatticeFasterDecoderConfig decoder_opts;
+        decoder_opts.beam = 13;
+        decoder_opts.max_active = 7000;
+        decoder_opts.min_active = 200;
+        decoder_opts.lattice_beam = 6.0;
+        decoder_opts.acoustic_scale = 1.0;
+        LatticeFasterDecoder decoder(trans_model, decoder_opts);
+
+        // 解码
+        Timer timer;
+        DecodableAmDiagGmmScaled gmm_decodable(am_gmm, trans_model, features, 0.1);
+        decoder.Decode(&gmm_decodable);
+        Lattice lat;
+        decoder.GetBestPath(&lat);
+
+        // 输出识别结果
+        CompactLattice clat;
+        ConvertLattice(lat, &clat);
+        CompactLattice aligned_lat;
+        WordAlignLattice(lat, trans_model, &aligned_lat);
+        std::vector<int32> words;
+        std::vector<int32> alignment;
+        LatticeWeight weight;
+        GetLinearSymbolSequence(aligned_lat, &words, &alignment, &weight);
+        std::cout << "Recognized: ";
+        for (size_t i = 0; i < words.size(); i++) {
+        std::cout << trans_model.GetSymbolTable().Find(words[i]) << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "Time elapsed: " << timer.Elapsed() << "s" << std::endl;
+
+    return 0;
+} catch(const std::exception &e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+			     }</p>
+		
+	
 	<p>C++短信发送程序，以下为代码和操作步骤</p>
 	<p>从curl的官方网站下载预编译的库文件：https://curl.se/windows/，使用以下代码发送短信</p>
 	<p>#include <iostream>
