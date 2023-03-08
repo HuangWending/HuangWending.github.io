@@ -7077,6 +7077,38 @@ document.body.removeChild(downloadLink);
 		xhr.send();
 	</script>
 	
+	<div class="ip-info">
+    <p><span>纬度:</span> <span id="latitude"></span></p>
+    <p><span>经度:</span> <span id="longitude"></span></p>
+    <p><span>时区:</span> <span id="timezone"></span></p>
+    <p><span>互联网服务提供商:</span> <span id="isp"></span></p>
+    <p><span>代理:</span> <span id="proxy"></span></p>
+</div>
+
+<script>
+    const apiKey = "https://geo.ipify.org/service/account-balance?apiKey=at_ic3pICtsxF2AdNA5KX3nsgICXyrVk";
+    const ipUrl = ` https://geo.ipify.org/api/v1?apiKey=at_ic3pICtsxF2AdNA5KX3nsgICXyrVk`;
+
+    async function getIpInfo() {
+        try {
+            const response = await fetch(ipUrl);
+            const data = await response.json();
+            console.log(data);
+            document.getElementById("latitude").textContent = data.location.lat;
+            document.getElementById("longitude").textContent = data.location.lng;
+            document.getElementById("timezone").textContent = data.location.timezone;
+            document.getElementById("isp").textContent = data.isp;
+            document.getElementById("proxy").textContent = data.proxy.proxy;
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    getIpInfo();
+</script>
+
+	
 	 <p>实时检测您现在的电量为：<span id="battery-level">unknown</span></p>
 
 <script>
