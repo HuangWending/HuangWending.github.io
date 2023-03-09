@@ -3290,6 +3290,163 @@ namespace CurrencyConverter
     }
 									}</p>
 								
+								<p>C# 文件解压缩程序</p>
+								<p>using System;
+using System.IO;
+using System.Security.Cryptography;
+using ICSharpCode.SharpZipLib.Zip;
+
+namespace FileCompression
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("请选择操作：\n1. 压缩文件\n2. 解压缩文件\n");
+            int choice = int.Parse(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 1:
+                    Console.WriteLine("请输入需要压缩的文件路径：");
+                    string sourceFile = Console.ReadLine();
+                    Console.WriteLine("请输入压缩后的文件路径：");
+                    string compressedFile = Console.ReadLine();
+                    Console.WriteLine("请输入加密密码：");
+                    string password = Console.ReadLine();
+                    CompressFile(sourceFile, compressedFile, password);
+                    Console.WriteLine("文件压缩成功！");
+                    break;
+
+                case 2:
+                    Console.WriteLine("请输入需要解压的文件路径：");
+                    string compressedFile2 = Console.ReadLine();
+                    Console.WriteLine("请输入解压后的文件路径：");
+                    string targetFile = Console.ReadLine();
+                    Console.WriteLine("请输入加密密码：");
+                    string password2 = Console.ReadLine();
+                    DecompressFile(compressedFile2, targetFile, password2);
+                    Console.WriteLine("文件解压成功！");
+                    break;
+
+                default:
+                    Console.WriteLine("输入错误！");
+                    break;
+            }
+        }
+
+        static void CompressFile(string sourceFile, string compressedFile, string password)
+        {
+            using (FileStream sourceStream = new FileStream(sourceFile, FileMode.Open))
+            {
+                using (FileStream compressedStream = File.Create(compressedFile))
+                {
+                    using (ZipOutputStream zipStream = new ZipOutputStream(compressedStream))
+                    {
+                        zipStream.Password = password;
+                        string fileName = Path.GetFileName(sourceFile);
+                        ZipEntry entry = new ZipEntry(fileName);
+                        zipStream.PutNextEntry(entry);
+                        byte[] buffer = new byte[4096];
+                        int bytesRead;
+                        do
+                        {
+                            bytesRead = sourceStream.Read(buffer, 0, buffer.Length);
+                            zipStream.Write(buffer, 0, bytesRead);
+                        } while (bytesRead > 0);
+                        zipStream.CloseEntry();
+                    }
+                }
+            }
+        }
+
+        static void DecompressFile(string compressedFile, string targetFile, string password)
+        {
+            using (FileStream compressedStream = new FileStream(compressedFile, FileMode.Open))
+            {
+                using (FileStream targetStream = File.Create(targetFile))
+                {
+                    using (ZipInputStream zipStream = new ZipInputStream(compressedStream))
+                    {
+                        zipStream.Password = password;
+                        ZipEntry entry = zipStream.GetNextEntry();
+                        byte[] buffer = new byte[4096];
+                        int bytesRead;
+                        do
+                        {
+                            bytesRead = zipStream.Read(buffer, 0, buffer.Length);
+                            targetStream.Write(buffer, 0, bytesRead);
+                        } while (bytesRead > 0);
+                    }
+                }
+            }
+        }
+
+        static void EncryptFile(string inputFile, string outputFile, string password)
+        {
+            byte[] salt = new byte[32];
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            rng.GetBytes(salt);
+
+            RijndaelManaged aes = new RijndaelManaged();
+            aes.KeySize = 256;
+            aes.BlockSize = 128;
+        aes.Key = new Rfc2898DeriveBytes(password, salt, 1000).GetBytes(aes.KeySize / 8);
+        aes.IV = new Rfc2898DeriveBytes(password, salt).GetBytes(aes.BlockSize / 8);
+        aes.Mode = CipherMode.CBC;
+
+        using (FileStream inputFileStream = new FileStream(inputFile, FileMode.Open))
+        {
+            using (FileStream outputFileStream = new FileStream(outputFile, FileMode.Create))
+            {
+                using (CryptoStream cryptoStream = new CryptoStream(outputFileStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
+                {
+                    outputFileStream.Write(salt, 0, salt.Length);
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    do
+                    {
+                        bytesRead = inputFileStream.Read(buffer, 0, buffer.Length);
+                        cryptoStream.Write(buffer, 0, bytesRead);
+                    } while (bytesRead > 0);
+                }
+            }
+        }
+    }
+
+    static void DecryptFile(string inputFile, string outputFile, string password)
+    {
+        byte[] salt = new byte[32];
+        using (FileStream inputFileStream = new FileStream(inputFile, FileMode.Open))
+        {
+            inputFileStream.Read(salt, 0, salt.Length);
+
+            RijndaelManaged aes = new RijndaelManaged();
+            aes.KeySize = 256;
+            aes.BlockSize = 128;
+            aes.Key = new Rfc2898DeriveBytes(password, salt, 1000).GetBytes(aes.KeySize / 8);
+            aes.IV = new Rfc2898DeriveBytes(password, salt).GetBytes(aes.BlockSize / 8);
+            aes.Mode = CipherMode.CBC;
+
+            using (FileStream outputFileStream = new FileStream(outputFile, FileMode.Create))
+            {
+                using (CryptoStream cryptoStream = new CryptoStream(inputFileStream, aes.CreateDecryptor(), CryptoStreamMode.Read))
+                {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    do
+                    {
+                        bytesRead = cryptoStream.Read(buffer, 0, buffer.Length);
+                        outputFileStream.Write(buffer, 0, bytesRead);
+                    } while (bytesRead > 0);
+                }
+            }
+        }
+    }
+}
+									}</p>
+										
+								
 <h2>编程语言C++代码列表</h2>
 	
 	<p>C++语音识别程序，以下为代码</p>
