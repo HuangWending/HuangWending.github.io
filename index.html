@@ -427,6 +427,284 @@ class Program : Form
         this.Size = new System.Drawing.Size(400, 300);
     }
 		}</p>
+	<p>C#加减乘除计算器</p>
+	<p>using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // 提示用户输入第一个数字
+        Console.Write("请输入第一个数字：");
+        double num1 = Convert.ToDouble(Console.ReadLine());
+
+        // 提示用户输入运算符
+        Console.Write("请选择运算符(+、-、*、/): ");
+        string op = Console.ReadLine();
+
+        // 提示用户输入第二个数字
+        Console.Write("请输入第二个数字： ");
+        double num2 = Convert.ToDouble(Console.ReadLine());
+
+        // 执行计算并输出结果
+        if (op == "+")
+        {
+            Console.WriteLine(num1 + num2);
+        }
+        else if (op == "-")
+        {
+            Console.WriteLine(num1 - num2);
+        }
+        else if (op == "*")
+        {
+            Console.WriteLine(num1 * num2);
+        }
+        else if (op == "/")
+        {
+            if (num2 == 0)
+            {
+                Console.WriteLine("错误：除数不能为0");
+            }
+            else
+            {
+                Console.WriteLine(num1 / num2);
+            }
+        }
+        else
+        {
+            Console.WriteLine("错误：运算符不正确");
+        }
+
+        Console.ReadLine();
+    }
+		}</p>
+	<p>C#显示当前时间并实时更新</p>
+	<p>using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        while (true)
+        {
+            // 获取当前时间并显示
+            DateTime now = DateTime.Now;
+            Console.WriteLine("当前时间：{0}", now);
+
+            // 等待1秒钟并清除控制台窗口
+            System.Threading.Thread.Sleep(1000);
+            Console.Clear();
+        }
+    }
+		}</p>
+	
+	<p>C#语音识别程序</p>
+	<p>使用Microsoft Azure Cognitive Services中的语音服务API和LUIS（语言理解）API,实现更复杂的语音识别和响应</p>
+	<p>在Azure门户中注册Azure语音服务，获取您的Subscription Key和Endpoint。
+		在LUIS门户中创建一个新的LUIS应用程序，定义意图（intent）和实体（entity），并在应用程序设置中获取应用程序的Endpoint和Key</p>
+	<p>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.CognitiveServices.Speech;
+using Microsoft.CognitiveServices.Speech.Audio;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime;
+using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
+
+namespace SpeechRecognitionDemo
+{
+    class Program
+    {
+        private static IConfiguration _configuration;
+        private static ILogger _logger;
+
+        static async Task Main(string[] args)
+        {
+            ConfigureServices();
+
+            // Replace with your own subscription key and region
+            var config = SpeechConfig.FromSubscription(_configuration["SpeechSubscriptionKey"], _configuration["SpeechServiceRegion"]);
+
+            using var audioConfig = AudioConfig.FromDefaultMicrophoneInput();
+            using var recognizer = new SpeechRecognizer(config, audioConfig);
+
+            Console.WriteLine("请开始说话...");
+            var result = await recognizer.RecognizeOnceAsync();
+
+            if (result.Reason == ResultReason.RecognizedSpeech)
+            {
+                Console.WriteLine($"识别到的文本：{result.Text}");
+
+                // Call LUIS API to get intent and entity
+                var intent = await GetIntentFromLUIS(result.Text);
+                Console.WriteLine($"意图：{intent?.TopScoringIntent?.Intent}");
+
+                if (intent?.Entities?.Count > 0)
+                {
+                    foreach (var entity in intent.Entities)
+                    {
+                        Console.WriteLine($"实体：{entity.Entity}");
+                    }
+                }
+
+                // Perform action based on intent and entity
+                switch (intent?.TopScoringIntent?.Intent)
+                {
+                    case "Calculator.Add":
+                        if (intent.Entities.Count == 2)
+                        {
+                            var num1 = Convert.ToDouble(intent.Entities.FirstOrDefault(e => e.Type == "Number")?.Entity);
+                            var num2 = Convert.ToDouble(intent.Entities.LastOrDefault(e => e.Type == "Number")?.Entity);
+                            var resultStr = $"{num1} + {num2} = {num1 + num2}";
+                            Console.WriteLine(resultStr);
+                        }
+                        break;
+
+                    case "Calculator.Subtract":
+                        if (intent.Entities.Count == 2)
+                        {
+                            var num1 = Convert.ToDouble(intent.Entities.FirstOrDefault(e => e.Type == "Number")?.Entity);
+                            var num2 = Convert.ToDouble(intent.Entities.LastOrDefault(e => e.Type == "Number")?.Entity);
+                            var resultStr = $"{num1} - {num2} = {num1 - num2}";
+                            Console.WriteLine(resultStr);
+                        }
+                        break;
+
+                    case "Calculator.Multiply":
+                        if (intent.Entities.Count == 2)
+                        {
+                            var num1 = Convert.ToDouble(intent.Entities.FirstOrDefault(e => e.Type == "Number")?.Entity
+		 var num2 = Convert.ToDouble(intent.Entities.LastOrDefault(e => e.Type == "Number")?.Entity);
+                        var resultStr = $"{num1} x {num2} = {num1 * num2}";
+                        Console.WriteLine(resultStr);
+                    }
+                    break;
+
+                case "Calculator.Divide":
+                    if (intent.Entities.Count == 2)
+                    {
+                        var num1 = Convert.ToDouble(intent.Entities.FirstOrDefault(e => e.Type == "Number")?.Entity);
+                        var num2 = Convert.ToDouble(intent.Entities.LastOrDefault(e => e.Type == "Number")?.Entity);
+
+                        if (num2 == 0)
+                        {
+                            Console.WriteLine("除数不能为0");
+                        }
+                        else
+                        {
+                            var resultStr = $"{num1} / {num2} = {num1 / num2}";
+                            Console.WriteLine(resultStr);
+                        }
+                    }
+                    break;
+
+                default:
+                    Console.WriteLine("不支持的操作");
+                    break;
+            }
+        }
+        else if (result.Reason == ResultReason.NoMatch)
+        {
+            Console.WriteLine("未能识别出语音");
+        }
+        else if (result.Reason == ResultReason.Canceled)
+        {
+            var cancellation = CancellationDetails.FromResult(result);
+            Console.WriteLine($"语音识别已取消：{cancellation.Reason}");
+            if (cancellation.Reason == CancellationReason.Error)
+            {
+                Console.WriteLine($"错误消息：{cancellation.ErrorDetails}");
+            }
+        }
+
+        Console.WriteLine("按任意键退出");
+        Console.ReadKey();
+    }
+
+    private static async Task<LuisResult> GetIntentFromLUIS(string text)
+    {
+        var client = new LUISRuntimeClient(new ApiKeyServiceClientCredentials(_configuration["LUISAuthoringKey"]))
+        {
+            Endpoint = _configuration["LUISRuntimeEndpoint"]
+        };
+
+        var predictionRequest = new PredictionRequest
+        {
+            Query = text
+        };
+
+        var appId = _configuration["LUISAppId"];
+        return await client.Prediction.GetSlotPredictionAsync(appId, "Production", predictionRequest);
+    }
+
+    private static void ConfigureServices()
+    {
+        _configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: false)
+            .Build();
+
+        var services = new ServiceCollection();
+        services.AddLogging(builder => builder.AddConsole());
+        var serviceProvider = services.BuildServiceProvider();
+        _logger = serviceProvider.GetService<ILogger<Program>>();
+    }
+}
+		}</p>
+		
+	<p>C# IP所属国家，地区和城市检测程序</p>
+	<p>需要使用一个第三方库来获取IP地址信息。这里使用的是MaxMind GeoIP2库，需要从NuGet包管理器中安装它</p>
+	<p>using MaxMind.GeoIP2;
+using System.Net;
+
+public class IPLocation
+{
+    public string Country { get; set; }
+    public string Region { get; set; }
+    public string City { get; set; }
+}
+
+public class IPDetector
+{
+    public static IPLocation GetLocation(string ipAddress)
+    {
+        IPLocation location = new IPLocation();
+
+        try
+        {
+            using (var reader = new DatabaseReader("path/to/GeoLite2-City.mmdb"))
+            {
+                var response = reader.City(ipAddress);
+
+                location.Country = response.Country.Name;
+                location.Region = response.MostSpecificSubdivision.Name;
+                location.City = response.City.Name;
+            }
+        }
+        catch (Exception ex)
+        {
+            // handle exception
+        }
+
+        return location;
+    }
+
+    public static IPLocation GetCurrentLocation()
+    {
+        string ipAddress = new WebClient().DownloadString("http://icanhazip.com").Trim();
+        return GetLocation(ipAddress);
+    }
+		}</p>
+	<p>替换path/to/GeoLite2-City.mmdb为您的MaxMind数据库文件的路径</p>
+	<p>调用方法代码</p>
+	<p>IPLocation currentLocation = IPDetector.GetCurrentLocation();
+Console.WriteLine($"Current Location: {currentLocation.Country}, {currentLocation.Region}, {currentLocation.City}");
+Console.Write("Enter an IP address to detect its location: ");
+string input = Console.ReadLine();
+IPLocation location = IPDetector.GetLocation(input);
+Console.WriteLine($"Location of {input}: {location.Country}, {location.Region}, {location.City}");</p>
 	
 <h2>编程语言C++代码列表</h2>
 	
