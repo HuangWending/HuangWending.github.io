@@ -706,6 +706,161 @@ string input = Console.ReadLine();
 IPLocation location = IPDetector.GetLocation(input);
 Console.WriteLine($"Location of {input}: {location.Country}, {location.Region}, {location.City}");</p>
 	
+	<p>C# 屏幕注音键盘程序</p>
+	<p>using System;
+using System.Windows.Forms;
+
+public class ZhuyinKeyboard : Form
+{
+    private TextBox textBox;
+    private Button[] buttons;
+
+    private static readonly string[] zhuyin = { "ㄅ", "ㄆ", "ㄇ", "ㄈ", "ㄉ", "ㄊ", "ㄋ", "ㄌ", "ㄍ", "ㄎ", "ㄏ", "ㄐ", "ㄑ", "ㄒ", "ㄓ", "ㄔ", "ㄕ", "ㄖ", "ㄗ", "ㄘ", "ㄙ", "ㄧ", "ㄨ", "ㄩ" };
+    private static readonly string[] chinese = { "不", "ㄅㄚ", "ㄘㄨㄛ", "ㄉㄧㄢ", "ㄜ", "ㄈㄨ", "ㄍㄨㄥ", "ㄏㄜ", "ㄐㄧ", "ㄎㄡ", "ㄌㄜ", "ㄇㄚ", "ㄋㄧㄝ", "ㄆㄧ", "ㄑㄧ", "ㄖㄢ", "ㄙㄨㄛ", "ㄕㄨㄛ", "ㄊㄧㄠ", "ㄨ", "ㄩ", "一", "五", "月" };
+
+    public ZhuyinKeyboard()
+    {
+        this.Text = "屏幕注音键盘";
+        this.Size = new System.Drawing.Size(360, 200);
+
+        this.textBox = new TextBox();
+        this.textBox.Dock = DockStyle.Top;
+        this.textBox.Multiline = true;
+        this.textBox.ScrollBars = ScrollBars.Vertical;
+        this.textBox.Font = new System.Drawing.Font("Microsoft YaHei", 12);
+        this.Controls.Add(this.textBox);
+
+        this.buttons = new Button[zhuyin.Length];
+        for (int i = 0; i < zhuyin.Length; i++)
+        {
+            this.buttons[i] = new Button();
+            this.buttons[i].Text = zhuyin[i] + "\r\n" + chinese[i];
+            this.buttons[i].Font = new System.Drawing.Font("Microsoft YaHei", 12);
+            this.buttons[i].Size = new System.Drawing.Size(40, 80);
+            this.buttons[i].Location = new System.Drawing.Point(10 + i * 40, 50);
+            this.buttons[i].Tag = chinese[i];
+            this.buttons[i].Click += new EventHandler(Button_Click);
+            this.Controls.Add(this.buttons[i]);
+        }
+    }
+
+    private void Button_Click(object sender, EventArgs e)
+    {
+        Button button = (Button)sender;
+        string chinese = (string)button.Tag;
+        SendKeys.Send(chinese);
+        textBox.AppendText(chinese);
+    }
+
+    [STAThread]
+    static void Main()
+    {
+        Application.EnableVisualStyles();
+        Application.Run(new ZhuyinKeyboard());
+    }
+					  }</p>
+		
+	<p>C# 屏幕拼音键盘输入法</p>
+	<p>using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace ScreenPinyinKeyboard
+{
+    public partial class MainForm : Form
+    {
+        private List<Button> buttons;
+        private Dictionary<Button, string> buttonToPinyin;
+
+        public MainForm()
+        {
+            InitializeComponent();
+
+            // 初始化按钮和注音符号的映射关系
+            buttonToPinyin = new Dictionary<Button, string>()
+            {
+                { button1, "ā" },
+                { button2, "á" },
+                { button3, "ǎ" },
+                { button4, "à" },
+                { button5, "ē" },
+                { button6, "é" },
+                { button7, "ě" },
+                { button8, "è" },
+                { button9, "ī" },
+                { button10, "í" },
+                { button11, "ǐ" },
+                { button12, "ì" },
+                { button13, "ō" },
+                { button14, "ó" },
+                { button15, "ǒ" },
+                { button16, "ò" },
+                { button17, "ū" },
+                { button18, "ú" },
+                { button19, "ǔ" },
+                { button20, "ù" },
+                { button21, "ü" },
+                { button22, "ǘ" },
+                { button23, "ǚ" },
+                { button24, "ǜ" },
+                { button25, "ń" },
+                { button26, "ň" },
+                { button27, "" }
+            };
+
+            // 初始化按钮的位置和大小
+            buttons = new List<Button>()
+            {
+                button1, button2, button3, button4, button5,
+                button6, button7, button8, button9, button10,
+                button11, button12, button13, button14, button15,
+                button16, button17, button18, button19, button20, button21, button22,
+            button23, button24, button25, button26, button27
+        };
+
+        var x = 10;
+        var y = 10;
+        var width = 60;
+        var height = 60;
+        var margin = 10;
+        var columns = 5;
+
+        foreach (var button in buttons)
+        {
+            button.Location = new Point(x, y);
+            button.Size = new Size(width, height);
+
+            x += width + margin;
+
+            if ((x - 10) / (width + margin) == columns)
+            {
+                x = 10;
+                y += height + margin;
+            }
+        }
+
+        // 为每个按钮添加点击事件处理程序
+        foreach (var button in buttons)
+        {
+            button.Click += button_Click;
+        }
+    }
+
+    private void button_Click(object sender, EventArgs e)
+    {
+        var button = (Button)sender;
+
+        if (buttonToPinyin.ContainsKey(button))
+        {
+            var pinyin = buttonToPinyin[button];
+            SendKeys.Send(pinyin);
+        }
+    }
+}
+		}</p>
+		
+	
 <h2>编程语言C++代码列表</h2>
 	
 	<p>C++语音识别程序，以下为代码</p>
