@@ -2454,7 +2454,842 @@ public class ScreenshotForm : Form
     }
 }
 				}</p>
+			
+			<p>C# 实现登录，注册和账户信息修改的程序</p>
+			<p>using System;
+using System.Collections.Generic;
+
+namespace LoginRegistrationApp
+{
+    class Program
+    {
+        static List<User> users = new List<User>();
+
+        static void Main(string[] args)
+        {
+            bool quit = false;
+            while (!quit)
+            {
+                Console.WriteLine("1. 登录");
+                Console.WriteLine("2. 注册");
+                Console.WriteLine("3. 退出");
+                Console.Write("请选择操作: ");
+
+                string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        Login();
+                        break;
+                    case "2":
+                        Register();
+                        break;
+                    case "3":
+                        quit = true;
+                        break;
+                    default:
+                        Console.WriteLine("无效的选择！");
+                        break;
+                }
+            }
+        }
+
+        static void Login()
+        {
+            Console.Write("请输入用户名: ");
+            string username = Console.ReadLine();
+
+            Console.Write("请输入密码: ");
+            string password = Console.ReadLine();
+
+            foreach (User user in users)
+            {
+                if (user.Username == username && user.Password == password)
+                {
+                    AccountMenu(user);
+                    return;
+                }
+            }
+
+            Console.WriteLine("用户名或密码错误！");
+        }
+
+        static void Register()
+        {
+            Console.Write("请输入用户名: ");
+            string username = Console.ReadLine();
+
+            Console.Write("请输入密码: ");
+            string password = Console.ReadLine();
+
+            Console.Write("请输入联系方式: ");
+            string email = Console.ReadLine();
+
+            User user = new User(username, password, email);
+            users.Add(user);
+
+            Console.WriteLine("注册成功！");
+        }
+
+        static void AccountMenu(User user)
+        {
+            bool quit = false;
+            while (!quit)
+            {
+                Console.WriteLine($"欢迎，{user.Username}！");
+                Console.WriteLine("1. 修改密码");
+                Console.WriteLine("2. 修改联系方式");
+                Console.WriteLine("3. 退出");
+                Console.Write("请选择操作: ");
+
+                string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        Console.Write("请输入新密码: ");
+                        string newPassword = Console.ReadLine();
+                        user.Password = newPassword;
+                        Console.WriteLine("密码修改成功！");
+                        break;
+                    case "2":
+                        Console.Write("请输入新的联系方式: ");
+                        string newEmail = Console.ReadLine();
+                        user.Email = newEmail;
+                        Console.WriteLine("联系方式修改成功！");
+                        break;
+                    case "3":
+                        quit = true;
+                        break;
+                    default:
+                        Console.WriteLine("无效的选择！");
+                        break;
+                }
+            }
+        }
+    }
+
+    class User
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Email { get; set; }
+
+        public User(string username, string password, string email)
+        {
+            Username = username;
+            Password = password;
+            Email = email;
+        }
+    }
+				}</p>
+				
+				<p>C# 手机或电脑硬件配置检测程序</p>
+				<p>using System;
+using System.Management;
+
+namespace HardwareInfo
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("硬件配置信息：\n");
+
+            Console.WriteLine("处理器信息：\n");
+            ManagementObjectSearcher processorSearcher = new ManagementObjectSearcher("select * from Win32_Processor");
+            foreach (ManagementObject processor in processorSearcher.Get())
+            {
+                Console.WriteLine($"处理器名称：{processor["Name"]}");
+                Console.WriteLine($"处理器核心数：{processor["NumberOfCores"]}");
+                Console.WriteLine($"处理器线程数：{processor["NumberOfLogicalProcessors"]}");
+                Console.WriteLine($"处理器架构：{processor["Architecture"]}");
+                Console.WriteLine($"处理器主频：{processor["MaxClockSpeed"]} MHz");
+                Console.WriteLine($"处理器当前时钟速度：{processor["CurrentClockSpeed"]} MHz");
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("内存信息：\n");
+            ManagementObjectSearcher memorySearcher = new ManagementObjectSearcher("select * from Win32_PhysicalMemory");
+            foreach (ManagementObject memory in memorySearcher.Get())
+            {
+                Console.WriteLine($"内存容量：{Convert.ToDouble(memory["Capacity"]) / 1024 / 1024 / 1024:F2} GB");
+                Console.WriteLine($"内存类型：{memory["MemoryType"]}");
+                Console.WriteLine($"内存速度：{memory["Speed"]} MHz");
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("硬盘信息：\n");
+            ManagementObjectSearcher diskSearcher = new ManagementObjectSearcher("select * from Win32_DiskDrive");
+            foreach (ManagementObject disk in diskSearcher.Get())
+            {
+                Console.WriteLine($"硬盘型号：{disk["Model"]}");
+                Console.WriteLine($"硬盘容量：{Convert.ToDouble(disk["Size"]) / 1024 / 1024 / 1024:F2} GB");
+                Console.WriteLine($"硬盘接口类型：{disk["InterfaceType"]}");
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("显卡信息：\n");
+            ManagementObjectSearcher videoSearcher = new ManagementObjectSearcher("select * from Win32_VideoController");
+            foreach (ManagementObject video in videoSearcher.Get())
+            {
+                Console.WriteLine($"显卡名称：{video["Name"]}");
+                Console.WriteLine($"显卡制造商：{video["AdapterCompatibility"]}");
+                Console.WriteLine($"显存大小：{Convert.ToDouble(video["AdapterRAM"]) / 1024 / 1024} MB");
+                Console.WriteLine($"显卡驱动版本号：{video["DriverVersion"]}");
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("操作系统信息：\n");
+            ManagementObjectSearcher osSearcher = new ManagementObjectSearcher("select * from Win32_OperatingSystem");
+            foreach (ManagementObject os in osSearcher.Get())
+            {
+                Console.WriteLine($"操作系统名称：{os["Caption"]}");
+                Console.WriteLine($"操作系统版本：{os["Version"]}");
+                Console.WriteLine($"安装日期：{ManagementDateTimeConverter.ToDateTime(os["InstallDate"]).ToString("yyyy年MM月dd日 HH:mm:ss")}");
+                Console.WriteLine($"系统语言：{os["OSLanguage"]}");
+                Console.WriteLine();
+            }
+					 Console.WriteLine("网络适配器信息：\n");
+        ManagementObjectSearcher networkSearcher = new ManagementObjectSearcher("select * from Win32_NetworkAdapterConfiguration where IPEnabled = 'TRUE'");
+        foreach (ManagementObject network in networkSearcher.Get())
+        {
+            Console.WriteLine($"适配器名称：{network["Caption"]}");
+            Console.WriteLine($"适配器MAC地址：{network["MACAddress"]}");
+            Console.Write("IP地址：");
+            string[] ips = (string[])network["IPAddress"];
+            foreach (string ip in ips)
+            {
+                Console.Write($"{ip} ");
+            }
+            Console.WriteLine();
+            Console.Write("子网掩码：");
+            string[] subnets = (string[])network["IPSubnet"];
+            foreach (string subnet in subnets)
+            {
+                Console.Write($"{subnet} ");
+            }
+            Console.WriteLine();
+            Console.Write("网关地址：");
+            string[] gateways = (string[])network["DefaultIPGateway"];
+            foreach (string gateway in gateways)
+            {
+                Console.Write($"{gateway} ");
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
+        Console.ReadKey();
+    }
+}
+					}</p>
+				<p>使用Windows Management Instrumentation (WMI)来获取本地计算机或手机的硬件配置信息。在程序运行时，它将依次获取并显示处理器，内存，硬盘，显卡，操作系统和网络适配器的详细信息。运行程序后，将会在控制台上看到输出的详细信息。</p>
+				<p>无法适用于所有设备和操作系统版本。可能需要在特定的环境中进行调整和修改才能正常运行</p>
+				
+				<p>C# 垃圾回收站程序</p>
+				<p>using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace RecycleBin
+{
+    class Program
+    {
+        static string binPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Recycle Bin\\"; // 回收站文件夹路径
+        static List<string> deletedFiles = new List<string>(); // 已删除文件列表
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("欢迎使用回收站程序！");
+            Console.WriteLine();
+
+            if (!Directory.Exists(binPath))
+            {
+                Directory.CreateDirectory(binPath);
+                Console.WriteLine($"已创建回收站文件夹：{binPath}");
+                Console.WriteLine();
+            }
+
+            ShowInstructions();
+
+            while (true)
+            {
+                Console.Write("请输入命令：");
+                string input = Console.ReadLine();
+                Console.WriteLine();
+
+                switch (input)
+                {
+                    case "create":
+                        CreateFile();
+                        break;
+                    case "delete":
+                        DeleteFile();
+                        break;
+                    case "restore":
+                        RestoreFile();
+                        break;
+                    case "empty":
+                        EmptyBin();
+                        break;
+                    case "list":
+                        ListFiles();
+                        break;
+                    case "help":
+                        ShowInstructions();
+                        break;
+                    case "exit":
+                        Console.WriteLine("程序已退出。");
+                        return;
+                    default:
+                        Console.WriteLine("无效的命令，请重新输入。");
+                        Console.WriteLine();
+                        break;
+                }
+            }
+        }
+
+        static void CreateFile()
+        {
+            Console.Write("请输入要创建的文件名：");
+            string fileName = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                Console.WriteLine("文件名不能为空。");
+                Console.WriteLine();
+                return;
+            }
+
+            string filePath = binPath + fileName;
+
+            if (File.Exists(filePath))
+            {
+                Console.WriteLine("该文件已存在，请重新命名。");
+                Console.WriteLine();
+                return;
+            }
+
+            File.Create(filePath).Dispose();
+            Console.WriteLine($"文件已创建：{filePath}");
+            Console.WriteLine();
+        }
+
+        static void DeleteFile()
+        {
+            Console.Write("请输入要删除的文件名：");
+            string fileName = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                Console.WriteLine("文件名不能为空。");
+                Console.WriteLine();
+                return;
+            }
+
+            string filePath = binPath + fileName;
+
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine("该文件不存在，请重新输入。");
+                Console.WriteLine();
+                return;
+            }
+
+            File.Move(filePath, binPath + Path.GetFileNameWithoutExtension(fileName) + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(fileName));
+            Console.WriteLine($"文件已移到回收站：{binPath}");
+            deletedFiles.Add(fileName);
+            Console.WriteLine();
+        }
+
+        static void RestoreFile()
+        {
+            Console.Write("请输入要恢复的文件名：");
+            string fileName = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                Console.WriteLine("文件名不能为空。");
+                Console.WriteLine();
+                return;
+            }
+
+            string filePath = binPath + fileName;
+
+            if (!deletedFiles.Contains(fileName))
+            {
+                Console.WriteLine("该文件不在回收站中，请重新输入。");
+                Console.WriteLine();
+                return;
+            }
+
+            string newFilePath = binPath + fileName;
+
+            if (File.Exists(newFilePath))
+            {
+                Console.WriteLine($"文件{newFilePath}已存在，请重新命名。");
+                Console.WriteLine();
+                return; 
+					File.Move(filePath, newFilePath);
+        deletedFiles.Remove(fileName);
+        Console.WriteLine($"文件已恢复：{newFilePath}");
+        Console.WriteLine();
+    }
+
+    static void EmptyBin()
+    {
+        Console.Write("您确定要清空回收站吗？（Y/N）：");
+        string answer = Console.ReadLine();
+
+        if (answer.ToUpper() == "Y")
+        {
+            foreach (var file in Directory.GetFiles(binPath))
+            {
+                File.Delete(file);
+            }
+            deletedFiles.Clear();
+            Console.WriteLine("回收站已清空。");
+            Console.WriteLine();
+        }
+        else
+        {
+            Console.WriteLine("回收站未被清空。");
+            Console.WriteLine();
+        }
+    }
+
+    static void ListFiles()
+    {
+        if (deletedFiles.Count == 0)
+        {
+            Console.WriteLine("回收站为空。");
+            Console.WriteLine();
+        }
+        else
+        {
+            Console.WriteLine("回收站中的文件：");
+            foreach (var file in deletedFiles)
+            {
+                Console.WriteLine(file);
+            }
+            Console.WriteLine();
+        }
+    }
+
+    static void ShowInstructions()
+    {
+        Console.WriteLine("可用的命令：");
+        Console.WriteLine("create - 创建文件");
+        Console.WriteLine("delete - 删除文件");
+        Console.WriteLine("restore - 恢复文件");
+        Console.WriteLine("empty - 清空回收站");
+        Console.WriteLine("list - 列出回收站中的文件");
+        Console.WriteLine("help - 显示帮助");
+        Console.WriteLine("exit - 退出程序");
+        Console.WriteLine();
+    }
+}
+					}</p>
 					
+					<p>C# 动态烟花程序</p>
+					<p>using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
+
+namespace Fireworks
+{
+    public partial class MainWindow : Window
+    {
+        private const int MAX_PARTICLES = 200;
+        private const int MAX_FIREWORKS = 5;
+        private const int WIDTH = 800;
+        private const int HEIGHT = 600;
+        private const int GRAVITY = 1;
+
+        private Random random = new Random();
+        private List<Particle> particles = new List<Particle>();
+        private List<Firework> fireworks = new List<Firework>();
+        private Canvas canvas;
+        private int frameCount = 0;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            canvas = new Canvas();
+            canvas.Width = WIDTH;
+            canvas.Height = HEIGHT;
+            canvas.Background = Brushes.Black;
+            Content = canvas;
+
+            CompositionTarget.Rendering += CompositionTarget_Rendering;
+        }
+
+        private void CompositionTarget_Rendering(object sender, EventArgs e)
+        {
+            if (frameCount % 5 == 0 && fireworks.Count < MAX_FIREWORKS)
+            {
+                fireworks.Add(new Firework(WIDTH / 2, HEIGHT));
+            }
+
+            for (int i = 0; i < fireworks.Count; i++)
+            {
+                Firework firework = fireworks[i];
+                firework.Update();
+
+                if (firework.IsDead)
+                {
+                    fireworks.RemoveAt(i--);
+
+                    for (int j = 0; j < MAX_PARTICLES; j++)
+                    {
+                        particles.Add(new Particle(firework.Position, firework.Color));
+                    }
+                }
+            }
+
+            for (int i = 0; i < particles.Count; i++)
+            {
+                Particle particle = particles[i];
+                particle.Update();
+
+                if (particle.IsDead)
+                {
+                    particles.RemoveAt(i--);
+                }
+            }
+
+            frameCount++;
+        }
+
+        private class Firework
+        {
+            private Point position;
+            private Vector velocity;
+            private Color color;
+            private bool isDead;
+            private List<Particle> particles = new List<Particle>();
+
+            public Firework(double x, double y)
+            {
+                position = new Point(x, y);
+                color = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+                velocity = new Vector(random.Next(-5, 5), -12);
+            }
+
+            public Point Position { get { return position; } }
+            public Color Color { get { return color; } }
+            public bool IsDead { get { return isDead; } }
+
+            public void Update()
+            {
+                if (!isDead)
+                {
+                    position += velocity;
+                    velocity.Y += GRAVITY;
+
+                    if (velocity.Y >= 0)
+                    {
+                        isDead = true;
+                    }
+                }
+            }
+        }
+
+        private class Particle
+        {
+            private Point position;
+            private Vector velocity;
+            private Color color;
+            private bool isDead;
+            private int age;
+            private const int MAX_AGE = 80;
+
+            public Particle(Point position, Color color)
+            {
+                this.position = position;
+                this.color = color;
+                velocity = new Vector(random.Next(-2, 2), random.Next(-2, 2));
+            }
+
+            public Point Position { get { return position; } }
+            public Color Color { get { return color; } }
+            public bool IsDead { get { return isDead; } }
+
+            public void Update()
+            {
+                if (!is
+						 {
+                position += velocity;
+                age++;
+                velocity.Y += GRAVITY / 2;
+
+                if (age > MAX_AGE)
+                {
+                    isDead = true;
+                }
+            }
+        }
+    }
+}
+						}</p>
+						
+						<p>C# 字典查询程序</p>
+						<p>using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
+
+namespace DictionaryProgram
+{
+    class Dictionary
+    {
+        private SQLiteConnection connection;
+
+        public Dictionary(string dbFilePath)
+        {
+            connection = new SQLiteConnection($"Data Source={dbFilePath}");
+            connection.Open();
+            InitializeDatabase();
+        }
+
+        public void Close()
+        {
+            connection.Close();
+        }
+
+        private void InitializeDatabase()
+        {
+            string createTableSql = "CREATE TABLE IF NOT EXISTS dictionary (word TEXT PRIMARY KEY, definition TEXT)";
+            SQLiteCommand command = new SQLiteCommand(createTableSql, connection);
+            command.ExecuteNonQuery();
+        }
+
+        public void AddEntry(string word, string definition)
+        {
+            string insertSql = "INSERT INTO dictionary (word, definition) VALUES (@word, @definition)";
+            SQLiteCommand command = new SQLiteCommand(insertSql, connection);
+            command.Parameters.AddWithValue("@word", word.ToLower());
+            command.Parameters.AddWithValue("@definition", definition);
+            command.ExecuteNonQuery();
+        }
+
+        public void RemoveEntry(string word)
+        {
+            string deleteSql = "DELETE FROM dictionary WHERE word = @word";
+            SQLiteCommand command = new SQLiteCommand(deleteSql, connection);
+            command.Parameters.AddWithValue("@word", word.ToLower());
+            command.ExecuteNonQuery();
+        }
+
+        public List<string> Search(string query)
+        {
+            List<string> results = new List<string>();
+
+            string selectSql = "SELECT * FROM dictionary WHERE word LIKE @query OR definition LIKE @query";
+            SQLiteCommand command = new SQLiteCommand(selectSql, connection);
+            command.Parameters.AddWithValue("@query", $"%{query.ToLower()}%");
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string word = reader.GetString(0);
+                string definition = reader.GetString(1);
+                results.Add($"{word}: {definition}");
+            }
+
+            return results;
+        }
+
+        public List<string> FullTextSearch(string query)
+        {
+            List<string> results = new List<string>();
+
+            string selectSql = "SELECT * FROM dictionary WHERE MATCH(word, definition) AGAINST(@query)";
+            SQLiteCommand command = new SQLiteCommand(selectSql, connection);
+            command.Parameters.AddWithValue("@query", query.ToLower());
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string word = reader.GetString(0);
+                string definition = reader.GetString(1);
+                results.Add($"{word}: {definition}");
+            }
+
+            return results;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Dictionary dictionary = new Dictionary("dictionary.db");
+
+            while (true)
+            {
+                Console.Write("Enter a search term: ");
+                string query = Console.ReadLine().Trim().ToLower();
+
+                Console.Write("Search type (fuzzy/full): ");
+                string searchType = Console.ReadLine().Trim().ToLower();
+
+                List<string> results;
+
+                if (searchType == "full")
+                {
+                    results = dictionary.FullTextSearch(query);
+                }
+                else
+                {
+                    results = dictionary.Search(query);
+                }
+
+                Console.WriteLine();
+
+                if (results.Count == 0)
+                {
+                    Console.WriteLine("No results found.");
+                }
+                else
+                {
+                    foreach (string result in results)
+                    {
+                        Console.WriteLine(result);
+                    }
+                }
+
+                Console.WriteLine();
+            }
+
+            dictionary.Close();
+        }
+    }
+							}</p>
+							
+							<p>C# 翻译器程序</p>
+							<p>这个程序使用了Microsoft Translator API来进行翻译。要运行这个程序，您需要获取一个Microsoft Translator API的订阅密钥
+								修改你的API密钥在 string apiKey = "<your API key here>";</p>
+							<p>using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace LanguageTranslator
+{
+    class Program
+    {
+        static readonly HttpClient client = new HttpClient();
+
+        static async Task Main(string[] args)
+        {
+            // Prompt the user to enter the text to be translated
+            Console.Write("Enter the text to be translated: ");
+            string inputText = Console.ReadLine();
+
+            // Prompt the user to enter the source language
+            Console.Write("Enter the source language (e.g. en): ");
+            string sourceLanguage = Console.ReadLine();
+
+            // Prompt the user to enter the target language
+            Console.Write("Enter the target language (e.g. fr): ");
+            string targetLanguage = Console.ReadLine();
+
+            // Call the translation API and get the response
+            string response = await TranslateAsync(inputText, sourceLanguage, targetLanguage);
+
+            // Print the translation to the console
+            Console.WriteLine(response);
+        }
+
+        static async Task<string> TranslateAsync(string inputText, string sourceLanguage, string targetLanguage)
+        {
+            // Define the translation API endpoint and the API key
+            string endpoint = "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=" + sourceLanguage + "&to=" + targetLanguage;
+            string apiKey = "<your API key here>";
+
+            // Set up the HTTP request message with the input text
+            var content = new[] { new { Text = inputText } };
+            var requestBody = Newtonsoft.Json.JsonConvert.SerializeObject(content);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(endpoint),
+                Content = new StringContent(requestBody, System.Text.Encoding.UTF8, "application/json")
+            };
+            request.Headers.Add("Ocp-Apim-Subscription-Key", apiKey);
+
+            // Send the HTTP request and get the response
+            var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            // Parse the response JSON and extract the translation
+            dynamic jsonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject(responseBody);
+            string translation = jsonResponse[0].translations[0].text;
+
+            return translation;
+        }
+    }
+								}</p>
+								
+								<p>C# 货币转换程序</p>
+								<p>using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+
+namespace CurrencyConverter
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            Console.WriteLine("Welcome to Currency Converter!");
+            Console.WriteLine();
+
+            // Get currency codes and exchange rates from the API
+            string url = "https://api.exchangeratesapi.io/latest?base=USD";
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
+            JObject json = JObject.Parse(responseBody);
+            JObject rates = (JObject)json["rates"];
+
+            // Display available currencies
+            Console.WriteLine("Available currencies:");
+            foreach (var item in rates)
+            {
+                Console.WriteLine(item.Key);
+            }
+            Console.WriteLine();
+
+            // Get user input
+            Console.Write("Enter the amount of money to convert: ");
+            double amount = double.Parse(Console.ReadLine());
+            Console.Write("Enter the currency code to convert from: ");
+            string fromCurrency = Console.ReadLine().ToUpper();
+            Console.Write("Enter the currency code to convert to: ");
+            string toCurrency = Console.ReadLine().ToUpper();
+
+            // Calculate the conversion
+            double fromRate = (double)rates[fromCurrency];
+            double toRate = (double)rates[toCurrency];
+            double convertedAmount = amount / fromRate * toRate;
+
+            // Display the result
+            Console.WriteLine($"{amount} {fromCurrency} = {convertedAmount} {toCurrency}");
+        }
+    }
+									}</p>
+								
 <h2>编程语言C++代码列表</h2>
 	
 	<p>C++语音识别程序，以下为代码</p>
