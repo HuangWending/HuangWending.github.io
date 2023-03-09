@@ -860,7 +860,1601 @@ namespace ScreenPinyinKeyboard
 }
 		}</p>
 		
-	
+		<p>C# 画图程序</p>
+		<p>using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace DrawingApp
+{
+    public partial class MainForm : Form
+    {
+        private Bitmap canvas;  // 画布
+        private Graphics graphics;  // 画笔
+        private Pen pen;  // 画笔颜色
+        private int shapeWidth;  // 形状宽度
+        private int shapeHeight;  // 形状高度
+        private Point startPoint;  // 起始点
+        private Point endPoint;  // 终点
+        private bool drawing;  // 是否正在绘制
+        private bool selecting;  // 是否正在选择
+        private bool moving;  // 是否正在移动
+        private bool resizing;  // 是否正在调整大小
+        private bool rotating;  // 是否正在旋转
+        private Point selectStartPoint;  // 选择起始点
+        private Point selectEndPoint;  // 选择终点
+        private Rectangle selectedRectangle;  // 选择的矩形
+        private Point moveStartPoint;  // 移动起始点
+        private Point resizeStartPoint;  // 调整大小起始点
+        private double rotateAngle;  // 旋转角度
+
+        public MainForm()
+        {
+            InitializeComponent();
+            canvas = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            graphics = Graphics.FromImage(canvas);
+            pen = new Pen(Color.Black);
+            shapeWidth = 0;
+            shapeHeight = 0;
+            startPoint = new Point();
+            endPoint = new Point();
+            drawing = false;
+            selecting = false;
+            moving = false;
+            resizing = false;
+            rotating = false;
+            selectStartPoint = new Point();
+            selectEndPoint = new Point();
+            selectedRectangle = new Rectangle();
+            moveStartPoint = new Point();
+            resizeStartPoint = new Point();
+            rotateAngle = 0;
+        }
+
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawImage(canvas, 0, 0);
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (toolStripButtonLine.Checked)
+                {
+                    shapeWidth = 0;
+                    shapeHeight = 0;
+                    startPoint = e.Location;
+                    drawing = true;
+                }
+                else if (toolStripButtonRectangle.Checked)
+                {
+                    shapeWidth = 0;
+                    shapeHeight = 0;
+                    startPoint = e.Location;
+                    drawing = true;
+                }
+                else if (toolStripButtonEllipse.Checked)
+                {
+                    shapeWidth = 0;
+                    shapeHeight = 0;
+                    startPoint = e.Location;
+                    drawing = true;
+                }
+                else if (toolStripButtonArc.Checked)
+                {
+                    shapeWidth = 0;
+                    shapeHeight = 0;
+                    startPoint = e.Location;
+                    drawing = true;
+                }
+                else if (toolStripButtonText.Checked)
+                {
+                    shapeWidth  = 0;
+                shapeHeight = 0;
+                startPoint = e.Location;
+                drawing = true;
+            }
+            else if (toolStripButtonSelect.Checked)
+            {
+                selectStartPoint = e.Location;
+                selecting = true;
+            }
+        }
+        else if (e.Button == MouseButtons.Right)
+        {
+            if (toolStripButtonSelect.Checked)
+            {
+                moving = false;
+                resizing = false;
+                rotating = false;
+                selectedRectangle = Rectangle.Empty;
+                selectStartPoint = e.Location;
+                selectEndPoint = e.Location;
+                pictureBox1.Invalidate();
+            }
+        }
+    }
+
+    private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (drawing)
+        {
+            endPoint = e.Location;
+            pictureBox1.Invalidate();
+        }
+        else if (selecting)
+        {
+            selectEndPoint = e.Location;
+            pictureBox1.Invalidate();
+        }
+        else if (moving)
+        {
+            int dx = e.X - moveStartPoint.X;
+            int dy = e.Y - moveStartPoint.Y;
+            selectedRectangle.X += dx;
+            selectedRectangle.Y += dy;
+            moveStartPoint = e.Location;
+            pictureBox1.Invalidate();
+        }
+        else if (resizing)
+        {
+            int dx = e.X - resizeStartPoint.X;
+            int dy = e.Y - resizeStartPoint.Y;
+            if (selectedRectangle.Width + dx > 0 && selectedRectangle.Height + dy > 0)
+            {
+                selectedRectangle.Width += dx;
+                selectedRectangle.Height += dy;
+                resizeStartPoint = e.Location;
+                pictureBox1.Invalidate();
+            }
+        }
+        else if (rotating)
+        {
+            int dx = e.X - selectedRectangle.Left - selectedRectangle.Width / 2;
+            int dy = e.Y - selectedRectangle.Top - selectedRectangle.Height / 2;
+            double angle = Math.Atan2(dy, dx) * 180 / Math.PI;
+            rotateAngle = angle;
+            pictureBox1.Invalidate();
+        }
+    }
+
+    private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+    {
+        if (drawing)
+        {
+            endPoint = e.Location;
+            if (toolStripButtonLine.Checked)
+            {
+                graphics.DrawLine(pen, startPoint, endPoint);
+            }
+            else if (toolStripButtonRectangle.Checked)
+            {
+                shapeWidth = Math.Abs(endPoint.X - startPoint.X);
+                shapeHeight = Math.Abs(endPoint.Y - startPoint.Y);
+                int x = Math.Min(startPoint.X, endPoint.X);
+                int y = Math.Min(startPoint.Y, endPoint.Y);
+                graphics.DrawRectangle(pen, x, y, shapeWidth, shapeHeight);
+            }
+            else if (toolStripButtonEllipse.Checked)
+            {
+                shapeWidth = Math.Abs(endPoint.X - startPoint.X);
+                shapeHeight = Math.Abs(endPoint.Y - startPoint.Y);
+                int x = Math.Min(startPoint.X, endPoint.X);
+                int y = Math.Min(startPoint.Y, endPoint.Y);
+                graphics.DrawEllipse(pen, x, y, shapeWidth, shapeHeight);
+            }
+            else if (toolStripButtonArc.Checked)
+            {
+                shapeWidth = Math.Abs(endPoint.X - startPoint.X);
+                shapeHeight = Math.Abs(endPoint.Y - startPoint.Y);
+                int x = Math.Min(startPoint.X, endPoint.X);
+                int y = Math.Min(startPoint.Y, endPoint.Y);
+                int startAngle = 0;
+                int sweepAngle = 180;
+                graphics.DrawArc(pen, x, y, shapeWidth, shapeHeight, startAngle, sweepAngle);
+            }
+            else if (toolStripButtonText.Checked)
+            {
+                shapeWidth = Math.Abs(endPoint.X - startPoint.X);
+                shapeHeight = Math.Abs(endPoint.Y - startPoint.Y );
+                int x = Math.Min(startPoint.X, endPoint.X);
+                int y = Math.Min(startPoint.Y, endPoint.Y);
+                Font font = new Font("Arial", 16);
+                graphics.DrawString(toolStripTextBoxText.Text, font, brush, x, y);
+            }
+            pictureBox1.Invalidate();
+            drawing = false;
+        }
+        else if (selecting)
+        {
+            selectEndPoint = e.Location;
+            selecting = false;
+            selectedRectangle = new Rectangle(Math.Min(selectStartPoint.X, selectEndPoint.X),
+                Math.Min(selectStartPoint.Y, selectEndPoint.Y),
+                Math.Abs(selectStartPoint.X - selectEndPoint.X),
+                Math.Abs(selectStartPoint.Y - selectEndPoint.Y));
+            pictureBox1.Invalidate();
+        }
+        else if (moving)
+        {
+            moving = false;
+            pictureBox1.Invalidate();
+        }
+        else if (resizing)
+        {
+            resizing = false;
+            pictureBox1.Invalidate();
+        }
+        else if (rotating)
+        {
+            rotating = false;
+            pictureBox1.Invalidate();
+        }
+    }
+
+    private void pictureBox1_Paint(object sender, PaintEventArgs e)
+    {
+        if (drawing)
+        {
+            if (toolStripButtonLine.Checked)
+            {
+                e.Graphics.DrawLine(pen, startPoint, endPoint);
+            }
+            else if (toolStripButtonRectangle.Checked)
+            {
+                shapeWidth = Math.Abs(endPoint.X - startPoint.X);
+                shapeHeight = Math.Abs(endPoint.Y - startPoint.Y);
+                int x = Math.Min(startPoint.X, endPoint.X);
+                int y = Math.Min(startPoint.Y, endPoint.Y);
+                e.Graphics.DrawRectangle(pen, x, y, shapeWidth, shapeHeight);
+            }
+            else if (toolStripButtonEllipse.Checked)
+            {
+                shapeWidth = Math.Abs(endPoint.X - startPoint.X);
+                shapeHeight = Math.Abs(endPoint.Y - startPoint.Y);
+                int x = Math.Min(startPoint.X, endPoint.X);
+                int y = Math.Min(startPoint.Y, endPoint.Y);
+                e.Graphics.DrawEllipse(pen, x, y, shapeWidth, shapeHeight);
+            }
+            else if (toolStripButtonArc.Checked)
+            {
+                shapeWidth = Math.Abs(endPoint.X - startPoint.X);
+                shapeHeight = Math.Abs(endPoint.Y - startPoint.Y);
+                int x = Math.Min(startPoint.X, endPoint.X);
+                int y = Math.Min(startPoint.Y, endPoint.Y);
+                int startAngle = 0;
+                int sweepAngle = 180;
+                e.Graphics.DrawArc(pen, x, y, shapeWidth, shapeHeight, startAngle, sweepAngle);
+            }
+            else if (toolStripButtonText.Checked)
+            {
+                shapeWidth = Math.Abs(endPoint.X - startPoint.X);
+                shapeHeight = Math.Abs(endPoint.Y - startPoint.Y);
+                int x = Math.Min(startPoint.X, endPoint.X);
+                int y = Math.Min(startPoint.Y, endPoint.Y);
+                Font font = new Font("Arial", 16);
+                e.Graphics.DrawString(toolStripTextBoxText.Text, font, brush, x, y);
+            }
+        }
+        else
+        {
+            foreach (Shape shape in shapes)
+            {
+                shape.Draw(e.Graphics);
+            }
+
+            if (selecting)
+            {
+                Pen selectPen = new Pen(Color.Black, 1);
+                selectPen.DashStyle = DashStyle.Dash;
+                int x = Math.Min(selectStartPoint.X, selectEndPoint.X);
+                int y = Math.Min(selectStartPoint.Y, selectEndPoint.Y);
+                int width = Math.Abs(selectStartPoint.X - selectEndPoint.X);
+                int height = Math.Abs(selectStartPoint.Y - selectEndPoint.Y);
+                Rectangle rectangle = new Rectangle(x, y, width, height);
+                e.Graphics.Draw Rectangle(rectangle, selectPen);
+}
+else if (moving)
+{
+int deltaX = currentMouseLocation.X - previousMouseLocation.X;
+int deltaY = currentMouseLocation.Y - previousMouseLocation.Y;
+selectedShape.Move(deltaX, deltaY);
+}
+else if (resizing)
+{
+int deltaX = currentMouseLocation.X - previousMouseLocation.X;
+int deltaY = currentMouseLocation.Y - previousMouseLocation.Y;
+selectedShape.Resize(deltaX, deltaY);
+}
+else if (rotating)
+{
+double deltaX = currentMouseLocation.X - selectedShape.Center.X;
+double deltaY = currentMouseLocation.Y - selectedShape.Center.Y;
+double angle = Math.Atan2(deltaY, deltaX) - Math.Atan2(previousMouseLocation.Y - selectedShape.Center.Y, previousMouseLocation.X - selectedShape.Center.X);
+selectedShape.Rotate(angle);
+}
+}
+}
+			 private void toolStripButtonLine_Click(object sender, EventArgs e)
+    {
+        toolStripButtonLine.Checked = true;
+        toolStripButtonRectangle.Checked = false;
+        toolStripButtonEllipse.Checked = false;
+        toolStripButtonArc.Checked = false;
+        toolStripButtonText.Checked = false;
+        pen = new Pen(Color.Black, 3);
+        brush = new SolidBrush(Color.Black);
+    }
+
+    private void toolStripButtonRectangle_Click(object sender, EventArgs e)
+    {
+        toolStripButtonLine.Checked = false;
+        toolStripButtonRectangle.Checked = true;
+        toolStripButtonEllipse.Checked = false;
+        toolStripButtonArc.Checked = false;
+        toolStripButtonText.Checked = false;
+        pen = new Pen(Color.Black, 3);
+        brush = new SolidBrush(Color.Black);
+    }
+
+    private void toolStripButtonEllipse_Click(object sender, EventArgs e)
+    {
+        toolStripButtonLine.Checked = false;
+        toolStripButtonRectangle.Checked = false;
+        toolStripButtonEllipse.Checked = true;
+        toolStripButtonArc.Checked = false;
+        toolStripButtonText.Checked = false;
+        pen = new Pen(Color.Black, 3);
+        brush = new SolidBrush(Color.Black);
+    }
+
+    private void toolStripButtonArc_Click(object sender, EventArgs e)
+    {
+        toolStripButtonLine.Checked = false;
+        toolStripButtonRectangle.Checked = false;
+        toolStripButtonEllipse.Checked = false;
+        toolStripButtonArc.Checked = true;
+        toolStripButtonText.Checked = false;
+        pen = new Pen(Color.Black, 3);
+        brush = new SolidBrush(Color.Black);
+    }
+
+    private void toolStripButtonText_Click(object sender, EventArgs e)
+    {
+        toolStripButtonLine.Checked = false;
+        toolStripButtonRectangle.Checked = false;
+        toolStripButtonEllipse.Checked = false;
+        toolStripButtonArc.Checked = false;
+        toolStripButtonText.Checked = true;
+        pen = new Pen(Color.Black, 1);
+        brush = new SolidBrush(Color.Black);
+    }
+
+    private void toolStripButtonColor_Click(object sender, EventArgs e)
+    {
+        if (colorDialog.ShowDialog() == DialogResult.OK)
+        {
+            pen.Color = colorDialog.Color;
+            brush.Color = colorDialog.Color;
+        }
+    }
+
+    private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+    {
+        if (drawing)
+        {
+            return;
+        }
+
+        foreach (Shape shape in shapes)
+        {
+            if (shape.Contains(e.Location))
+            {
+                shape.Selected = true;
+                selectedShape = shape;
+                pictureBox1.Invalidate();
+                return;
+            }
+        }
+
+        foreach (Shape shape in shapes)
+        {
+            shape.Selected = false;
+        }
+        pictureBox1.Invalidate();
+    }
+
+    private void pictureBox1_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (selectedShape != null && e.KeyCode == Keys.Delete)
+        {
+            shapes.Remove(selectedShape);
+            selectedShape = null;
+            pictureBox1.Invalidate();
+        }
+			private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Left)
+        {
+            if (drawing)
+            {
+                return;
+            }
+
+            foreach (Shape shape in shapes)
+            {
+                if (shape.Contains(e.Location))
+                {
+                    if (e.Clicks == 1)
+                    {
+                        moving = true;
+                        selectedShape = shape;
+                        previousMouseLocation = e.Location;
+                        return;
+                    }
+                    else if (e.Clicks == 2 && shape.Type == ShapeType.Text)
+                    {
+                        TextShape textShape = (TextShape)shape;
+                        TextForm textForm = new TextForm(textShape.Text);
+                        if (textForm.ShowDialog() == DialogResult.OK)
+                        {
+                            textShape.Text = textForm.TextString;
+                            pictureBox1.Invalidate();
+                        }
+                        return;
+                    }
+                }
+            }
+
+            foreach (Shape shape in shapes)
+            {
+                shape.Selected = false;
+            }
+            pictureBox1.Invalidate();
+
+            if (toolStripButtonLine.Checked)
+            {
+                drawing = true;
+                currentShape = new LineShape(e.Location, e.Location, pen);
+            }
+            else if (toolStripButtonRectangle.Checked)
+            {
+                drawing = true;
+                currentShape = new RectangleShape(e.Location, e.Location, pen, brush);
+            }
+            else if (toolStripButtonEllipse.Checked)
+            {
+                drawing = true;
+                currentShape = new EllipseShape(e.Location, e.Location, pen, brush);
+            }
+            else if (toolStripButtonArc.Checked)
+            {
+                drawing = true;
+                currentShape = new ArcShape(e.Location, e.Location, pen, brush);
+            }
+            else if (toolStripButtonText.Checked)
+            {
+                drawing = true;
+                TextForm textForm = new TextForm("");
+                if (textForm.ShowDialog() == DialogResult.OK)
+                {
+                    currentShape = new TextShape(e.Location, e.Location, pen, textForm.TextString);
+                }
+            }
+        }
+        else if (e.Button == MouseButtons.Right)
+        {
+            if (drawing)
+            {
+                drawing = false;
+                shapes.Add(currentShape);
+                currentShape = null;
+                pictureBox1.Invalidate();
+            }
+            else
+            {
+                foreach (Shape shape in shapes)
+                {
+                    if (shape.Contains(e.Location))
+                    {
+                        resizing = true;
+                        selectedShape = shape;
+                        previousMouseLocation = e.Location;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Left)
+        {
+            if (drawing)
+            {
+                currentShape.EndPoint = e.Location;
+                drawing = false;
+                shapes.Add(currentShape);
+                currentShape = null;
+                pictureBox1.Invalidate();
+            }
+            else if (moving)
+            {
+                moving = false;
+                selectedShape = null;
+            }
+        }
+        else if (e.Button == MouseButtons.Right)
+        {
+            if (resizing)
+            {
+                resizing = false;
+                selectedShape = null;
+            }
+            else if (selectedShape != null)
+            {
+                rotating = true;
+                previousMouseLocation = e.Location;
+            }
+        }
+    }
+
+    private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+    {
+        currentMouseLocation = e.Location;
+
+        if (drawing)
+        {
+            currentShape.EndPoint = e.Location;
+            pictureBox1.Invalidate();
+        }
+        else if (moving)
+        {
+            pictureBox1.Invalidate();
+        }
+        else if (resizing)
+        {
+            pictureBox1.Invalidate();
+        }
+        else if (rotating)
+        {
+            pictureBox1.Invalidate();
+        }
+        else
+        {
+            foreach (Shape Shape shape in shapes)
+            {
+                if (shape.Contains(e.Location))
+                {
+                    Cursor = Cursors.Hand;
+                    return;
+                }
+            }
+            Cursor = Cursors.Default;
+        }
+
+        if (moving)
+        {
+            Point delta = new Point(currentMouseLocation.X - previousMouseLocation.X,
+                currentMouseLocation.Y - previousMouseLocation.Y);
+            selectedShape.Move(delta);
+            previousMouseLocation = currentMouseLocation;
+            pictureBox1.Invalidate();
+        }
+        else if (resizing)
+        {
+            Point delta = new Point(currentMouseLocation.X - previousMouseLocation.X,
+                currentMouseLocation.Y - previousMouseLocation.Y);
+            selectedShape.Resize(delta);
+            previousMouseLocation = currentMouseLocation;
+            pictureBox1.Invalidate();
+        }
+        else if (rotating)
+        {
+            float delta = currentMouseLocation.X - previousMouseLocation.X;
+            selectedShape.Rotate(delta);
+            previousMouseLocation = currentMouseLocation;
+            pictureBox1.Invalidate();
+        }
+    }
+
+    private void pictureBox1_Paint(object sender, PaintEventArgs e)
+    {
+        Graphics g = e.Graphics;
+
+        foreach (Shape shape in shapes)
+        {
+            shape.Draw(g);
+        }
+
+        if (drawing)
+        {
+            currentShape.Draw(g);
+        }
+        else if (moving)
+        {
+            selectedShape.Draw(g);
+        }
+        else if (resizing)
+        {
+            selectedShape.Draw(g);
+        }
+        else if (rotating)
+        {
+            selectedShape.Draw(g);
+        }
+    }
+
+    private void toolStripButtonColor_Click(object sender, EventArgs e)
+    {
+        ColorDialog colorDialog = new ColorDialog();
+        if (colorDialog.ShowDialog() == DialogResult.OK)
+        {
+            pen.Color = colorDialog.Color;
+            brush.Color = colorDialog.Color;
+            pictureBoxColor.BackColor = colorDialog.Color;
+        }
+    }
+
+    private void toolStripButtonWidth_Click(object sender, EventArgs e)
+    {
+        WidthForm widthForm = new WidthForm(pen.Width);
+        if (widthForm.ShowDialog() == DialogResult.OK)
+        {
+            pen.Width = widthForm.PenWidth;
+        }
+    }
+
+    private void toolStripButtonSave_Click(object sender, EventArgs e)
+    {
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        saveFileDialog.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF";
+        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            Bitmap bitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            pictureBox1.DrawToBitmap(bitmap, new Rectangle(0, 0, pictureBox1.Width, pictureBox1.Height));
+            bitmap.Save(saveFileDialog.FileName);
+        }
+    }
+
+    private void toolStripButtonOpen_Click(object sender, EventArgs e)
+    {
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        openFileDialog.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF";
+        if (openFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            Bitmap bitmap = new Bitmap(openFileDialog.FileName);
+            pictureBox1.Image = bitmap;
+        }
+    }
+
+    private void toolStripButtonClear_Click(object sender, EventArgs e)
+    {
+        shapes.Clear();
+        pictureBox1.Invalidate();
+    }
+}
+			}</p>
+		<p>在这个代码中，我创建了一个 Shape 抽象类和几个具体的形状类，例如 LineShape， RectangleShape， EllipseShape 和 TriangleShape。这些形状类都实现了 Shape 抽象类中定义的方法，如 Draw， Contains， Move， Resize 和 Rotate 等。这些方法允许我们绘制形状，检查形状是否包含一个点，移动形状，调整形状的大小和旋转形状。
+
+在 Form1 类中，我使用了一个 List<Shape> 对象来存储所有绘制的形状。当用户单击绘图工具栏中的某个工具时，我将 drawing 设置为 true，表示当前正在绘制一个新的形状。当用户单击绘图区域时，我会创建一个新的形状对象，将其添加到 shapes 列表中，并将 drawing 设置为 false。
+
+当用户将鼠标悬停在形状上时，我将光标设置为手形，以表示该形状可以被选择。当用户单击形状时，我将 selectedShape 设置为当前形状，并根据用户的操作（移动、调整大小或旋转）将 moving、resizing 或 rotating 设置为 true。当用户完成对形状的操作时，我将这些标志设置回 false，以便用户可以进行其他操作。
+
+在绘制绘图区域时，我首先绘制所有形状，然后绘制当前正在绘制或操作的形状。这确保当前形状始终显示在所有形状的最上层。
+
+除了绘制工具栏，我还添加了几个按钮，以允许用户选择线条颜色、线条宽度、保存图像、打开图像以及清除所有形状。这些按钮都有相应的单击事件处理程序，可以执行所需的操作。
+
+			我想说的是，这些代码提供了一个基本的画图应用程序框架，可以通过添加更多形状和功能来扩展和定制。</p>
+		<p>C# 录音器程序</p>
+		<p>using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+
+namespace Recorder
+{
+    public partial class Form1 : Form
+    {
+        [DllImport("winmm.dll", EntryPoint = "mciSendStringA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        private static extern int mciSendString(string lpCommand, string lpReturnString, int uReturnLength, int hwndCallback);
+
+        private string filePath;
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            // Create a new file name for the recording
+            filePath = Path.Combine(Application.StartupPath, DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".wav");
+
+            // Start recording
+            mciSendString("open new Type waveaudio Alias recsound", "", 0, 0);
+            mciSendString("record recsound", "", 0, 0);
+
+            // Update UI
+            lblStatus.Text = "Recording...";
+            btnStart.Enabled = false;
+            btnStop.Enabled = true;
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            // Stop recording
+            mciSendString("stop recsound", "", 0, 0);
+            mciSendString("save recsound \"" + filePath + "\"", "", 0, 0);
+            mciSendString("close recsound", "", 0, 0);
+
+            // Update UI
+            lblStatus.Text = "Recording stopped";
+            btnStart.Enabled = true;
+            btnStop.Enabled = false;
+        }
+    }
+			}</p>
+		<p>在这个程序中，我使用了 mciSendString 函数来调用Windows多媒体命令接口来捕获系统音频。我将录制的音频保存为WAV文件，并使用日期时间作为文件名。
+
+在UI方面，我添加了两个按钮（开始和停止录制）以及一个标签来显示当前录制状态。当用户单击“开始”按钮时，我将创建一个新的WAV文件，并使用 mciSendString 函数开始录制音频。在录制期间，标签将显示“Recording...”。当用户单击“停止”按钮时，我将停止录制，并使用 mciSendString 函数将录制的音频保存到文件中。标签将更新为“Recording stopped”。
+
+			程序提供了一个基本的录音器框架，但您可以通过添加更多功能来扩展和定制，可以添加音频剪辑、调整音频音量、添加音频效果等。</p>
+		
+		<p>C# 实现音乐播放器和其它功能程序</p>
+		<p>using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Windows.Forms;
+using NAudio.Wave;
+
+namespace MusicPlayer
+{
+    public partial class Form1 : Form
+    {
+        private List<string> playlist;
+        private int currentIndex;
+        private WaveOutEvent outputDevice;
+        private AudioFileReader audioFile;
+
+        public Form1()
+        {
+            InitializeComponent();
+            playlist = new List<string>();
+            currentIndex = -1;
+        }
+
+        private void btnOpen_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Audio Files (*.mp3;*.wav)|*.mp3;*.wav|All Files (*.*)|*.*";
+            openFileDialog.Multiselect = true;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                foreach (string file in openFileDialog.FileNames)
+                {
+                    playlist.Add(file);
+                }
+                UpdatePlaylist();
+            }
+        }
+
+        private void UpdatePlaylist()
+        {
+            lstPlaylist.Items.Clear();
+            foreach (string file in playlist)
+            {
+                lstPlaylist.Items.Add(Path.GetFileNameWithoutExtension(file));
+            }
+        }
+
+        private void lstPlaylist_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstPlaylist.SelectedIndex != -1)
+            {
+                currentIndex = lstPlaylist.SelectedIndex;
+                LoadAudioFile(playlist[currentIndex]);
+                Play();
+            }
+        }
+
+        private void LoadAudioFile(string filePath)
+        {
+            if (outputDevice != null)
+            {
+                outputDevice.Stop();
+                outputDevice.Dispose();
+            }
+            if (audioFile != null)
+            {
+                audioFile.Dispose();
+            }
+
+            audioFile = new AudioFileReader(filePath);
+            outputDevice = new WaveOutEvent();
+            outputDevice.Init(audioFile);
+        }
+
+        private void Play()
+        {
+            outputDevice.Play();
+            tmrProgress.Enabled = true;
+            btnPlay.Enabled = false;
+            btnPause.Enabled = true;
+            btnStop.Enabled = true;
+        }
+
+        private void Pause()
+        {
+            outputDevice.Pause();
+            tmrProgress.Enabled = false;
+            btnPlay.Enabled = true;
+            btnPause.Enabled = false;
+            btnStop.Enabled = true;
+        }
+
+        private void Stop()
+        {
+            outputDevice.Stop();
+            tmrProgress.Enabled = false;
+            btnPlay.Enabled = true;
+            btnPause.Enabled = false;
+            btnStop.Enabled = false;
+            audioFile.Position = 0;
+        }
+
+        private void btnPlay_Click(object sender, EventArgs e)
+        {
+            if (currentIndex != -1)
+            {
+                if (outputDevice.PlaybackState == PlaybackState.Paused)
+                {
+                    Play();
+                }
+                else
+                {
+                    LoadAudioFile(playlist[currentIndex]);
+                    Play();
+                }
+            }
+        }
+
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            Pause();
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            Stop();
+        }
+
+        private void tmrProgress_Tick(object sender, EventArgs e)
+        {
+            if (audioFile != null)
+            {
+                int seconds = (int)audioFile.CurrentTime.TotalSeconds;
+                lblProgress.Text = string.Format("{0:D2}:{1:D2}", seconds / 60, seconds % 60);
+                progressBar.Value = (int)(100 * audioFile.Position / audioFile.Length);
+            }
+        }
+    }
+			}</p>
+			<p>使用了NAudio库来处理音频文件和音频设备。程序界面由一个列表框用于显示播放列表，一个播放/暂停按钮，一个停止按钮，一个进度条和一个显示当前播放进度的标签组成。
+
+程序的核心是LoadAudioFile、Play、Pause和Stop方法，它们分别用于加载音频文件、播放、暂停和停止当前音频文件。当播放按钮被按下时，程序会检查当前是否有音频文件正在播放，如果没有，则加载并播放选定的音频文件。如果有，则继续播放当前音频文件。当暂停按钮被按下时，程序暂停当前音频文件的播放。当停止按钮被按下时，程序停止当前音频文件的播放并将其位置设置为0。
+
+在程序中，我还添加了一个计时器控件来更新当前播放进度。当播放按钮被按下时，计时器开始计时，并且进度条和标签被更新以反映当前播放进度。当暂停按钮被按下时，计时器停止，并且进度条和标签保持不变。当停止按钮被按下时，计时器停止，并且进度条和标签被重置。
+
+				程序提供了一个基本的音乐播放器功能，可以让您打开和播放常见音频文件格式的音乐。但是，这个程序还可以进一步改进，您可以添加音量控制、播放列表排序和搜索等功能，以提高您的体验。</p>
+			
+			<p>C# 视频播放器 程序</p>
+			<p>using System;
+using System.IO;
+using System.Windows.Forms;
+using Microsoft.DirectX.AudioVideoPlayback;
+
+namespace VideoPlayer
+{
+    public partial class Form1 : Form
+    {
+        private Video video;
+        private bool isPlaying = false;
+        private bool isPaused = false;
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Video Files|*.avi;*.mpg;*.mpeg;*.wmv|All Files|*.*";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filename = openFileDialog.FileName;
+                video = new Video(filename);
+                video.Owner = panel1;
+                trackBar1.Maximum = (int)video.Duration;
+                timer1.Start();
+                isPlaying = false;
+                isPaused = false;
+            }
+        }
+
+        private void playButton_Click(object sender, EventArgs e)
+        {
+            if (video != null)
+            {
+                if (!isPlaying)
+                {
+                    if (isPaused)
+                    {
+                        video.Play();
+                        timer1.Start();
+                        isPaused = false;
+                    }
+                    else
+                    {
+                        video.Play();
+                        timer1.Start();
+                        isPlaying = true;
+                    }
+                }
+            }
+        }
+
+        private void pauseButton_Click(object sender, EventArgs e)
+        {
+            if (video != null)
+            {
+                if (isPlaying)
+                {
+                    video.Pause();
+                    timer1.Stop();
+                    isPaused = true;
+                    isPlaying = false;
+                }
+            }
+        }
+
+        private void stopButton_Click(object sender, EventArgs e)
+        {
+            if (video != null)
+            {
+                if (isPlaying || isPaused)
+                {
+                    video.Stop();
+                    trackBar1.Value = 0;
+                    timer1.Stop();
+                    isPaused = false;
+                    isPlaying = false;
+                }
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (video != null)
+            {
+                if (video.CurrentPosition >= video.Duration)
+                {
+                    stopButton_Click(sender, e);
+                }
+                else
+                {
+                    trackBar1.Value = (int)video.CurrentPosition;
+                }
+            }
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            if (video != null)
+            {
+                video.CurrentPosition = trackBar1.Value;
+            }
+        }
+    }
+				}</p>
+			
+			<p>C# 地图程序</p>
+			<p>这个程序包括了地图显示、放大、缩小、拖动等功能。该程序使用了微软必应的地图API</p>
+			<p>using Microsoft.Maps.MapControl.WPF;
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+namespace MapViewer
+{
+    public partial class MainWindow : Window
+    {
+        private LocationConverter locationConverter;
+        private Location centerLocation;
+        private int zoomLevel;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            locationConverter = new LocationConverter();
+            centerLocation = new Location(39.92, 116.46);
+            zoomLevel = 10;
+            UpdateMap(centerLocation, zoomLevel);
+        }
+
+        private void UpdateMap(Location location, int zoom)
+        {
+            myMap.Center = location;
+            myMap.ZoomLevel = zoom;
+        }
+
+        private void ZoomIn_Click(object sender, RoutedEventArgs e)
+        {
+            zoomLevel++;
+            UpdateMap(centerLocation, zoomLevel);
+        }
+
+        private void ZoomOut_Click(object sender, RoutedEventArgs e)
+        {
+            zoomLevel--;
+            UpdateMap(centerLocation, zoomLevel);
+        }
+
+        private void myMap_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Point mousePosition = e.GetPosition(myMap);
+                Location mouseLocation = (Location)locationConverter.ConvertBack(mousePosition, null, null, null);
+                centerLocation = new Location(centerLocation.Latitude - (mouseLocation.Latitude - centerLocation.Latitude), centerLocation.Longitude + (mouseLocation.Longitude - centerLocation.Longitude));
+                UpdateMap(centerLocation, zoomLevel);
+            }
+        }
+    }
+				}</p>
+			
+			<p>C# 文本编辑器程序</p>
+			<p>这个程序包括了打开、保存、复制、粘贴、撤销、恢复的功能</p>
+			<p>using System;
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+
+namespace TextEditor
+{
+    public partial class MainWindow : Window
+    {
+        private string currentFilePath = null;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void NewFile_Click(object sender, RoutedEventArgs e)
+        {
+            currentFilePath = null;
+            TextEditorBox.Text = string.Empty;
+            UpdateWindowTitle();
+        }
+
+        private void OpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                currentFilePath = openFileDialog.FileName;
+                TextEditorBox.Text = File.ReadAllText(currentFilePath);
+                UpdateWindowTitle();
+            }
+        }
+
+        private void SaveFile_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(currentFilePath))
+            {
+                Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+                saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    currentFilePath = saveFileDialog.FileName;
+                }
+            }
+            if (!string.IsNullOrEmpty(currentFilePath))
+            {
+                File.WriteAllText(currentFilePath, TextEditorBox.Text);
+                UpdateWindowTitle();
+            }
+        }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(TextEditorBox.SelectedText))
+            {
+                Clipboard.SetText(TextEditorBox.SelectedText);
+            }
+        }
+
+        private void Cut_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(TextEditorBox.SelectedText))
+            {
+                Clipboard.SetText(TextEditorBox.SelectedText);
+                TextEditorBox.SelectedText = string.Empty;
+            }
+        }
+
+        private void Paste_Click(object sender, RoutedEventArgs e)
+        {
+            if (Clipboard.ContainsText())
+            {
+                TextEditorBox.SelectedText = Clipboard.GetText();
+            }
+        }
+
+        private void Undo_Click(object sender, RoutedEventArgs e)
+        {
+            if (TextEditorBox.CanUndo)
+            {
+                TextEditorBox.Undo();
+            }
+        }
+
+        private void Redo_Click(object sender, RoutedEventArgs e)
+        {
+            if (TextEditorBox.CanRedo)
+            {
+                TextEditorBox.Redo();
+            }
+        }
+
+        private void TextEditorBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateWindowTitle();
+        }
+
+        private void UpdateWindowTitle()
+        {
+            string title = "文本编辑器";
+            if (!string.IsNullOrEmpty(currentFilePath))
+            {
+                title += " - " + Path.GetFileName(currentFilePath);
+            }
+            if (TextEditorBox.IsModified)
+            {
+                title += "*";
+            }
+            Title = title;
+        }
+    }
+				}</p>
+			<p>C# 图片查看器程序</p>
+			<p>using System;
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Microsoft.Win32;
+
+namespace ImageViewer
+{
+    public partial class MainWindow : Window
+    {
+        private string currentFilePath = null;
+        private double zoomFactor = 1.0;
+        private RotateTransform rotateTransform = new RotateTransform();
+        private bool isGrayscale = false;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void OpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image files (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                currentFilePath = openFileDialog.FileName;
+                LoadImage();
+                UpdateWindowTitle();
+            }
+        }
+
+        private void SaveFile_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(currentFilePath))
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Image files (*.bmp)|*.bmp|Image files (*.jpg)|*.jpg|Image files (*.png)|*.png";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    currentFilePath = saveFileDialog.FileName;
+                }
+            }
+            if (!string.IsNullOrEmpty(currentFilePath))
+            {
+                BitmapEncoder encoder = null;
+                switch (Path.GetExtension(currentFilePath).ToLower())
+                {
+                    case ".bmp":
+                        encoder = new BmpBitmapEncoder();
+                        break;
+                    case ".jpg":
+                        encoder = new JpegBitmapEncoder();
+                        break;
+                    case ".png":
+                        encoder = new PngBitmapEncoder();
+                        break;
+                }
+                if (encoder != null)
+                {
+                    encoder.Frames.Add(BitmapFrame.Create((BitmapSource)ImageBox.Source));
+                    using (Stream stream = File.Create(currentFilePath))
+                    {
+                        encoder.Save(stream);
+                    }
+                    UpdateWindowTitle();
+                }
+            }
+        }
+
+        private void ZoomIn_Click(object sender, RoutedEventArgs e)
+        {
+            zoomFactor += 0.1;
+            ImageBox.LayoutTransform = new ScaleTransform(zoomFactor, zoomFactor);
+        }
+
+        private void ZoomOut_Click(object sender, RoutedEventArgs e)
+        {
+            if (zoomFactor > 0.2)
+            {
+                zoomFactor -= 0.1;
+                ImageBox.LayoutTransform = new ScaleTransform(zoomFactor, zoomFactor);
+            }
+        }
+
+        private void RotateLeft_Click(object sender, RoutedEventArgs e)
+        {
+            rotateTransform.Angle -= 90;
+            ImageBox.LayoutTransform = rotateTransform;
+        }
+
+        private void RotateRight_Click(object sender, RoutedEventArgs e)
+        {
+            rotateTransform.Angle += 90;
+            ImageBox.LayoutTransform = rotateTransform;
+        }
+
+        private void Grayscale_Click(object sender, RoutedEventArgs e)
+        {
+            if (isGrayscale)
+            {
+                ImageBox.Effect = null;
+            }
+            else
+            {
+                ImageBox.Effect = new GrayscaleEffect();
+            }
+            isGrayscale = !isGrayscale;
+        }
+
+        private void LoadImage()
+        {
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+            bitmap.UriSource = new Uri(currentFilePath);
+            bitmap.EndInit();
+            ImageBox.Source = bitmap;
+        }
+
+        private void UpdateWindowTitle()
+        {
+            string title = "Image Viewer";
+        if (!string.IsNullOrEmpty(currentFilePath))
+        {
+            title += " - " + Path.GetFileName(currentFilePath);
+        }
+        Title = title;
+    }
+}
+
+public class GrayscaleEffect : ShaderEffect
+{
+    private static PixelShader pixelShader = new PixelShader();
+
+    static GrayscaleEffect()
+    {
+        pixelShader.UriSource = new Uri("/ImageViewer;component/Grayscale.ps", UriKind.Relative);
+    }
+
+    public GrayscaleEffect()
+    {
+        PixelShader = pixelShader;
+        UpdateShaderValue(InputProperty);
+    }
+
+    public Brush Input
+    {
+        get { return (Brush)GetValue(InputProperty); }
+        set { SetValue(InputProperty, value); }
+    }
+
+    public static readonly DependencyProperty InputProperty =
+        ShaderEffect.RegisterPixelShaderSamplerProperty("Input", typeof(GrayscaleEffect), 0);
+}
+				}</p>
+			<p>该程序包括了打开、保存、缩放、旋转、滤镜的功能，自定义的灰度滤镜效果。界面使用WPF的布局控件，可以自适应窗口大小和图片大小。使用C#的常规语法和WPF的UI框架。</p>
+			
+			<p>C# 截图程序</p>
+			<p>该程序可以进行全屏截图、窗口截图、自定义区域截图，并支持保存截图和设置截图质量的功能</p>
+			<p>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Drawing.Imaging;
+
+namespace ScreenshotApp
+{
+    public partial class MainForm : Form
+    {
+        private Bitmap screenshotBitmap;
+
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+            }
+        }
+
+        private void captureFullScreenButton_Click(object sender, EventArgs e)
+        {
+            using (var bitmap = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height))
+            {
+                using (var graphics = Graphics.FromImage(bitmap))
+                {
+                    graphics.CopyFromScreen(Point.Empty, Point.Empty, bitmap.Size);
+                }
+
+                ShowScreenshot(bitmap);
+            }
+        }
+
+        private void captureWindowButton_Click(object sender, EventArgs e)
+        {
+            var handle = NativeMethods.GetForegroundWindow();
+
+            if (handle != IntPtr.Zero)
+            {
+                var rect = new NativeMethods.Rect();
+                NativeMethods.GetWindowRect(handle, ref rect);
+
+                var width = rect.right - rect.left;
+                var height = rect.bottom - rect.top;
+
+                using (var bitmap = new Bitmap(width, height))
+                {
+                    using (var graphics = Graphics.FromImage(bitmap))
+                    {
+                        graphics.CopyFromScreen(new Point(rect.left, rect.top), Point.Empty, bitmap.Size);
+                    }
+
+                    ShowScreenshot(bitmap);
+                }
+            }
+        }
+
+        private void captureAreaButton_Click(object sender, EventArgs e)
+        {
+            Hide();
+            var screenshotForm = new ScreenshotForm();
+            screenshotForm.ShowDialog();
+            Show();
+
+            if (screenshotForm.DialogResult == DialogResult.OK)
+            {
+                ShowScreenshot(screenshotForm.CroppedBitmap);
+            }
+        }
+
+        private void ShowScreenshot(Bitmap bitmap)
+        {
+            screenshotBitmap?.Dispose();
+            screenshotBitmap = bitmap;
+
+            screenshotPictureBox.Image = screenshotBitmap;
+            screenshotPictureBox.Visible = true;
+
+            saveButton.Enabled = true;
+            qualityComboBox.Enabled = true;
+            rotateButton.Enabled = true;
+            grayscaleButton.Enabled = true;
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            using (var saveDialog = new SaveFileDialog())
+            {
+                saveDialog.Filter = "PNG|*.png|JPEG|*.jpg";
+                saveDialog.Title = "Save Screenshot";
+                saveDialog.FileName = "Screenshot";
+                saveDialog.DefaultExt = "png";
+
+                if (saveDialog.ShowDialog() == DialogResult.OK)
+                {
+                    var encoder = GetEncoder(saveDialog.FileName);
+                    var encoderParameters = new EncoderParameters(1);
+                    encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, (long)GetSelectedQuality());
+
+                    screenshotBitmap.Save(saveDialog.FileName, encoder, encoderParameters);
+                }
+            }
+        }
+
+        private void qualityComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            screenshotPictureBox.Image = null;
+        }
+
+        private int GetSelectedQuality()
+        {
+            switch (qualityComboBox.SelectedIndex)
+            {
+                case 0:
+                    return 25;
+                case 1:
+                    return 50;
+                case 2:
+                    return 75;
+                case 3:
+                    return 100;
+                default:
+                    return 75;
+            }
+        }
+
+        private void rotateButton_Click(object sender, EventArgs e)
+        {
+            screenshotBitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            screenshotPictureBox.Image = screenshotBitmap;
+				 private void grayscaleButton_Click(object sender, EventArgs e)
+    {
+        var grayMatrix = new ColorMatrix(new float[][] {
+            new float[] {0.299f, 0.299f, 0.299f, 0, 0},
+            new float[] {0.587f, 0.587f, 0.587f, 0, 0},
+            new float[] {0.114f, 0.114f, 0.114f, 0, 0},
+            new float[] {0, 0, 0, 1, 0},
+            new float[] {0, 0, 0, 0, 1}
+        });
+
+        var imageAttributes = new ImageAttributes();
+        imageAttributes.SetColorMatrix(grayMatrix);
+
+        using (var graphics = Graphics.FromImage(screenshotBitmap))
+        {
+            graphics.DrawImage(screenshotBitmap, new Rectangle(0, 0, screenshotBitmap.Width, screenshotBitmap.Height),
+                                0, 0, screenshotBitmap.Width, screenshotBitmap.Height, GraphicsUnit.Pixel, imageAttributes);
+        }
+
+        screenshotPictureBox.Image = screenshotBitmap;
+    }
+}
+
+public class NativeMethods
+{
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public struct Rect
+    {
+        public int left;
+        public int top;
+        public int right;
+        public int bottom;
+    }
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    public static extern IntPtr GetForegroundWindow();
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    public static extern bool GetWindowRect(IntPtr hwnd, ref Rect rectangle);
+}
+
+public class ScreenshotForm : Form
+{
+    private Point startLocation;
+    private Rectangle selectionRectangle;
+    private Bitmap screenshotBitmap;
+
+    public Bitmap CroppedBitmap => screenshotBitmap.Clone(selectionRectangle, screenshotBitmap.PixelFormat);
+
+    public ScreenshotForm()
+    {
+        InitializeComponent();
+    }
+
+    private void ScreenshotForm_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Escape)
+        {
+            Close();
+        }
+    }
+
+    private void ScreenshotForm_MouseDown(object sender, MouseEventArgs e)
+    {
+        startLocation = e.Location;
+        selectionRectangle = new Rectangle(startLocation, new Size(0, 0));
+        Refresh();
+    }
+
+    private void ScreenshotForm_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Left)
+        {
+            var currentLocation = e.Location;
+            var x = Math.Min(startLocation.X, currentLocation.X);
+            var y = Math.Min(startLocation.Y, currentLocation.Y);
+            var width = Math.Abs(startLocation.X - currentLocation.X);
+            var height = Math.Abs(startLocation.Y - currentLocation.Y);
+
+            selectionRectangle = new Rectangle(x, y, width, height);
+            Refresh();
+        }
+    }
+
+    private void ScreenshotForm_MouseUp(object sender, MouseEventArgs e)
+    {
+        DialogResult = DialogResult.OK;
+        Close();
+    }
+
+    private void ScreenshotForm_Paint(object sender, PaintEventArgs e)
+    {
+        using (var pen = new Pen(Color.Red, 2))
+        {
+            e.Graphics.DrawRectangle(pen, selectionRectangle);
+        }
+    }
+
+    protected override void OnLoad(EventArgs e)
+    {
+        Hide();
+        screenshotBitmap = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+        using (var graphics = Graphics.FromImage(screenshotBitmap))
+        {
+            graphics.CopyFromScreen(Point.Empty, Point.Empty, screenshotBitmap.Size);
+        }
+
+        Show();
+
+        base.OnLoad(e);
+    }
+}
+				}</p>
+					
 <h2>编程语言C++代码列表</h2>
 	
 	<p>C++语音识别程序，以下为代码</p>
