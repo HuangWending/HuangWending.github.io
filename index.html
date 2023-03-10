@@ -3612,9 +3612,406 @@ namespace CameraApp
 }
 									}</p>
 									
+				  <p>用C#写一个Unity游戏框架，包括游戏管理器(Game Manager)场景管理器(Scene Manager)资源管理器(Resource Manager)
+					  实体管理器(Entity Manager)动画管理器(Animation Manager)物理管理器(Physics Manager)
+					  UI管理器(UI Manager)输入管理器(Input Manager)网络管理器(Network Manager)声音管理器(Audio Manager)</p>
+								<p>游戏管理器:GameManager.cs</p>
+								<p>using UnityEngine;
+
+public class GameManager : MonoBehaviour
+{
+    private static GameManager instance;
+
+    public static GameManager Instance { get { return instance; } }
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void Start()
+    {
+        // 游戏启动时的初始化逻辑
+        SceneManager.Instance.LoadScene("StartScene");
+    }
+
+    // 游戏结束时的逻辑
+    public void GameOver()
+    {
+        // TODO: 处理游戏结束逻辑
+    }
+									}</p>
+								<p>场景管理器:SceneManager.cs</p>
+								<p>using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class SceneManager : MonoBehaviour
+{
+    private static SceneManager instance;
+
+    public static SceneManager Instance { get { return instance; } }
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // 加载场景的方法
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+									}</p>
+								<p>资源管理器:ResourceManager.cs</p>
+								<p>using UnityEngine;
+
+public class ResourceManager : MonoBehaviour
+{
+    private static ResourceManager instance;
+
+    public static ResourceManager Instance { get { return instance; } }
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // 加载资源的方法
+    public GameObject LoadPrefab(string path)
+    {
+        return Resources.Load<GameObject>(path);
+    }
+									}</p>
 									
+								<p>实体管理器:EntityManager.cs</p>
+								<p>using System.Collections.Generic;
+using UnityEngine;
+
+public class EntityManager : MonoBehaviour
+{
+    private static EntityManager instance;
+
+    public static EntityManager Instance { get { return instance; } }
+
+    private List<GameObject> entities = new List<GameObject>();
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // 添加实体的方法
+    public void AddEntity(GameObject entity)
+    {
+        entities.Add(entity);
+    }
+
+    // 删除实体的方法
+    public void RemoveEntity(GameObject entity)
+    {
+        entities.Remove(entity);
+        Destroy(entity);
+    }
+									}</p>
+									
+									<p>动画管理器:AnimationManager.cs</p>
+									<p>using UnityEngine;
+
+public class AnimationManager : MonoBehaviour
+{
+    private static AnimationManager instance;
+
+    public static AnimationManager Instance { get { return instance; } }
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // 播放动画的方法
+    public void PlayAnimation(GameObject target, string animationName)
+    {
+        target.GetComponent<Animation>().Play(animationName);
+    }
+										}</p>
 										
-								
+									<p>物理管理器:PhysicsManager.cs</p>
+									<p>using UnityEngine;
+
+public class PhysicsManager : MonoBehaviour
+{
+    private static PhysicsManager instance;
+
+    public static PhysicsManager Instance { get { return instance; } }
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // 启用/禁用物理系统的方法
+    public void SetPhysicsEnabled(bool enabled)
+    {
+        Physics.autoSimulation = enabled;
+    }
+										}</p>
+									
+									<p>UI管理器:UIManager.cs</p>
+									<p>using UnityEngine;
+
+public class UIManager : MonoBehaviour
+{
+    private static UIManager instance;
+										public static UIManager Instance { get { return instance; } }
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // 显示/隐藏UI界面的方法
+    public void ShowUI(GameObject uiObject)
+    {
+        uiObject.SetActive(true);
+    }
+
+    public void HideUI(GameObject uiObject)
+    {
+        uiObject.SetActive(false);
+    }
+										}</p>
+									
+									<p>输入管理器:InputManager.cs</p>
+									<p>using UnityEngine;
+
+public class InputManager : MonoBehaviour
+{
+    private static InputManager instance;
+
+    public static InputManager Instance { get { return instance; } }
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // 获取鼠标位置的方法
+    public Vector2 GetMousePosition()
+    {
+        return Input.mousePosition;
+    }
+
+    // 判断是否按下了鼠标左键的方法
+    public bool IsMouseLeftButtonDown()
+    {
+        return Input.GetMouseButtonDown(0);
+    }
+
+    // 判断是否按下了鼠标右键的方法
+    public bool IsMouseRightButtonDown()
+    {
+        return Input.GetMouseButtonDown(1);
+    }
+										}</p>
+									
+									<p>网络管理器:NetworkManager.cs</p>
+									<p>using UnityEngine;
+
+public class NetworkManager : MonoBehaviour
+{
+    private static NetworkManager instance;
+
+    public static NetworkManager Instance { get { return instance; } }
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // 连接服务器的方法
+    public void ConnectToServer(string ip, int port)
+    {
+        // TODO: 连接服务器的逻辑
+    }
+
+    // 发送消息给服务器的方法
+    public void SendToServer(string message)
+    {
+        // TODO: 发送消息给服务器的逻辑
+    }
+										}</p>
+									
+									<p>声音管理器:AudioManager.cs</p>
+									<p>using UnityEngine;
+
+public class AudioManager : MonoBehaviour
+{
+    private static AudioManager instance;
+
+    public static AudioManager Instance { get { return instance; } }
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // 播放音效的方法
+    public void PlaySound(AudioClip sound)
+    {
+        AudioSource.PlayClipAtPoint(sound, transform.position);
+    }
+										}</p>
+									
+									<p>C# UE游戏引擎基础框架</p>
+									<p>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Windows.Forms;
+
+namespace UEGameFramework
+{
+    class Game
+    {
+        private Stopwatch stopwatch;
+        private long lastFrameTicks;
+
+        public Game()
+        {
+            stopwatch = new Stopwatch();
+        }
+
+        public void Run()
+        {
+            stopwatch.Start();
+
+            while (true)
+            {
+                Application.DoEvents(); //处理窗口消息
+
+                long elapsedTicks = stopwatch.ElapsedTicks - lastFrameTicks;
+
+                Update(elapsedTicks);
+                Render();
+
+                lastFrameTicks = stopwatch.ElapsedTicks;
+            }
+        }
+
+        private void Update(long elapsedTicks)
+        {
+            // 处理输入
+            ProcessInput();
+
+            // 更新游戏逻辑
+            // ...
+
+            // 更新时间
+            // ...
+        }
+
+        private void Render()
+        {
+            // 清空屏幕
+            // ...
+
+            // 绘制游戏对象
+            // ...
+
+            // 刷新屏幕
+            // ...
+        }
+
+        private void ProcessInput()
+        {
+            // 处理键盘输入
+            if (Keyboard.IsKeyDown(Keys.Up))
+            {
+                // ...
+            }
+
+            // 处理鼠标输入
+            if (Mouse.LeftButton == ButtonState.Pressed)
+            {
+                // ...
+            }
+        }
+    }
+										}</p>
+										
+														  
 <h2>编程语言C++代码列表</h2>
 	
 	<p>C++语音识别程序，以下为代码</p>
