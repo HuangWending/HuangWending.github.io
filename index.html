@@ -2,6 +2,66 @@
 <html>
 <head>
     <meta charset="utf-8">
+	    <style>
+        #heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            opacity: 0;
+            animation: heartbeat 2s infinite;
+            animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
+        }
+
+        #heart:before,
+        #heart:after {
+            position: absolute;
+            content: "";
+            left: 50px;
+            top: 0;
+            width: 50px;
+            height: 80px;
+            background-color: red;
+            border-radius: 50px 50px 0 0;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        #heart:after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="heart"></div>
+</body>
+<script>
+    var heart = document.getElementById("heart");
+    heart.addEventListener("animationend", function() {
+        heart.style.animation = "none";
+        void heart.offsetWidth;
+        heart.style.animation = "heartbeat 2s infinite";
+    });
+</script>
     <img src="The%20People's%20Republic%20of%20China.png" alt="中华人民共和国国旗">
     <title>黄文定(HuángWénDìng;Wong Mandeng;ㄏㄨㄤˊㄨㄣˊㄉㄧㄥˋ)</title>
 </head>
