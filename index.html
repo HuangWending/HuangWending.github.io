@@ -9651,6 +9651,113 @@ public class SpeechRecognizer {
 					    <p>所需要的第三方库:Apache Commons Math：用于矩阵计算和高斯混合模型计算
 						    javax.sound.sampled：用来读取音频文件的
 						    该程序实现语音识别系统，包含了训练模型和识别两个步骤。其中，训练模型使用了MFCC和GMM-HMM算法以及Viterbi算法。</p>
+					    
+					    <h1>收藏网站功能</h1>
+<form id="bookmarkForm">
+    <label>输入您要收藏的网站名称：</label>
+    <input type="text" id="siteName">
+    <br><br>
+    <label>输入您要收藏的网站URL(链接)：</label>
+    <input type="text" id="siteUrl">
+    <br><br>
+    <input type="submit" value="添加您输入的网站名称和链接到收藏夹">
+</form>
+<br><br>
+<ul id="bookmarks"></ul>
+<script>
+    // 获取表单元素和收藏夹列表元素
+    const bookmarkForm = document.getElementById('bookmarkForm');
+    const siteNameInput = document.getElementById('siteName');
+    const siteUrlInput = document.getElementById('siteUrl');
+    const bookmarksList = document.getElementById('bookmarks');
+
+    // 添加收藏夹
+    function addBookmark(e) {
+        e.preventDefault();
+        const siteName = siteNameInput.value;
+        let siteUrl = siteUrlInput.value;
+
+        // 确保URL正确格式
+        if (!siteUrl.startsWith('http://') && !siteUrl.startsWith('https://')) {
+            siteUrl = `https://${siteUrl}`;
+        }
+
+        // 创建一个收藏夹元素
+        const bookmark = document.createElement('li');
+        bookmark.innerHTML = `
+    <h3>${siteName}</h3>
+    <a href="${siteUrl}" target="_blank">点击访问您收藏的网站</a>
+    <button onclick="deleteBookmark('${siteUrl}')">点击删除您这个收藏的网站</button>
+  `;
+
+        // 将收藏夹元素添加到列表中
+        bookmarksList.appendChild(bookmark);
+
+        // 重置表单
+        bookmarkForm.reset();
+
+        // 保存收藏夹到本地存储
+        saveBookmark(siteName, siteUrl);
+    }
+
+    // 保存收藏夹到本地存储
+    function saveBookmark(siteName, siteUrl) {
+        let bookmarks = [];
+        if (localStorage.getItem('bookmarks')) {
+            bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+        }
+
+        bookmarks.push({ name: siteName, url: siteUrl });
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    }
+
+    // 删除收藏夹
+    function deleteBookmark(url) {
+        let bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+        bookmarks = bookmarks.filter(bookmark => bookmark.url !== url);
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+
+        // 重新渲染收藏夹列表
+        renderBookmarks();
+    }
+
+    // 渲染收藏夹列表
+    function renderBookmarks() {
+        bookmarksList.innerHTML = '';
+        let bookmarks = [];
+        if (localStorage.getItem('bookmarks')) {
+            bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+        }
+
+        bookmarks.forEach(bookmark => {
+            const siteName = bookmark.name;
+            const siteUrl = bookmark.url;
+
+            // 创建一个收藏夹元素
+            const bookmarkElement = document.createElement('li');
+            bookmarkElement.innerHTML = `
+      <h3>${siteName}</h3>
+      <a href="${siteUrl}" target="_blank">点击访问您收藏的网站</a>
+      <button onclick="deleteBookmark('${siteUrl}')">点击删除您收藏的网站</button>
+    `;
+
+            // 将收藏夹元素添加到列表中
+            bookmarksList.appendChild(bookmarkElement);
+        });
+    }
+
+    // 初始化
+    function init() {
+        renderBookmarks();
+    }
+
+    // 在加载页面时运行初始化函数
+    window.onload = init;
+
+    // 监听表单提交事件
+    bookmarkForm.addEventListener('submit', addBookmark);
+    
+</script>
 				    
 				    
 				    <h1>视频播放功能</h1>
