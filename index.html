@@ -3445,6 +3445,174 @@ namespace FileCompression
     }
 }
 									}</p>
+								
+								<p>C# 相机程序</p>
+								<p>using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+
+namespace CameraApp
+{
+    public partial class CameraForm : Form
+    {
+        private int captureWidth;
+        private int captureHeight;
+        private int previewWidth;
+        private int previewHeight;
+        private string savePath;
+        private int frameRate;
+        private int videoLength;
+        private int counter;
+
+        private VideoCaptureDevice videoSource;
+        private VideoFileWriter writer;
+        private Bitmap videoFrame;
+        private Bitmap previewFrame;
+
+        public CameraForm()
+        {
+            InitializeComponent();
+
+            captureWidth = 640;
+            captureHeight = 480;
+            previewWidth = 320;
+            previewHeight = 240;
+            savePath = @"C:\";
+            frameRate = 30;
+            videoLength = 10;
+
+            counter = 0;
+        }
+
+        private void CameraForm_Load(object sender, EventArgs e)
+        {
+            // 获取可用的视频输入设备列表
+            var videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            if (videoDevices.Count == 0)
+            {
+                MessageBox.Show("未检测到视频输入设备！");
+                return;
+            }
+
+            // 配置视频输入设备并启动预览
+            videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
+            videoSource.VideoResolution = videoSource.VideoCapabilities.FirstOrDefault(vc => vc.FrameSize.Width == captureWidth && vc.FrameSize.Height == captureHeight);
+            videoSource.NewFrame += VideoSource_NewFrame;
+            videoSource.Start();
+
+            // 配置预览画面
+            previewFrame = new Bitmap(previewWidth, previewHeight);
+            previewPictureBox.Image = previewFrame;
+        }
+
+        private void CameraForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (videoSource != null)
+            {
+                videoSource.SignalToStop();
+                videoSource.NewFrame -= VideoSource_NewFrame;
+                videoSource = null;
+            }
+        }
+
+        private void VideoSource_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
+        {
+            // 获取新的视频帧并更新预览画面
+            videoFrame = eventArgs.Frame;
+            var graphics = Graphics.FromImage(previewFrame);
+            graphics.DrawImage(videoFrame, 0, 0, previewWidth, previewHeight);
+            graphics.Dispose();
+
+            // 如果正在录制视频，将帧写入视频文件
+            if (writer != null && counter < frameRate * videoLength)
+            {
+                writer.WriteVideoFrame(videoFrame);
+                counter++;
+            }
+        }
+
+        private void startButton_Click(object sender, EventArgs e)
+        {
+            // 弹出文件保存对话框并配置视频文件写入器
+            var saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "视频文件 (*.avi)|*.avi";
+            saveDialog.InitialDirectory = savePath;
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                writer = new VideoFileWriter();
+                writer.Open(saveDialog.FileName, captureWidth, captureHeight, frameRate, VideoCodec.MPEG4);
+                savePath = Path.GetDirectoryName(saveDialog.FileName) + Path.DirectorySeparatorChar;
+                counter = 0;
+            }
+        }
+
+        private void stopButton_Click(object sender, EventArgs e)
+        {
+            // 停止录制视频并关闭视频文件写入器
+            if (writer != null)
+            {
+                writer.Close();
+                writer.Dispose();
+            writer = null;
+        }
+    }
+
+    private void CameraForm_KeyDown(object sender, KeyEventArgs e)
+    {
+        // 按下空格键开始或停止录制视频
+        if (e.KeyCode == Keys.Space)
+        {
+            if (writer == null)
+            {
+                startButton.PerformClick();
+            }
+            else
+            {
+                stopButton.PerformClick();
+            }
+        }
+    }
+
+    private void settingsButton_Click(object sender, EventArgs e)
+    {
+        // 弹出设置对话框，允许用户修改录制视频的参数
+        var settingsDialog = new CameraSettingsDialog(captureWidth, captureHeight, previewWidth, previewHeight, frameRate, videoLength, savePath);
+        if (settingsDialog.ShowDialog() == DialogResult.OK)
+        {
+            captureWidth = settingsDialog.CaptureWidth;
+            captureHeight = settingsDialog.CaptureHeight;
+            previewWidth = settingsDialog.PreviewWidth;
+            previewHeight = settingsDialog.PreviewHeight;
+            frameRate = settingsDialog.FrameRate;
+            videoLength = settingsDialog.VideoLength;
+            savePath = settingsDialog.SavePath;
+
+            // 重新配置视频输入设备
+            if (videoSource != null)
+            {
+                videoSource.SignalToStop();
+                videoSource.WaitForStop();
+                videoSource.VideoResolution = videoSource.VideoCapabilities.FirstOrDefault(vc => vc.FrameSize.Width == captureWidth && vc.FrameSize.Height == captureHeight);
+                videoSource.Start();
+            }
+
+            // 重新配置预览画面
+            previewFrame.Dispose();
+            previewFrame = new Bitmap(previewWidth, previewHeight);
+            previewPictureBox.Image = previewFrame;
+        }
+    }
+}
+									}</p>
+									
+									
 										
 								
 <h2>编程语言C++代码列表</h2>
