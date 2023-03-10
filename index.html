@@ -9652,6 +9652,48 @@ public class SpeechRecognizer {
 						    javax.sound.sampled：用来读取音频文件的
 						    该程序实现语音识别系统，包含了训练模型和识别两个步骤。其中，训练模型使用了MFCC和GMM-HMM算法以及Viterbi算法。</p>
 					    
+					    <h1>模拟网站发送通知功能</h1>
+<p>请输入您要模拟此网站发送的通知内容：</p>
+<textarea id="notification-content"></textarea>
+<br><br>
+<button onclick="requestNotificationPermission()">点击开启请求通知权限并发送通知</button>
+<br><br>
+<p>您发送过的通知列表：</p>
+<ul id="notification-list"></ul>
+
+<script>
+    // 请求许可发送通知
+    function requestNotificationPermission() {
+        Notification.requestPermission().then(function(permission) {
+            if (permission === 'granted') {
+                showNotification();
+            }
+        });
+    }
+
+    // 显示通知
+    function showNotification() {
+        // 获取通知内容
+        var notificationContent = document.getElementById("notification-content").value;
+        if (notificationContent === "") {
+            alert("请先输入您要发送的通知内容！");
+            return;
+        }
+
+        // 创建通知
+        var notification = new Notification("来自黄文定(HuángWénDìng;Wong Mandeng;ㄏㄨㄤˊㄨㄣˊㄉㄧㄥˋ)网站的通知", {
+            body: notificationContent,
+            icon: "notification-icon.png"
+        });
+
+        // 将通知添加到列表中
+        var notificationList = document.getElementById("notification-list");
+        var notificationItem = document.createElement("li");
+        notificationItem.textContent = notificationContent;
+        notificationList.appendChild(notificationItem);
+    }
+</script>
+					    
 					    <h1>收藏网站功能</h1>
 <form id="bookmarkForm">
     <label>输入您要收藏的网站名称：</label>
