@@ -10161,6 +10161,118 @@ public class SpeechRecognizer {
 					    <p>所需要的第三方库:Apache Commons Math：用于矩阵计算和高斯混合模型计算
 						    javax.sound.sampled：用来读取音频文件的
 						    该程序实现语音识别系统，包含了训练模型和识别两个步骤。其中，训练模型使用了MFCC和GMM-HMM算法以及Viterbi算法。</p>
+					    <h1>画图功能</h1>
+					        <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<label>颜色：</label>
+<input type="color" id="color-picker">
+<br>
+<label>笔刷大小：</label>
+<input type="range" id="brush-size" min="1" max="50" value="5">
+<br>
+<label>绘画模式：</label>
+<select id="drawing-mode">
+    <option value="pen">画笔</option>
+    <option value="eraser">橡皮擦</option>
+</select>
+<br>
+<button id="clear-button">清除画布</button>
+<br>
+<canvas id="canvas"></canvas>
+<br>
+<label>文件名：</label>
+<input type="text" id="filename" value="黄文定">
+<br>
+<label>文件类型：</label>
+<select id="file-type">
+    <option value="png">PNG</option>
+    <option value="jpg">JPG</option>
+</select>
+<br>
+<button id="download-button">下载图像</button>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const colorPicker = document.getElementById('color-picker');
+    const brushSize = document.getElementById('brush-size');
+    const drawingMode = document.getElementById('drawing-mode');
+    const clearButton = document.getElementById('clear-button');
+    const downloadButton = document.getElementById('download-button');
+    const filenameInput = document.getElementById('filename');
+    const fileType = document.getElementById('file-type');
+
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+    clearButton.addEventListener('click', clearCanvas);
+    downloadButton.addEventListener('click', downloadCanvas);
+
+    function startDrawing(e) {
+        isDrawing = true;
+        lastX = e.offsetX;
+        lastY = e.offsetY;
+    }
+
+    function draw(e) {
+        if (!isDrawing) return;
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.strokeStyle = colorPicker.value;
+        ctx.lineWidth = brushSize.value;
+        if (drawingMode.value === 'eraser') {
+            ctx.globalCompositeOperation = 'destination-out';
+        } else {
+            ctx.globalCompositeOperation = 'source-over';
+        }
+        ctx.stroke();
+        lastX = e.offsetX;
+        lastY = e.offsetY;
+    }
+
+    function stopDrawing() {
+        isDrawing = false;
+    }
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function downloadCanvas() {
+        const filename = `${filenameInput.value}.${fileType.value}`;
+        // 获取用户输入的文件名和文件类型
+        const name = filenameInput.value;
+        const type = fileType.value;
+        // 创建一个新的画布，将当前画布复制到新画布
+        const newCanvas = document.createElement('canvas');
+        newCanvas.width = canvas.width;
+        newCanvas.height = canvas.height;
+        const newCtx = newCanvas.getContext('2d');
+        newCtx.drawImage(canvas, 0, 0);
+
+        // 将新画布转换为图像数据URL
+        const dataURL = newCanvas.toDataURL(`image/${type}`);
+
+        // 创建一个链接元素，将数据URL作为链接地址
+        const link = document.createElement('a');
+        link.download = `${name}.${type}`;
+        link.href = dataURL;
+
+        // 触发链接元素的点击事件，强制浏览器下载图像文件
+        link.click();
+    }
+</script>
 					    
 					    <h1>模拟网站发送通知功能</h1>
 <p>请输入您要模拟此网站发送的通知内容：</p>
