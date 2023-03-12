@@ -10172,6 +10172,142 @@ public class SpeechRecognizer {
 					    <p>所需要的第三方库:Apache Commons Math：用于矩阵计算和高斯混合模型计算
 						    javax.sound.sampled：用来读取音频文件的
 						    该程序实现语音识别系统，包含了训练模型和识别两个步骤。其中，训练模型使用了MFCC和GMM-HMM算法以及Viterbi算法。</p>
+				
+					    <h1>留言板</h1>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="message_board.js"></script>
+</head>
+<body>
+<form>
+    <label for="name">请输入您的姓名：</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <label for="contact">请输入您的联系方式：</label>
+    <input type="text" id="contact" name="contact" required>
+    <br>
+    <label for="message">请输入您的留言内容：</label>
+    <textarea id="message" name="message" required></textarea>
+    <br>
+    <button type="submit">点击提交您的留言</button>
+</form>
+
+<h2>留言列表</h2>
+<ul id="messages"></ul>
+<script>
+    // 初始化留言列表
+    var messages = [];
+
+    // 获取表单和留言列表元素
+    var form = document.querySelector('form');
+    var messageList = document.querySelector('#messages');
+
+    // 添加提交表单事件监听器
+    form.addEventListener('submit', function(event) {
+        // 阻止表单提交的默认行为
+        event.preventDefault();
+
+        // 获取表单数据
+        var name = form.elements['name'].value;
+        var contact = form.elements['contact'].value;
+        var message = form.elements['message'].value;
+        var date = new Date();
+
+        // 添加新留言
+        messages.push({
+            name: name,
+            contact: contact,
+            message: message,
+            date: date,
+            likes: 0,
+            comments: []
+        });
+
+        // 刷新留言列表
+        displayMessages();
+    });
+
+    // 添加点赞和评论事件监听器
+    messageList.addEventListener('click', function(event) {
+        // 判断是点赞还是评论
+        if (event.target.classList.contains('like')) {
+            // 获取留言项元素和留言索引
+            var messageItem = event.target.parentNode.parentNode;
+            var index = parseInt(messageItem.dataset.index);
+            // 增加点赞数并更新列表
+            messages[index].likes++;
+            displayMessages();
+        } else if (event.target.classList.contains('comment')) {
+            // 获取留言的索引和评论内容
+            var messageItem = event.target.parentNode.parentNode;
+            var index = parseInt(messageItem.dataset.index);
+            var commentInput = messageItem.querySelector('.comment-input');
+            var comment = commentInput.value;
+
+            // 添加评论并清空输入框
+            messages[index].comments.push(comment);
+            commentInput.value = '';
+
+            // 更新列表
+            displayMessages();
+        }
+    });
+
+    // 显示留言列表
+    function displayMessages() {
+        // 清空留言列表元素
+        messageList.innerHTML = '';
+
+        // 遍历留言数组，创建留言项元素并添加到列表
+        for (var i = 0; i < messages.length; i++) {
+            var message = messages[i];
+            var messageItem = document.createElement('li');
+            messageItem.dataset.index = i;
+
+            // 留言标题（姓名和时间）
+            var messageTitle = document.createElement('h3');
+            messageTitle.textContent = message.name + ' (' + message.date.toLocaleString() + ')';
+            messageItem.appendChild(messageTitle);
+
+            // 留言内容
+            var messageContent = document.createElement('p');
+            messageContent.textContent = message.message;
+            messageItem.appendChild(messageContent);
+
+            // 点赞按钮
+            var likeButton = document.createElement('button');
+            likeButton.classList.add('like');
+            likeButton.textContent = '点击点赞 (' + message.likes + ')';
+            messageItem.appendChild(likeButton);
+
+            // 评论框
+            var commentInput = document.createElement('input');
+            commentInput.classList.add('comment-input');
+            commentInput.placeholder = '请输入您的评论';
+            messageItem.appendChild(commentInput);
+
+            // 评论按钮
+            var commentButton = document.createElement('button');
+            commentButton.classList.add('comment');
+            commentButton.textContent = '点击评论';
+            messageItem.appendChild(commentButton);
+
+            // 评论列表
+            var commentList = document.createElement('ul');
+            for (var j = 0; j < message.comments.length; j++) {
+                var comment = message.comments[j];
+                var commentItem = document.createElement('li');
+                commentItem.textContent = comment;
+                commentList.appendChild(commentItem);
+            }
+            messageItem.appendChild(commentList);
+
+            // 添加留言项元素到列表
+            messageList.appendChild(messageItem);
+        }
+    }
+</script>
+					    
 					    <h1>画图功能</h1>
 					        <style>
         canvas {
