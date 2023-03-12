@@ -10173,64 +10173,214 @@ public class SpeechRecognizer {
 						    javax.sound.sampled：用来读取音频文件的
 						    该程序实现语音识别系统，包含了训练模型和识别两个步骤。其中，训练模型使用了MFCC和GMM-HMM算法以及Viterbi算法。</p>
 				
-	
-<!-- 留言区域开始 -->
-<h1>留言功能</h1>
-<div id="comment-container"></div>
-<form id="comment-form">
-    <label for="comment-name">输入您的姓名：</label>
-    <input type="text" id="comment-name" required>
-    <br>
-    <label for="comment-content">输入您的留言内容：</label>
-    <textarea id="comment-content" required></textarea>
-    <br>
-    <button type="submit">点击发表您的留言</button>
-</form>
-<!-- 留言区域结束 -->
-
-<script>
-    // 创建一个空数组，用于存储所有的评论
-    var comments = [];
-
-    // 从本地存储中获取之前保存的评论
-    if (localStorage.getItem("comments")) {
-        comments = JSON.parse(localStorage.getItem("comments"));
-    }
-
-    // 定义函数，用于将评论保存到本地存储中
-    function saveComments() {
-        localStorage.setItem("comments", JSON.stringify(comments));
-    }
-
-    // 定义函数，用于渲染所有评论到页面上
-    function renderComments() {
-        // 清空评论容器中的内容
-        document.getElementById("comment-container").innerHTML = "";
-
-        // 遍历所有评论，创建一个包含评论信息的 HTML 元素，并添加到评论容器中
-        for (var i = 0; i < comments.length; i++) {
-            var comment = comments[i];
-            var html = "<div><strong>" + comment.name + "：</strong>" + comment.content + "</div>";
-            document.getElementById("comment-container").innerHTML += html;
+					    <h1>屏幕注音，拼音键盘</h1>
+    <style>
+        h1 {
+            text-align: center;
+            margin-top: 50px;
         }
+
+        #input-box {
+            display: block;
+            margin: 50px auto;
+            padding: 10px;
+            font-size: 24px;
+            width: 80%;
+        }
+
+        .keyboard {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px auto;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .key {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 20px;
+            background-color: #eee;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .letter {
+            width: 50px;
+        }
+
+        .key:focus {
+            outline: none;
+        }
+
+        .key:active {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+<div class="keyboard-container">
+    <input type="text" id="input-box" placeholder="点击这里开始输入您的文本">
+    <div class="keyboard">
+        <div class="row">
+            <button class="key letter-key" onclick="addText('q')">q</button>
+            <button class="key letter-key" onclick="addText('w')">w</button>
+            <button class="key letter-key" onclick="addText('e')">e</button>
+            <button class="key letter-key" onclick="addText('r')">r</button>
+            <button class="key letter-key" onclick="addText('t')">t</button>
+            <button class="key letter-key" onclick="addText('y')">y</button>
+            <button class="key letter-key" onclick="addText('u')">u</button>
+            <button class="key letter-key" onclick="addText('i')">i</button>
+            <button class="key letter-key" onclick="addText('o')">o</button>
+            <button class="key letter-key" onclick="addText('p')">p</button>
+            <button class="key letter-key" onclick="addText('[')">&#91;</button>
+            <button class="key letter-key" onclick="addText(']')">&#93;</button>
+        </div>
+        <div class="row">
+            <button class="key letter-key" onclick="addText('a')">a</button>
+            <button class="key letter-key" onclick="addText('d')">d</button>
+            <button class="key letter-key" onclick="addText('f')">f</button>
+            <button class="key letter-key" onclick="addText('g')">g</button>
+            <button class="key letter-key" onclick="addText('h')">h</button>
+            <button class="key letter-key" onclick="addText('j')">j</button>
+            <button class="key letter-key" onclick="addText('k')">k</button>
+            <button class="key letter-key" onclick="addText('l')">l</button>
+            <button class="key letter-key" onclick="addText(';')">;</button>
+            <button class="key letter-key" onclick="addText('\'')">\'</button>
+        </div>
+        <div class="row">
+            <button class="key letter-key" onclick="addText('z')">z</button>
+            <button class="key letter-key" onclick="addText('x')">x</button>
+            <button class="key letter-key" onclick="addText('c')">c</button>
+            <button class="key letter-key" onclick="addText('v')">v</button>
+            <button class="key letter-key" onclick="addText('b')">b</button>
+            <button class="key letter-key" onclick="addText('n')">n</button>
+            <button class="key letter-key" onclick="addText('m')">m</button>
+            <button class="key letter-key" onclick="addText(',')">,</button>
+            <button class="key letter-key" onclick="addText('.')">.</button>
+            <button class="key letter-key" onclick="addText('/')">/</button>
+        </div>
+        <div class="row">
+            <button class="key pinyin-key" onclick="addText('ā')">ā</button>
+            <button class="key pinyin-key" onclick="addText('á')">á</button>
+            <button class="key pinyin-key" onclick="addText('ǎ')">ǎ</button>
+            <button class="key pinyin-key" onclick="addText('à')">à</button>
+            <button class="key pinyin-key" onclick="addText('ē')">ē</button>
+            <button class="key pinyin-key" onclick="addText('é')">é</button>
+            <button class="key pinyin-key" onclick="addText('ě')">ě</button>
+            <button class="key pinyin-key" onclick="addText('è')">è</button>
+            <button class="key pinyin-key" onclick="addText('ī')">ī</button>
+            <button class="key pinyin-key" onclick="addText('í')">í</button>
+            <button class="key pinyin-key" onclick="addText('ǐ')">ǐ</button>
+            <button class="key pinyin-key" onclick="addText('ì')">ì</button>
+            <button class="key pinyin-key" onclick="addText('ō')">ō</button>
+            <button class="key pinyin-key" onclick="addText('ó')">ó</button>
+            <button class="key pinyin-key" onclick="addText('ǒ')">ǒ</button>
+            <button class="key pinyin-key" onclick="addText('ò')">ò</button>
+            <button class="key pinyin-key" onclick="addText('ū')">ū</button>
+            <button class="key pinyin-key" onclick="addText('ú')">ú</button>
+            <button class="key pinyin-key" onclick="addText('ǔ')">ǔ</button>
+            <button class="key pinyin-key" onclick="addText('ù')">ù</button>
+            <button class="key pinyin-key" onclick="addText('ü')">ü</button>
+            <button class="key pinyin-key" onclick="addText('ǘ')">ǘ</button>
+            <button class="key pinyin-key" onclick="addText('ǚ')">ǚ</button>
+            <button class="key pinyin-key" onclick="addText('ǜ')">ǜ</button>
+        </div>
+        <div class="row">
+            <button class="key bopomofo-key" onclick="addText('ㄅ')">ㄅ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄆ')">ㄆ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄇ')">ㄇ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄈ')">ㄈ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄉ')">ㄉ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄊ')">ㄊ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄋ')">ㄋ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄌ')">ㄌ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄍ')">ㄍ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄎ')">ㄎ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄏ')">ㄏ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄐ')">ㄐ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄑ')">ㄑ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄒ')">ㄒ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄓ')">ㄓ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄔ')">ㄔ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄕ')">ㄕ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄖ')">ㄖ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄗ')">ㄗ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄘ')">ㄘ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄙ')">ㄙ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄧ')">ㄧ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄨ')">ㄨ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄩ')">ㄩ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄚ')">ㄚ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄛ')">ㄛ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄜ')">ㄜ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄝ')">ㄝ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄞ')">ㄞ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄠ')">ㄠ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄡ')">ㄡ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄢ')">ㄢ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄣ')">ㄣ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄤ')">ㄤ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄥ')">ㄥ</button>
+            <button class="key bopomofo-key" onclick="addText('ㄦ')">ㄦ</button>
+            <button class="key bopomofo-key" onclick="addText('ˊ')">ˊ</button>
+            <button class="key bopomofo-key" onclick="addText('ˇ')">ˇ</button>
+            <button class="key bopomofo-key" onclick="addText('ˋ')">ˋ</button>
+            <button class="key bopomofo-key" onclick="addText('˙')">˙</button>
+        </div>
+        <div class="row">
+            <button class="key capslock-key" onclick="toggleCapsLock()">Caps Lock</button>
+            <button class="key letter-key" onclick="addText('a')">a</button>
+            <button class="key letter-key" onclick="addText('s')">s</button>
+            <button class="key letter-key" onclick="addText('d')">d</button>
+            <button class="key letter-key" onclick="addText('f')">f</button>
+            <button class="key letter-key" onclick="addText('g')">g</button>
+            <button class="key letter-key" onclick="addText('h')">h</button>
+            <button class="key letter-key" onclick="addText('j')">j</button>
+            <button class="key letter-key" onclick="addText('k')">k</button>
+            <button class="key letter-key" onclick="addText('l')">l</button>
+            <button class="key letter-key" onclick="addText(';')">;</button>
+            <button class="key letter-key" onclick="addText('\'")">'</button>
+            <button class="key enter-key" onclick="addText('\n')">Enter</button>
+        </div>
+        <div class="row">
+            <button class="key shift-key" onclick="toggleShift()">Shift</button>
+            <button class="key letter-key" onclick="addText('z')">z</button>
+            <button class="key letter-key" onclick="addText('x')">x</button>
+            <button class="key letter-key" onclick="addText('c')">c</button>
+            <button class="key letter-key" onclick="addText('v')">v</button>
+            <button class="key letter-key" onclick="addText('b')">b</button>
+            <button class="key letter-key" onclick="addText('n')">n</button>
+            <button class="key letter-key" onclick="addText('m')">m</button>
+            <button class="key letter-key" onclick="addText(',')">,</button>
+            <button class="key letter-key" onclick="addText('.')">.</button>
+            <button class="key letter-key" onclick="addText('/')">/</button>
+            <button class="key shift-key" onclick="toggleShift()">Shift</button>
+        </div>
+        <button class="key" onclick="addText(' ')">点击空格</button>
+        <button class="key" onclick="deleteText()">点击删除</button>
+        <button class="key" onclick="clearText()">点击清空</button>
+    </div>
+</div>
+<script>
+    function addText(text) {
+        document.getElementById('input-box').value += text;
     }
 
-    // 在页面加载完成后，立即渲染所有评论
-    document.addEventListener("DOMContentLoaded", function() {
-        renderComments();
-    });
+    function deleteText() {
+        var inputBox = document.getElementById('input-box');
+        inputBox.value = inputBox.value.slice(0, -1);
+    }
 
-    // 监听表单提交事件，当提交表单时，将表单数据转换为评论对象，保存到数组中，并重新渲染所有评论
-    document.getElementById("comment-form").addEventListener("submit", function(event) {
-        event.preventDefault();
-        var name = document.getElementById("comment-name").value;
-        var content = document.getElementById("comment-content").value;
-        var comment = { name: name, content: content };
-        comments.push(comment);
-        saveComments();
-        renderComments();
-        document.getElementById("comment-form").reset();
-    });
+    function clearText() {
+        document.getElementById('input-box').value = '';
+    }
 </script>
 					    
 					    <h1>画图功能</h1>
