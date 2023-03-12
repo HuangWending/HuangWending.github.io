@@ -10172,6 +10172,153 @@ public class SpeechRecognizer {
 					    <p>所需要的第三方库:Apache Commons Math：用于矩阵计算和高斯混合模型计算
 						    javax.sound.sampled：用来读取音频文件的
 						    该程序实现语音识别系统，包含了训练模型和识别两个步骤。其中，训练模型使用了MFCC和GMM-HMM算法以及Viterbi算法。</p>
+					    
+					      <h1>留言功能</h1>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        h2 {
+            font-size: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+        }
+        input, textarea {
+            width: 100%;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            font-size: 1.2rem;
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+        li {
+            text-align: left;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .name {
+            font-weight: bold;
+        }
+        .time {
+            font-style: italic;
+            font-size: 0.8rem;
+        }
+        .delete {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #dc3545;
+            color: white;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form>
+        <label>姓名</label>
+        <input type="text" id="name" placeholder="请输入您的姓名">
+        <label>留言内容</label>
+        <textarea id="message" placeholder="请输入您的留言内容"></textarea>
+        <button type="button" onclick="submitMessage()">点击提交您的留言</button>
+    </form>
+    <hr>
+    <h2>留言列表</h2>
+    <ul id="messageList">
+    </ul>
+</div>
+<script>
+        // 保存留言的数组
+           var messages = [];
+
+        // 添加留言到列表中
+           function addMessage(name, message) {
+        // 创建 li 元素，并将姓名、留言内容、时间加入其中
+        var li = document.createElement("li");
+            var nameNode = document.createElement("span");
+            nameNode.setAttribute("class", "name");
+            nameNode.appendChild(document.createTextNode(name));
+            var messageNode = document.createTextNode(": " + message);
+            var timeNode = document.createElement("span");
+            timeNode.setAttribute("class", "time");
+            timeNode.appendChild(document.createTextNode(getCurrentTime()));
+            var deleteButton = document.createElement("button");
+            deleteButton.setAttribute("class", "delete");
+            deleteButton.appendChild(document.createTextNode("点击删除您的留言"));
+        deleteButton.addEventListener("click", function() {
+        deleteMessage(li);
+        });
+        li.appendChild(nameNode);
+
+        li.appendChild(messageNode);
+        li.appendChild(timeNode);
+        li.appendChild(deleteButton);
+        // 将 li 元素添加到留言列表中
+           var messageList = document.getElementById("messageList");
+        messageList.appendChild(li);
+        }
+
+        // 获取当前时间
+           function getCurrentTime() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = now.getMonth() + 1;
+            var day = now.getDate();
+            var hour = now.getHours();
+            var minute = now.getMinutes();
+            var second = now.getSeconds();
+            return year + "-" + formatNumber(month) + "-" + formatNumber(day) + " " + formatNumber(hour) + ":" + formatNumber(minute) + ":" + formatNumber(second);
+        }
+
+        // 格式化数字，补零
+           function formatNumber(num) {
+            return num < 10 ? "0" + num : num;
+        }
+
+        // 删除留言
+           function deleteMessage(li) {
+            var messageList = document.getElementById("messageList");
+            messageList.removeChild(li);
+        }
+
+        // 提交留言
+           function submitMessage() {
+            var nameInput = document.getElementById("name");
+            var messageInput = document.getElementById("message");
+            var name = nameInput.value;
+            var message = messageInput.value;
+        if (name && message) { // 如果姓名和留言内容都不为空
+        addMessage(name, message);
+            nameInput.value = "";
+            messageInput.value = "";
+        } else {
+          alert("警告:您的姓名和您的留言内容不能为空！");
+          }
+        }
+
+        </script>
 				
 					    <h1>屏幕注音，拼音键盘功能</h1>
     <style>
