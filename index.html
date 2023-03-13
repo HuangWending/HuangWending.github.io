@@ -2067,6 +2067,7 @@ selectedShape.Rotate(angle);
     }
 }
 			}</p>
+		
 		<p>在这个代码中，我创建了一个 Shape 抽象类和几个具体的形状类，例如 LineShape， RectangleShape， EllipseShape 和 TriangleShape。这些形状类都实现了 Shape 抽象类中定义的方法，如 Draw， Contains， Move， Resize 和 Rotate 等。这些方法允许我们绘制形状，检查形状是否包含一个点，移动形状，调整形状的大小和旋转形状。
 
 在 Form1 类中，我使用了一个 List<Shape> 对象来存储所有绘制的形状。当用户单击绘图工具栏中的某个工具时，我将 drawing 设置为 true，表示当前正在绘制一个新的形状。当用户单击绘图区域时，我会创建一个新的形状对象，将其添加到 shapes 列表中，并将 drawing 设置为 false。
@@ -2078,6 +2079,7 @@ selectedShape.Rotate(angle);
 除了绘制工具栏，我还添加了几个按钮，以允许用户选择线条颜色、线条宽度、保存图像、打开图像以及清除所有形状。这些按钮都有相应的单击事件处理程序，可以执行所需的操作。
 
 			我想说的是，这些代码提供了一个基本的画图应用程序框架，可以通过添加更多形状和功能来扩展和定制。</p>
+			
 		<p>C# 录音器程序</p>
 		<p>using System;
 using System.IO;
@@ -2127,6 +2129,7 @@ namespace Recorder
         }
     }
 			}</p>
+		
 		<p>在这个程序中，我使用了 mciSendString 函数来调用Windows多媒体命令接口来捕获系统音频。我将录制的音频保存为WAV文件，并使用日期时间作为文件名。
 
 在UI方面，我添加了两个按钮（开始和停止录制）以及一个标签来显示当前录制状态。当用户单击“开始”按钮时，我将创建一个新的WAV文件，并使用 mciSendString 函数开始录制音频。在录制期间，标签将显示“Recording...”。当用户单击“停止”按钮时，我将停止录制，并使用 mciSendString 函数将录制的音频保存到文件中。标签将更新为“Recording stopped”。
@@ -2273,6 +2276,7 @@ namespace MusicPlayer
         }
     }
 			}</p>
+			
 			<p>使用了NAudio库来处理音频文件和音频设备。程序界面由一个列表框用于显示播放列表，一个播放/暂停按钮，一个停止按钮，一个进度条和一个显示当前播放进度的标签组成。
 
 程序的核心是LoadAudioFile、Play、Pause和Stop方法，它们分别用于加载音频文件、播放、暂停和停止当前音频文件。当播放按钮被按下时，程序会检查当前是否有音频文件正在播放，如果没有，则加载并播放选定的音频文件。如果有，则继续播放当前音频文件。当暂停按钮被按下时，程序暂停当前音频文件的播放。当停止按钮被按下时，程序停止当前音频文件的播放并将其位置设置为0。
@@ -2393,7 +2397,7 @@ namespace VideoPlayer
 				}</p>
 			
 			<p>C# 地图程序</p>
-			<p>这个程序包括了地图显示、放大、缩小、拖动等功能。该程序使用了微软必应的地图API</p>
+			<p>这个程序包括了地图显示、放大、缩小、拖动等功能。该程序使用微软必应的地图API</p>
 			<p>using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.Windows;
@@ -2449,7 +2453,9 @@ namespace MapViewer
 				}</p>
 			
 			<p>C# 文本编辑器程序</p>
+			
 			<p>这个程序包括了打开、保存、复制、粘贴、撤销、恢复的功能</p>
+			
 			<p>using System;
 using System.IO;
 using System.Windows;
@@ -2566,7 +2572,9 @@ namespace TextEditor
         }
     }
 				}</p>
+			
 			<p>C# 图片查看器程序</p>
+			
 			<p>using System;
 using System.IO;
 using System.Windows;
@@ -10174,66 +10182,6 @@ public class SpeechRecognizer {
 						    该程序实现语音识别系统，包含了训练模型和识别两个步骤。其中，训练模型使用了MFCC和GMM-HMM算法以及Viterbi算法。</p>
 					    
 					      <h1>留言功能</h1>
-    <style>
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        h2 {
-            font-size: 2rem;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-        label {
-            display: block;
-            font-size: 1.2rem;
-            margin-top: 1.5rem;
-        }
-        input, textarea {
-            width: 100%;
-            font-size: 1.2rem;
-            padding: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            font-size: 1.2rem;
-            padding: 0.5rem 1.5rem;
-            border: none;
-            border-radius: 0.25rem;
-            cursor: pointer;
-        }
-        li {
-            text-align: left;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-        .name {
-            font-weight: bold;
-        }
-        .time {
-            font-style: italic;
-            font-size: 0.8rem;
-        }
-        .delete {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: #dc3545;
-            color: white;
-            font-size: 0.8rem;
-            padding: 0.2rem 0.5rem;
-            border: none;
-            border-radius: 0.25rem;
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
 <div class="container">
@@ -10321,55 +10269,6 @@ public class SpeechRecognizer {
         </script>
 				
 					    <h1>屏幕注音，拼音键盘功能</h1>
-    <style>
-        h1 {
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        #input-box {
-            display: block;
-            margin: 50px auto;
-            padding: 10px;
-            font-size: 24px;
-            width: 80%;
-        }
-
-        .keyboard {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 20px auto;
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .key {
-            padding: 10px 20px;
-            margin: 5px;
-            font-size: 20px;
-            background-color: #eee;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .letter {
-            width: 50px;
-        }
-
-        .key:focus {
-            outline: none;
-        }
-
-        .key:active {
-            background-color: #ddd;
-        }
-    </style>
 </head>
 <body>
 <div class="keyboard-container">
@@ -11233,31 +11132,6 @@ public class SpeechRecognizer {
 			 <h1>货币转换功能</h1>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-    }
-    h1 {
-        margin-top: 50px;
-    }
-    form {
-        margin-top: 20px;
-    }
-    input[type="number"] {
-        padding: 10px;
-        font-size: 20px;
-    }
-    select {
-        padding: 10px;
-        font-size: 20px;
-    }
-    button {
-        margin-top: 20px;
-        padding: 10px;
-        font-size: 20px;
-    }
-</style>
 </head>
 <body>
 <form onsubmit="convert(event)">
@@ -12020,11 +11894,11 @@ document.body.removeChild(downloadLink);
 	</script>
 	
 	<div class="ip-info">
-    <p><span>纬度:</span> <span id="latitude"></span></p>
-    <p><span>经度:</span> <span id="longitude"></span></p>
-    <p><span>时区:</span> <span id="timezone"></span></p>
-    <p><span>互联网服务提供商:</span> <span id="isp"></span></p>
-    <p><span>代理:</span> <span id="proxy"></span></p>
+    <p><span>您所在的纬度:</span> <span id="latitude"></span></p>
+    <p><span>您所在的经度:</span> <span id="longitude"></span></p>
+    <p><span>您所在的时区:</span> <span id="timezone"></span></p>
+    <p><span>您的互联网服务提供商:</span> <span id="isp"></span></p>
+    <p><span>您是否使用代理:</span> <span id="proxy"></span></p>
 </div>
 
 <script>
@@ -12088,7 +11962,7 @@ document.body.removeChild(downloadLink);
       } else if (userAgent.indexOf('iOS') != -1) {
         return 'iOS';
       } else {
-        return '我不知道你所使用的操作系统是什么(可以告知站主)';
+        return '我不知道您所使用的操作系统是什么(可以告知站主)';
       }
     }
   </script>
@@ -12109,7 +11983,7 @@ document.body.removeChild(downloadLink);
     var today = new Date();
     var todayGMT = today.toLocaleString('chinese', { hour12: false, timeZone: 'Asia/Shanghai' });
     var dateTimeParts = todayGMT.split(/\D/); //["2020","4","4","14","32","42"]
-    document.write("你進入此網站的時間:" + dateTimeParts[0]+"-"+dateTimeParts[1]+"-"+dateTimeParts[2]+" "+dateTimeParts[3]+":"+dateTimeParts[4]+":"+dateTimeParts[5]);
+    document.write("您進入此網站的時間:" + dateTimeParts[0]+"-"+dateTimeParts[1]+"-"+dateTimeParts[2]+" "+dateTimeParts[3]+":"+dateTimeParts[4]+":"+dateTimeParts[5]);
     setInterval(function(){
 
         var today = new Date();
